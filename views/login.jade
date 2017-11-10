@@ -1,0 +1,13 @@
+extends ./layout.jade
+block contenido
+    div(class="col-md-8 remove-float center-block  big-top-space")
+        form(action="/sessions", method="post")
+            div(class="form-group")
+                label(for="email") Email
+                input(type="email", id="email", name="email" , placeholder="example@empresa.com" class="form-control")
+            div
+                label(for="password") Contraseña
+                input(type="password", id="password" name="password" , placeholder="Contraseña" class="form-control") 
+            div
+                input(type="submit" value="Ingresar" class="btn btn-info")    
+                
