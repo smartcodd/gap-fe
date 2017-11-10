@@ -1,0 +1,31 @@
+{
+  "name": "gap",
+  "version": "1.0.0",
+  "description": "Aplicación Gestión de Agua Potable",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdministracionAguaPotable/gap_fe.git"
+  },
+  "keywords": [
+    "Gestión",
+    "Agua",
+    "Potable"
+  ],
+  "author": "Freddy Castillo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AdministracionAguaPotable/gap_fe/issues"
+  },
+  "homepage": "https://github.com/AdministracionAguaPotable/gap_fe#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.1",
+    "express-session": "^1.15.6",
+    "jade": "^1.11.0",
+    "mongoose": "^4.12.2"
+  }
+}

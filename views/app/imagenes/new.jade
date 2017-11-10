@@ -1,0 +1,15 @@
+extends ../../layout.jade
+block contenido
+    div(class="col-md-8 remove-float center-block  big-top-space")
+        
+        form(action="/app/imagenes", method="post")
+            h1 Subir Nueva Imagen
+            div(class="form-group")
+                label(for="title") Titulo
+                input(type="text", id="title", name="title" , placeholder="Titulo de la imagen" class="form-control")
+            div
+                label(for="imagen") Archivo
+                input(type="file", id="imagen" name="imagen" , placeholder="Imagen" class="form-control") 
+            div
+                input(type="submit" value="Ingresar" class="btn btn-info")    
+                
