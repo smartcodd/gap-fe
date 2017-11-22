@@ -39,7 +39,14 @@ router.route("/imagenes/:id").get(
             }
         });
     }).delete(function (req, res) {
-
+        Imagen.findByIdAndRemove({_id:req.params.id},function(err){
+            if(!err){
+                res.redirect("/app/imagenes");
+            }else{
+                console.log(err);
+                res.redirect("/app/imagenes/"+req.params.id);
+            }
+        });
     });
 router.route("/imagenes").get(
     function (req, res) {
