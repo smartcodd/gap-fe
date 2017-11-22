@@ -2,11 +2,12 @@ extends ../../layout.jade
 block contenido
     div(class="container")
         h1 Imagenes
-        for img in imagenes
+        for imagen in imagenes
             .white.border.tr.large-padding
                 .row
                     .col-md-10
-                        h2=img.titulo
+                        h2=imagen.titulo
                     .col-md-2
-                        a(href="/app/imaganes/#{img._id}/edit" class="right-space") Editar
-                        a(href="/app/imaganes/#{img._id}/") Eliminar
+                        a(href="/app/imaganes/#{imagen._id}/edit" class="right-space") Editar
+                        form(action="/app/imaganes/#{imagen._id}?_method=DELETE")
+                            a() Eliminar

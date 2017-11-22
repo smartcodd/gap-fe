@@ -8,20 +8,36 @@ router.get("/", function (req, res) {
 router.get("/imagenes/new", function (req, res) {
     res.render("app/imagenes/new")
 });
+router.get("/imaganes/:id/edit", function (req, res) {
+    Imagen.findById(req.params.id, function (err, imagen) {
+        if (!err) {
+            res.render("app/imagenes/edit", { imagen: imagen })
+        }
+    });
+    
+});
 router.route("/imagenes/:id").get(
     function (req, res) {
         Imagen.findById(req.params.id, function (err, img) {
-            console.log("Imagen Lectura");
-            console.log(img);
-            if (err) {
-
-            } else {
+            if (!err) {
                 res.render("app/imagenes/show", { imagen: img });
             }
         });
 
     }).put(function (req, res) {
-
+        Imagen.findById(req.params.id, function (err, img) {
+            if (!err) {
+                img.titulo=req.body.title ;
+                img.save(
+                    function(err){
+                        if(!err){
+                            res.render("app/imagenes/show", { imagen: img });
+                        }
+                    }
+                );
+                
+            }
+        });
     }).delete(function (req, res) {
 
     });
@@ -38,7 +54,6 @@ router.route("/imagenes").get(
     }).post(function (req, res) {
         var data = { titulo: req.body.title };
         var imagen = new Imagen(data);
-        console.log(imagen)
         imagen.save(function (err) {
             if (!err) {
                 res.redirect("/app/imagenes/" + imagen._id)

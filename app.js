@@ -5,12 +5,14 @@ var app = express();
 var User = require("./models/user").User;
 var session = require("express-session");
 var cookieSession = require("cookie-session");
+var methodOverride = require("method-override");
 var router_app = require("./rutas_app.js");
 var session_middleware = require("./middlewares/session.js");
 
 var bodyParcer = require("body-parser")
 app.use("/docs", express.static("public"));
 app.use(bodyParcer.json());
+app.use(methodOverride("_method"));
 app.use(bodyParcer.urlencoded({ extended: true }));
 app.use(cookieSession({
     name: "session",
