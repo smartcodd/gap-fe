@@ -1,50 +1,40 @@
 var express = require("express");
 var router = express.Router();
 var Imagen = require("./models/imagenes").Imagen;
+var image_find_middleware = require("./middlewares/find_image");
 router.get("/", function (req, res) {
     res.render("app/home");
 });
-
 router.get("/imagenes/new", function (req, res) {
     res.render("app/imagenes/new")
 });
-router.get("/imaganes/:id/edit", function (req, res) {
-    Imagen.findById(req.params.id, function (err, imagen) {
-        if (!err) {
-            res.render("app/imagenes/edit", { imagen: imagen })
-        }
-    });
-    
+router.all("/imagenes/:id*", image_find_middleware);
+router.get("/imagenes/:id/edit", function (req, res) {
+    res.render("app/imagenes/edit");
 });
 router.route("/imagenes/:id").get(
     function (req, res) {
-        Imagen.findById(req.params.id, function (err, img) {
-            if (!err) {
-                res.render("app/imagenes/show", { imagen: img });
-            }
-        });
+        res.render("app/imagenes/show");
 
     }).put(function (req, res) {
-        Imagen.findById(req.params.id, function (err, img) {
-            if (!err) {
-                img.titulo=req.body.title ;
-                img.save(
-                    function(err){
-                        if(!err){
-                            res.render("app/imagenes/show", { imagen: img });
-                        }
-                    }
-                );
-                
+        res.locals.imagen.titulo = req.body.title;
+        res.locals.imagen.save(
+            function (err) {
+                if (!err) {
+                    res.render("app/imagenes/show");
+                }else
+                {
+                    res.render("app/imagenes/"+req.params.id+"/edit");
+                }
             }
-        });
+        );
     }).delete(function (req, res) {
-        Imagen.findByIdAndRemove({_id:req.params.id},function(err){
-            if(!err){
+        Imagen.findByIdAndRemove({ _id: req.params.id }, function (err) {
+            if (!err) {
                 res.redirect("/app/imagenes");
-            }else{
+            } else {
                 console.log(err);
-                res.redirect("/app/imagenes/"+req.params.id);
+                res.redirect("/app/imagenes/" + req.params.id);
             }
         });
     });

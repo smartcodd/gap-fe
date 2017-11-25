@@ -8,7 +8,7 @@ block contenido
                     .col-md-10
                         h2=imagen.titulo
                     .col-md-2
-                        a(href="/app/imaganes/#{imagen._id}/edit" class="right-space") Editar
+                        a(href="/app/imagenes/#{imagen._id}/edit" class="right-space") Editar
                         form(action="/app/imagenes/#{imagen._id}?_method=DELETE",class="link", method="POST")
                            
                             input( type="submit",value="Eliminar") 
