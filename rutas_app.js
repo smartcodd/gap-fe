@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var Imagen = require("./models/imagenes").Imagen;
 var image_find_middleware = require("./middlewares/find_image");
+var fs=require("fs");
 router.get("/", function (req, res) {
     res.render("app/home");
 });
@@ -15,7 +16,6 @@ router.get("/imagenes/:id/edit", function (req, res) {
 router.route("/imagenes/:id").get(
     function (req, res) {
         res.render("app/imagenes/show");
-
     }).put(function (req, res) {
         res.locals.imagen.titulo = req.body.title;
         res.locals.imagen.save(
@@ -29,18 +29,17 @@ router.route("/imagenes/:id").get(
             }
         );
     }).delete(function (req, res) {
-        Imagen.findByIdAndRemove({ _id: req.params.id }, function (err) {
+        Imagen.findByIdAndRemove({ _id: res.locals.imagen._id }, function (err) {
             if (!err) {
                 res.redirect("/app/imagenes");
             } else {
-                console.log(err);
                 res.redirect("/app/imagenes/" + req.params.id);
             }
         });
     });
 router.route("/imagenes").get(
     function (req, res) {
-        Imagen.find({}, function (err, imagenes) {
+        Imagen.find({creator:res.locals.user._id}, function (err, imagenes) {
             if (err) {
                 res.redirect("/app");
                 return;
@@ -49,10 +48,13 @@ router.route("/imagenes").get(
             }
         });
     }).post(function (req, res) {
-        var data = { titulo: req.body.title };
+        var extension=req.files.archivo.name.split(".").pop();
+        var data = {titulo: req.fields.title ,creator:res.locals.user._id,extension:extension};
         var imagen = new Imagen(data);
         imagen.save(function (err) {
             if (!err) {
+                var nombre=imagen._id+"."+req.files.archivo.name.split(".").pop();
+                fs.rename(req.files.archivo.path,"public/imagenes/"+nombre)
                 res.redirect("/app/imagenes/" + imagen._id)
             } else {
                 res.render(err);
