@@ -23,6 +23,7 @@
   "homepage": "https://github.com/AdministracionAguaPotable/gap_fe#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "connect-redis": "^3.3.2",
     "cookie-session": "^2.0.0-beta.3",
     "express": "^4.16.1",
     "express-formidable": "^1.0.0",

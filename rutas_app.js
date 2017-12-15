@@ -4,7 +4,15 @@ var Imagen = require("./models/imagenes").Imagen;
 var image_find_middleware = require("./middlewares/find_image");
 var fs=require("fs");
 router.get("/", function (req, res) {
-    res.render("app/home");
+    Imagen.find({}).populate("creator").exec( function (err, imagenes) {
+        if (err) {
+            console.log(err);
+        } 
+        res.render("app/home", { imagenes: imagenes });
+        
+    });
+
+    
 });
 router.get("/imagenes/new", function (req, res) {
     res.render("app/imagenes/new")

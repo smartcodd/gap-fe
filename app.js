@@ -18,12 +18,12 @@ app.use(cookieSession({
     name: "session",
     keys: ["llave-1", "llave-2"]
 }));
-/*
+
 app.use(formidable({
     encoding: 'utf-8',
     uploadDir: 'D:',
     multiples: true 
-  }));*/
+  }));
 
 app.set("view engine", "jade");
 app.get("/", function (req, res) {
@@ -52,6 +52,7 @@ app.post("/users", function (req, res) {
             res.send("Recivimos tus datos...");
         }
     });
+
 
 });
 app.post("/sessions", function (req, res) {
