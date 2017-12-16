@@ -1,29 +1,37 @@
 var express = require("express");
-
-
 var app = express();
 var User = require("./models/user").User;
 var session = require("express-session");
 var cookieSession = require("cookie-session");
+var expressSession = require("express-session");
 var methodOverride = require("method-override");
 var router_app = require("./rutas_app.js");
 var session_middleware = require("./middlewares/session.js");
 var bodyParcer = require("body-parser")
 var formidable = require("express-formidable");
+var RedisStore=require("connect-redis")(expressSession);
+var realtime=require("./realtime.js");
+var http=require("http");
+var server=http.Server(app);
+var sessionMiddleware=expressSession({
+    store:new RedisStore({}),
+    secret:"mi clave secreta"
+})
+
+realtime(server,sessionMiddleware);
 app.use("/docs", express.static("public"));
 app.use(bodyParcer.json());
 app.use(methodOverride("_method"));
 app.use(bodyParcer.urlencoded({ extended: true }));
-app.use(cookieSession({
-    name: "session",
-    keys: ["llave-1", "llave-2"]
-}));
 
+app.use(sessionMiddleware);
+/*
 app.use(formidable({
     encoding: 'utf-8',
     uploadDir: 'D:',
     multiples: true 
   }));
+  */
 
 app.set("view engine", "jade");
 app.get("/", function (req, res) {
@@ -70,4 +78,4 @@ app.post("/sessions", function (req, res) {
 });
 app.use("/app", session_middleware);
 app.use("/app", router_app);
-app.listen(8080);
+server.listen(8080);
