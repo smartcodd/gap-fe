@@ -1,9 +1,17 @@
-module.exports=function(server,sessionMiddleware){
-	var io=require("socket.io")(server);
-	io.use(function(socket,next){
-		sessionMiddleware(socket.request,socket.request.res,next);
+module.exports = function (server, sessionMiddleware) {
+	var io = require("socket.io")(server);
+	var redis = require('redis');
+	var redisClient = redis.createClient();
+	io.use(function (socket, next) {
+		sessionMiddleware(socket.request, socket.request.res, next);
 	});
-	io.sockets.on("connection",function(socket){
-		console.log(socket.request.session_user_id);
+	redisClient.on("message", function (channel, message) {
+		if (channel === "mensaje") {
+			io.emit("new imagen", message);
+		}
+		console.log("Message '" + message + "' on channel '" + channel + "' arrived!")
 	});
+	redisClient.subscribe("mensaje");
+
+
 }

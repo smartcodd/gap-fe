@@ -3,6 +3,8 @@ var router = express.Router();
 var Imagen = require("./models/imagenes").Imagen;
 var image_find_middleware = require("./middlewares/find_image");
 var fs=require("fs");
+var redis=require("redis");
+var client=redis.createClient();
 router.get("/", function (req, res) {
     Imagen.find({}).populate("creator").exec( function (err, imagenes) {
         if (err) {
@@ -23,6 +25,7 @@ router.get("/imagenes/:id/edit", function (req, res) {
 });
 router.route("/imagenes/:id").get(
     function (req, res) {
+        client.publish("mensaje",imagen.toString())
         res.render("app/imagenes/show");
     }).put(function (req, res) {
         res.locals.imagen.titulo = req.body.title;
@@ -61,8 +64,18 @@ router.route("/imagenes").get(
         var imagen = new Imagen(data);
         imagen.save(function (err) {
             if (!err) {
+                
                 var nombre=imagen._id+"."+req.files.archivo.name.split(".").pop();
                 fs.rename(req.files.archivo.path,"public/imagenes/"+nombre)
+                
+                console.log(imagen)
+                var imgJson={
+                    id:imagen._id,
+                    titulo:imagen.titulo,
+                    creator:imagen.creator,
+                    extension:imagen.extension
+                }
+                client.publish("mensaje",JSON.stringify(imgJson));
                 res.redirect("/app/imagenes/" + imagen._id)
             } else {
                 res.render(err);
