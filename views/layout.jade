@@ -10,7 +10,7 @@ html(lang="en")
         script(src="/socket.io/socket.io.js")
         script(src="/docs/js/handlebars.js")
     body
-        nav(class="large-padding black white-text")
+        nav(class="large-padding black white-text container-fluid")
             ul
                 li 
                     a(href="/app/imagenes/new") Subir Imagen
@@ -19,3 +19,7 @@ html(lang="en")
                 li  
                     a(href="/app/imagenes") Mis Imagenes
         block contenido
+        ui
+        form(action="" class="form-group")
+            input(type="text" id="m" autocomplete="off" class="form-control")
+            button(class="btn btn-primary") Enviar

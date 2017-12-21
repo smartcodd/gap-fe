@@ -5,5 +5,4 @@ socket.on("new imagen",function(data){
     var source =document.querySelector("#image-template").innerHTML;
     var template=Handlebars.compile(source);
     container.innerHTML+=template(data);
-    console.log(data);
 })

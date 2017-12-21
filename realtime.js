@@ -9,7 +9,6 @@ module.exports = function (server, sessionMiddleware) {
 		if (channel === "mensaje") {
 			io.emit("new imagen", message);
 		}
-		console.log("Message '" + message + "' on channel '" + channel + "' arrived!")
 	});
 	redisClient.subscribe("mensaje");
 
