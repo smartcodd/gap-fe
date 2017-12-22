@@ -7,5 +7,20 @@ html(lang="en")
         title Gestón de Agua Potable
         link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css")
         link(rel="stylesheet", href="/docs/css/app.css")
+        script(src="/socket.io/socket.io.js")
+        script(src="/docs/js/handlebars.js")
     body
+        nav(class="large-padding black white-text ")
+            ul
+                li 
+                    a(href="/app/imagenes/new") Subir Imagen
+                li 
+                    a(href="/app") Inicio
+                li  
+                    a(href="/app/imagenes") Mis Imagenes
         block contenido
+        ui
+        form(action="/chat" class="form-group"  method="post")
+            input(type="text" name="chatm" id="chatm" autocomplete="off" class="form-control")
+            button(class="btn btn-primary") Enviar
+        script(src="/docs/js/client.js")    
