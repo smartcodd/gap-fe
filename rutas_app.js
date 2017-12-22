@@ -3,19 +3,19 @@ var router = express.Router();
 var Imagen = require("./models/imagenes").Imagen;
 var User = require("./models/user").User;
 var image_find_middleware = require("./middlewares/find_image");
-var fs=require("fs");
-var redis=require("redis");
-var client=redis.createClient();
+var fs = require("fs");
+var redis = require("redis");
+var client = redis.createClient();
 router.get("/", function (req, res) {
-    Imagen.find({}).populate("creator").exec( function (err, imagenes) {
+    Imagen.find({}).populate("creator").exec(function (err, imagenes) {
         if (err) {
             console.log(err);
-        } 
+        }
         res.render("app/home", { imagenes: imagenes });
-        
+
     });
 
-    
+
 });
 router.get("/imagenes/new", function (req, res) {
     res.render("app/imagenes/new")
@@ -26,7 +26,7 @@ router.get("/imagenes/:id/edit", function (req, res) {
 });
 router.route("/imagenes/:id").get(
     function (req, res) {
-        client.publish("mensaje",imagen.toString())
+        client.publish("mensaje", imagen.toString())
         res.render("app/imagenes/show");
     }).put(function (req, res) {
         res.locals.imagen.titulo = req.body.title;
@@ -34,9 +34,8 @@ router.route("/imagenes/:id").get(
             function (err) {
                 if (!err) {
                     res.render("app/imagenes/show");
-                }else
-                {
-                    res.render("app/imagenes/"+req.params.id+"/edit");
+                } else {
+                    res.render("app/imagenes/" + req.params.id + "/edit");
                 }
             }
         );
@@ -49,9 +48,10 @@ router.route("/imagenes/:id").get(
             }
         });
     });
+
 router.route("/imagenes").get(
     function (req, res) {
-        Imagen.find({creator:res.locals.user._id}, function (err, imagenes) {
+        Imagen.find({ creator: res.locals.user._id }, function (err, imagenes) {
             if (err) {
                 res.redirect("/app");
                 return;
@@ -60,25 +60,25 @@ router.route("/imagenes").get(
             }
         });
     }).post(function (req, res) {
-        var extension=req.files.archivo.name.split(".").pop();
-        var data = {titulo: req.fields.title ,creator:res.locals.user._id,extension:extension};
+        var extension = req.files.archivo.name.split(".").pop();
+        var data = { titulo: req.fields.title, creator: res.locals.user._id, extension: extension };
         var imagen = new Imagen(data);
         imagen.save(function (err) {
             if (!err) {
-                
-                var nombre=imagen._id+"."+req.files.archivo.name.split(".").pop();
-                fs.rename(req.files.archivo.path,"public/imagenes/"+nombre)
-                User.findById(imagen.creator,function(err,user){
-                    
-                    var imgJson={
-                        id:imagen._id,
-                        titulo:imagen.titulo,
-                        creator:user,
-                        extension:imagen.extension
+
+                var nombre = imagen._id + "." + req.files.archivo.name.split(".").pop();
+                fs.rename(req.files.archivo.path, "public/imagenes/" + nombre)
+                User.findById(imagen.creator, function (err, user) {
+
+                    var imgJson = {
+                        id: imagen._id,
+                        titulo: imagen.titulo,
+                        creator: user,
+                        extension: imagen.extension
                     }
-                    client.publish("mensaje",JSON.stringify(imgJson));
+                    client.publish("mensaje", JSON.stringify(imgJson));
                 });
-                
+
                 res.redirect("/app/imagenes/" + imagen._id)
             } else {
                 res.render(err);

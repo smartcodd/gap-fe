@@ -9,31 +9,32 @@ var methodOverride = require("method-override");
 var session_middleware = require("./middlewares/session.js");
 var bodyParcer = require("body-parser")
 var formidable = require("express-formidable");
-var RedisStore=require("connect-redis")(expressSession);
-var realtime=require("./realtime.js");
-var http=require("http");
-var server=http.Server(app);
+var RedisStore = require("connect-redis")(expressSession);
+var realtime = require("./realtime.js");
+var http = require("http");
+var server = http.Server(app);
 var router_app = require("./rutas_app.js");
-var sessionMiddleware=expressSession({
-    store:new RedisStore({}),
-    secret:"mi clave secreta"
+var sessionMiddleware = expressSession({
+    store: new RedisStore({}),
+    secret: "mi clave secreta"
 });
+var redis = require("redis");
+var client = redis.createClient();
 
-
-realtime(server,sessionMiddleware);
+realtime(server, sessionMiddleware);
 app.use("/docs", express.static("public"));
 app.use(bodyParcer.json());
 app.use(methodOverride("_method"));
 app.use(bodyParcer.urlencoded({ extended: true }));
 
 app.use(sessionMiddleware);
-
+/*
 app.use(formidable({
     encoding: 'utf-8',
     uploadDir: 'D:',
-    multiples: false 
-  }));
-
+    multiples: false
+}));
+*/
 
 app.set("view engine", "jade");
 app.get("/", function (req, res) {
@@ -41,6 +42,10 @@ app.get("/", function (req, res) {
 });
 app.get("/login", function (req, res) {
     res.render("login");
+});
+app.post("/chat",function (req, res) {
+    client.publish("chat", req.body.chatm);
+    res.render("index");
 });
 app.get("/signup", function (req, res) {
     User.find(function (err, doc) {
@@ -80,4 +85,5 @@ app.post("/sessions", function (req, res) {
 });
 app.use("/app", session_middleware);
 app.use("/app", router_app);
+app.use("/chat", router_app);
 server.listen(8080);
