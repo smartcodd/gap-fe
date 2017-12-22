@@ -7,5 +7,6 @@ socket.on("new imagen",function(data){
     container.innerHTML+=template(data);
 });
 socket.on("chat message",function(data){
+    
     console.log(data);
 });
