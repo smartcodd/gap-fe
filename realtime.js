@@ -7,6 +7,10 @@ module.exports = function (server, sessionMiddleware) {
 	});
 	io.on('connection', function (socket) {
 		console.log('a user connected');
+		setTimeout(function() {
+			socket.send('Sent a message 4seconds after connection!');
+		 }, 4000);
+		 
 		socket.on('disconnect', function () {
 			console.log('user disconnected');
 		});
@@ -14,11 +18,9 @@ module.exports = function (server, sessionMiddleware) {
 			console.log('...2.-Recive el servidor y emite a todos excepto al emisor: ' + msg);
 			io.emit('chat message', msg);
 			socket.broadcast.emit('chat message',msg+" ... menos el emisor");
-		});
-		
-			
-		
+		});	
 	});
+	
 	redisClient.on("message", function (channel, message) {
 		if (channel === "mensaje") {
 			io.emit("new imagen", message);

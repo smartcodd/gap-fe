@@ -13,8 +13,9 @@ something = function () {
 }
 
 socket.on("chat message", function (data) {
-    console.log("...3 recibe los demas el msg "+data)
+    console.log("...3 recibe los demas el msg " + data)
 });
+socket.on('message', function (data) { console.log(data) });
 socket.on('connection', function (socket) {
     console.log('a user connected cli');
     socket.on('disconnect', function () {
