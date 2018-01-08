@@ -1,8 +1,8 @@
 extends ./layout.jade
 block contenido
-    div(class="row" ) 
-        div(class="col-md-8 remove-float  text-center big-top-space")
-            h1 Bienvenido a GAP
-            h2 Gestión de Agua Potable
-            a(href="/login",class="right-space") Iniciar Sessión
-            a(href="/signup") Registro
+    .jumbotron
+    h1 Bienvenido a GAP!
+    p Gestión de Agua Potable
+    p 
+        +link("primary","/login","small") Iniciar Sessión 
+        +link("primary","/signup","small") Registro 

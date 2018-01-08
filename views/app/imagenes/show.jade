@@ -2,6 +2,5 @@ extends ../../layout.jade
 block contenido
     div(class="img-container")
         h1 Archivo #{imagen.titulo}
-        img(src="/docs/imagenes/#{imagen._id}.#{imagen.extension}", class="main-img")
-        if(typeof imagen.creator!="undefined")
-            p por #{imagen.creator.email}
+        img(src="/docs/imagenes/#{imagen._id}.#{imagen.extension}", class="img-thumbnail")
+        p por #{imagen.creator.email}

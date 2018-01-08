@@ -1,15 +1,15 @@
 extends ../../layout.jade
 block contenido
-    div(class="col-md-8 remove-float center-block  big-top-space")
-        
-        form(action="/app/imagenes", method="post" , enctype="multipart/form-data")
-            h1 Subir Nueva Imagen
-            div(class="form-group")
-                label(for="title") Titulo
-                input(type="text", id="title", name="title" , placeholder="Titulo de la imagen" class="form-control")
-            div
-                label(for="archivo") Archivo
-                input(type="file", id="archivo" name="archivo" , placeholder="Imagen" class="form-control") 
-            div
-                input(type="submit" value="Guardar" class="btn btn-info")    
-                
+    .row
+        +columna(12,12,12)
+            form(action="/app/imagenes", method="post" , enctype="multipart/form-data")
+                h1 Subir Nueva Imagen
+                div(class="form-group")
+                    label(for="title") Titulo
+                    input(type="text", id="title", name="title" , placeholder="Titulo de la imagen" class="form-control")
+                div
+                    label(for="archivo") Archivo
+                    input(type="file", id="archivo" name="archivo" , placeholder="Imagen" class="form-control") 
+                div
+                    +button("primary","","submit","Guardar")
+                    

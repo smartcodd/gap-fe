@@ -1,6 +1,8 @@
+
 var express = require("express");
 var app = express();
 var User = require("./models/user").User;
+var Mensaje = require("./models/mensaje").Mensaje;
 var session = require("express-session");
 var cookieSession = require("cookie-session");
 var expressSession = require("express-session");
@@ -14,6 +16,7 @@ var realtime = require("./realtime.js");
 var http = require("http");
 var server = http.Server(app);
 var router_app = require("./rutas_app.js");
+
 var sessionMiddleware = expressSession({
     store: new RedisStore({}),
     secret: "mi clave secreta"
@@ -38,21 +41,22 @@ app.use(formidable({
 
 app.set("view engine", "jade");
 
+app.use(function (req, res, next) {
+    Mensaje.find({}).populate("emisor").exec(function (err, mensajes) {
+        res.locals.listMsg = mensajes;
+        next();
+    });
+});
 app.get("/", function (req, res) {
-    res.render("index", { usuario: "Freddy" });
+    res.render("index");
 });
 app.get("/login", function (req, res) {
     res.render("login");
-});
-app.post("/chat",function (req, res) {
-    client.publish("chat", req.body.chatm);
-    res.render("index");
 });
 app.get("/signup", function (req, res) {
     User.find(function (err, doc) {
         res.render("signup");
     });
-
 });
 app.post("/users", function (req, res) {
     var user = new User({
@@ -68,13 +72,12 @@ app.post("/users", function (req, res) {
             res.send("Recivimos tus datos...");
         }
     });
-
-
 });
 app.post("/sessions", function (req, res) {
     User.findOne({ email: req.body.email, password: req.body.password },
         function (err, doc) {
             if (doc) {
+                client.publish("login", doc._id.toString());
                 req.session.user_id = doc._id;
                 res.redirect("/app");
             } else {
@@ -86,5 +89,4 @@ app.post("/sessions", function (req, res) {
 });
 app.use("/app", session_middleware);
 app.use("/app", router_app);
-app.use("/chat", router_app);
-server.listen(8080,"0.0.0.0");
+server.listen(8080, "0.0.0.0");

@@ -1,10 +1,9 @@
 extends ../../layout.jade
 block contenido
-    div(class="col-md-8 remove-float center-block  big-top-space")
-        
+    +columna(12,12,12)
         form(action="/app/imagenes/#{imagen._id}?_method=PUT", method="post")
             input(type="hidden",value="PUT",name="_method")
-            h1 Subir Nueva Imagen
+            h1 Editar Imagen
             div(class="form-group")
                 label(for="title") Titulo
                 input(type="text", id="title", name="title" , placeholder="Titulo de la imagen" class="form-control" value="#{imagen.titulo}")
