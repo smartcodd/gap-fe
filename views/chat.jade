@@ -1,4 +1,4 @@
-div(id="chat_window_1",class=["row","chat-window"],style="margin-left:2px;")
+div(id="chat_window_base",class=["row","chat-window"],style="margin-left:2px;display:nonde")
     +columna(10,10,12)
         div(class=["panel","panel-default"])
             div(class=["panel-heading","top-bar"])
@@ -8,32 +8,15 @@ div(id="chat_window_1",class=["row","chat-window"],style="margin-left:2px;")
                         Chat - Miguel
                 +columna(4,4,4,"text-align: right;")
                     a(href="#" )
-                        span(id="minim_chat_window",class=["glyphicon","glyphicon-minus","icon_minim"])
+                        span(class=["glyphicon","glyphicon-minus","icon_minim"])
                     a(href="#" )
                         span(class=["glyphicon","glyphicon-remove","icon_close"],data-id="chat_window_1")
-            
-            div(class=["panel-body","msg_container_base"] id="msg_container")
-                script(id="msg_sent" type="text/x-handlebars-template" src="/docs/js/client.js")
-                    div(class=["row","msg_container","base_sent"])
-                        +columna(10,10,10)
-                            div(class=["messages","msg_sent"])
-                                p {{msg}}
-                                time(datetime="2009-11-13T20:00") Timothy • 51 min
-                        +columna(2,2,2,"padding-left: 2px;padding-right: 2px;")
-                            img(src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class="img-responsive")
-                script(id="msg_receiver" type="text/x-handlebars-template" src="/docs/js/client.js")
-                        div(class=["row","msg_container","base_receive"])
-                        +columna(2,2,2,"padding-left: 2px;padding-right: 2px;")
-                            img(src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class="img-responsive")
-                        +columna(10,10,10)
-                            div(class=["messages","msg_smsg_receiveent"])
-                                p {{msg}}
-                                time(datetime="2009-11-13T20:00") Timothy • 51 min
             div(class=["panel-footer"])
                 .input-group
-                    input(type="text" id="btn-input" name="btn-input" class=["form-control","input-sm","chat_input"] placeholder="Escribe tu mensaje aqui..s")
+                    input(type="text"  class=["form-control","input-sm","chat_input"] placeholder="Escribe tu mensaje aqui..s")
                     span(class="input-group-btn")
-                    button(id="btn-chat" class=["btn", "btn-primary" ,"btn-sm"] onclick="return sendMsg()") Send
+                    button( class=["btn", "btn-primary" ,"btn-sm","btn-chat"] ) Send
+
 div(id="chat_window_1",class=["row","chat-window"],style="margin-left:2px;")
     +columna(10,10,12)
         div(class=["panel","panel-default"])
@@ -44,7 +27,7 @@ div(id="chat_window_1",class=["row","chat-window"],style="margin-left:2px;")
                         Chat - Miguel
                 +columna(4,4,4,"text-align: right;")
                     a(href="#" )
-                        span(id="minim_chat_window",class=["glyphicon","glyphicon-minus","icon_minim"])
+                        span(class=["glyphicon","glyphicon-minus","icon_minim"])
                     a(href="#" )
                         span(class=["glyphicon","glyphicon-remove","icon_close"],data-id="chat_window_1")
             
@@ -55,9 +38,7 @@ div(id="chat_window_1",class=["row","chat-window"],style="margin-left:2px;")
                             +columna(10,10,10)
                                 div(class=["messages","msg_sent"])
                                     p #{mensaje.msg}
-                                    
                                     - var fecha=mensaje.fechaEnvio.getTime();
-                                    
                                     time(datetime=mensaje.fechaEnvio.getTime()) Timothy • 51 min
                             +columna(2,2,2,"padding-left: 2px;padding-right: 2px;")
                                 img(src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class="img-responsive")
@@ -80,9 +61,9 @@ div(id="chat_window_1",class=["row","chat-window"],style="margin-left:2px;")
                                 time(datetime="2009-11-13T20:00") Timothy • 51 min
             div(class=["panel-footer"])
                 .input-group
-                    input(type="text" id="btn-input" name="btn-input" class=["form-control","input-sm","chat_input"] placeholder="Escribe tu mensaje aqui..s")
+                    input(type="text"   class=["form-control","input-sm","chat_input"] placeholder="Escribe tu mensaje aqui..s")
                     span(class="input-group-btn")
-                    button(id="btn-chat" class=["btn", "btn-primary" ,"btn-sm"] onclick="return sendMsg()") Send
+                    button(class=["btn", "btn-primary" ,"btn-sm","btn-chat"] ) Send
 div(class=["btn-group","dropup"])
     button(type="button" class=["btn","btn-default","dropdown-toggle"]  data-toggle="dropdown")
         span(class=["glyphicon","glyphicon-cog"])
@@ -91,15 +72,7 @@ div(class=["btn-group","dropup"])
         li
             a(href="#" id="new_chat") 
                 span(class=["glyphicon","glyphicon-plus"])
-                strong Novo
-        li
-            a(href="#" ) 
-                span(class=["glyphicon","glyphicon-list"])
-                strong Ver outras
-        li
-            a(href="#" ) 
-                span(class=["glyphicon","glyphicon-remove"])
-                strong Fechar Tudo
+                strong Nuevo Chat
         li(class=["divider"])
         li
             a(href="#" ) 

@@ -10,6 +10,7 @@ var client = redis.createClient();
 router.use(function (req, res, next) {
     Mensaje.find({}).populate("emisor").exec(function (err, mensajes) {
         res.locals.listMsg = mensajes;
+        res.locals.ID=req.session.user_id;
         next();
     });
 });

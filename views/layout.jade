@@ -12,25 +12,23 @@ html(lang="en")
         link(rel="stylesheet", href="/docs/css/app.css")
         script(src="/socket.io/socket.io.js")
         script(src="/docs/js/handlebars.js")
-    body(style="padding-bottom:10rem;")
+    body(style="")
         +nav("Project name", "expand")
             +nav_item( "/", "active" ) Home
-            +nav_item( "/app/imagenes/new" ) Subir Imagen
-            +nav_item( "/app" )  Inicio
-            +nav_item( "/app/imagenes" )  Mis Imagenes 
+            +nav_item( "/login" ) Iniciar Sessión
+            +nav_item( "/logout" ) Salir
             +nav_item_dropdown( "#" )( label="Opciones")
-                +nav_item( "/login" ) Iniciar Sessión
                 +nav_item( "/signup" ) Registrarse
-                +nav_item( "#" ) Something else here
                 +nav_divider
-                +nav_header Nav header
-                +nav_item( "#" ) Separated link
-                +nav_item( "#" ) One more separated link
+                +nav_item( "/app/imagenes/new" ) Subir Imagen
+                +nav_item( "/app" )  Inicio
+                +nav_item( "/app/imagenes" )  Mis Imagenes 
             
-        .container-fluid
+        div(class=["container-fluid"] style="padding-top:6rem;",id="container_gap")
             .row.flex-xl-nowrap
-                +columnaAll(12,3,2,2,2,2,1,"bd-sidebar")
+                +columnaAll(12,2,2,2,2,2,1,"bd-sidebar")
                     include chat
-                +columnaAll(12,9,10,10,10,4,5,"bd-content")
+                +columnaAll(12,10,10,10,10,4,5,"bd-content")
                     block contenido
+        input(type="hidden"  id="hiddenSecret" value="#{ID}")
                 

@@ -1,7 +1,9 @@
 var socket = io();
 var logi_id = "";
 $(document).on('click', '.panel-heading span.icon_minim', function (e) {
+
     var $this = $(this);
+    console.log($this)
     if (!$this.hasClass('panel-collapsed')) {
         $this.parents('.panel').find('.panel-body').slideUp();
         $this.addClass('panel-collapsed');
@@ -14,21 +16,23 @@ $(document).on('click', '.panel-heading span.icon_minim', function (e) {
 });
 $(document).on('focus', '.panel-footer input.chat_input', function (e) {
     var $this = $(this);
-    if ($('#minim_chat_window').hasClass('panel-collapsed')) {
+    var nodeMini = $this.parents('.panel').find('.icon_minim');
+    if (nodeMini.hasClass('panel-collapsed')) {
         $this.parents('.panel').find('.panel-body').slideDown();
-        $('#minim_chat_window').removeClass('panel-collapsed');
-        $('#minim_chat_window').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        nodeMini.removeClass('panel-collapsed');
+        nodeMini.removeClass('glyphicon-plus').addClass('glyphicon-minus');
     }
 });
 $(document).on('click', '#new_chat', function (e) {
     var size = $(".chat-window:last-child").css("margin-left");
-    if(size)
+    if (size)
         size_total = parseInt(size) + 400;
     else
-        size_total =  420;
-    console.log(size_total);
-    var clone = $("#chat_window_1").clone().appendTo(".container");
+        size_total = 420;
+    var clone = $("#chat_window_base").clone();
+    clone.appendTo("#container_gap");
     clone.css("margin-left", size_total);
+    clone.css("display", "");
     if (clone.hasClass('panel-collapsed')) {
         clone.removeClass('panel-collapsed');
         clone.removeClass('glyphicon-plus').addClass('glyphicon-minus');
@@ -46,19 +50,26 @@ socket.on("new imagen", function (data) {
     var template = Handlebars.compile(source);
     container.innerHTML += template(data);
 });
-sendMsg = function () {
-    var data = {
-        msg: document.getElementById("btn-input").value
-    };
-    var container = document.querySelector("#msg_container");
-    var source_send = document.querySelector("#msg_sent").innerHTML;
-    var template = Handlebars.compile(source_send);
-    container.innerHTML = container.innerHTML + template(data);
-    //console.log(socket.id)
-    socket.emit("nuevoMsg", document.getElementById("btn-input").value);
-    document.getElementById("btn-input").value = "";
+$(document).on('click', '.panel-footer button.btn-chat', function (e) {
+    var $this = $(this);
+    var listInput = $this.parents('.panel-footer').find('.chat_input');
+    if (listInput.length > 0) {
+        msgInput = listInput[0].value;
+        var user_id = document.getElementById("hiddenSecret").value;
+        var data = {
+            msg: msgInput,
+            user_id: user_id
+        };
+        var container = document.querySelector("#msg_container");
+        var source_send = document.querySelector("#msg_sent").innerHTML;
+        var template = Handlebars.compile(source_send);
+        container.innerHTML = container.innerHTML + template(data);
+        socket.emit("nuevoMsg", JSON.stringify(data));
+        listInput[0].value = "";
+    }
     return false;
-}
+});
+
 socket.on("greeting", function (data) {
     console.log("... lega msg " + data)
 });

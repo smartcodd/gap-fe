@@ -16,7 +16,8 @@ var realtime = require("./realtime.js");
 var http = require("http");
 var server = http.Server(app);
 var router_app = require("./rutas_app.js");
-
+var bcrypt = require('bcrypt');
+var BCRYPT_SALT_ROUNDS = 12;
 var sessionMiddleware = expressSession({
     store: new RedisStore({}),
     secret: "mi clave secreta"
@@ -34,17 +35,33 @@ app.use(sessionMiddleware);
 /*
 app.use(formidable({
     encoding: 'utf-8',
-    uploadDir: 'D:',
+    uploadDir: 'F:',
     multiples: false
 }));
-*/
 
+*/
 app.set("view engine", "jade");
 
 app.use(function (req, res, next) {
     Mensaje.find({}).populate("emisor").exec(function (err, mensajes) {
         res.locals.listMsg = mensajes;
+        res.locals.ID = req.session.user_id;
+        //Metodo que elimina los msg
+        /*
+        mensajes.forEach(function (element) {
+            console.log(element);
+            Mensaje.findByIdAndRemove({ _id: element._id }, function (err) {
+                console.log("eliminado...")
+            });
+        });
+        */
         next();
+    });
+    User.find({}).populate("emisor").exec(function (err, users) {
+        res.locals.listUsers = users;
+        users.forEach(function (user) {
+            console.log(user)
+        });
     });
 });
 app.get("/", function (req, res) {
@@ -58,34 +75,81 @@ app.get("/signup", function (req, res) {
         res.render("signup");
     });
 });
-app.post("/users", function (req, res) {
-    var user = new User({
-        email: req.body.email,
-        password: req.body.password,
-        username: req.body.username,
-        password_conf: req.body.password_confirmation,
-    });
-    user.save(function (err) {
-        if (err) {
-            res.send(String(err));
-        } else {
-            res.send("Recivimos tus datos...");
-        }
-    });
-});
-app.post("/sessions", function (req, res) {
-    User.findOne({ email: req.body.email, password: req.body.password },
+app.get("/logout", function (req, res) {
+    User.findOne({ _id: req.session.user_id },
         function (err, doc) {
+            console.log(doc)
             if (doc) {
-                client.publish("login", doc._id.toString());
-                req.session.user_id = doc._id;
-                res.redirect("/app");
+                doc.conected = "N";
+                doc.password_conf = doc.password;
+                doc.save(
+                    function (err) {
+                        if (err)
+                            console.log(err)
+                    }
+                );
             } else {
                 res.redirect("/signup");
             }
         }
     );
 
+    req.session.user_id = "";
+    res.render("index");
+});
+app.post("/users", function (req, res) {
+    bcrypt.genSalt(BCRYPT_SALT_ROUNDS, function (err, salt) {
+        bcrypt.hash(req.body.password, salt, function (err, hash) {
+            var user = new User({
+                email: req.body.email,
+                password: req.body.password,
+                username: req.body.username,
+                password_conf: req.body.password_confirmation,
+                hashedPassword: hash,
+                conected: "S"
+            });
+            user.save(function (err) {
+                if (err) {
+                    res.send(String(err));
+                } else {
+                    req.session.user_id = user._id;
+                    res.render("index");
+                }
+            });
+        });
+    });
+
+
+});
+app.post("/sessions", function (req, res) {
+    User.findOne({ email: req.body.email, password: req.body.password },
+        function (err, doc) {
+            if (doc) {
+                // Load hash from your password DB.
+                bcrypt.compare(req.body.password, doc.hashedPassword, function (err, resp) {
+                    if (err) {
+                        res.redirect("/signup");
+                    } else if (resp) {
+                        req.session.user_id = doc._id;
+                        doc.conected = "S";
+                        doc.password_conf = doc.password;
+                        doc.save(
+                            function (err) {
+                                if (err)
+                                    console.log(err)
+                            }
+                        );
+                        res.redirect("/app");
+                    } else {
+                        res.redirect("/signup");
+                    }
+
+                });
+            } else {
+                res.redirect("/signup");
+            }
+        }
+    );
 });
 app.use("/app", session_middleware);
 app.use("/app", router_app);

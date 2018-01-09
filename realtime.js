@@ -16,14 +16,15 @@ module.exports = function (server, sessionMiddleware) {
 		//console.log(socket.id)
 		//console.log(socket.request.res);
 		io.sockets.connected[socket.id].emit("greeting", "usermae");
-		
+
 		socket.emit('newclientconnect', { description: 'Hey, welcome!' });
 		socket.on('disconnect', function () {
 			clients--;
 		});
-		socket.on('nuevoMsg', function (msg) {
-			var data = { msg: msg, fechaEnvio: new Date()};
-			var mensaje = new Mensaje(data);
+		socket.on('nuevoMsg', function (data) {
+			data = JSON.parse(data);
+			var dataMensaje = { msg: data.msg, fechaEnvio: new Date(), emisor: data.user_id };
+			var mensaje = new Mensaje(dataMensaje);
 			mensaje.save(function (err) {
 				if (!err) {
 					socket.broadcast.emit("nuevoMsg", JSON.stringify(mensaje));
@@ -35,7 +36,7 @@ module.exports = function (server, sessionMiddleware) {
 		socket.on('login', function (msg) {
 			users.push({
 				id: socket.id,
-				login:msg
+				login: msg
 			});
 			console.log(users)
 		});
@@ -45,10 +46,10 @@ module.exports = function (server, sessionMiddleware) {
 				io.emit("new imagen", message);
 			} else if (channel == "chat") {
 				io.emit("chat message", message);
-			}else if (channel == "login") {
-				var msg={
-					id_:message,
-					id_socket:socket.id
+			} else if (channel == "login") {
+				var msg = {
+					id_: message,
+					id_socket: socket.id
 				}
 				io.emit("login", JSON.stringify(msg));
 			}
