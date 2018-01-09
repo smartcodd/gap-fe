@@ -32,37 +32,37 @@ app.use(methodOverride("_method"));
 app.use(bodyParcer.urlencoded({ extended: true }));
 
 app.use(sessionMiddleware);
-/*
+
 app.use(formidable({
     encoding: 'utf-8',
     uploadDir: 'F:',
     multiples: false
 }));
 
-*/
 app.set("view engine", "jade");
 
 app.use(function (req, res, next) {
-    Mensaje.find({}).populate("emisor").exec(function (err, mensajes) {
-        res.locals.listMsg = mensajes;
+
+    User.find({}, function (err, users) {
         res.locals.ID = req.session.user_id;
-        //Metodo que elimina los msg
-        /*
-        mensajes.forEach(function (element) {
-            console.log(element);
-            Mensaje.findByIdAndRemove({ _id: element._id }, function (err) {
-                console.log("eliminado...")
-            });
-        });
-        */
-        next();
-    });
-    User.find({}).populate("emisor").exec(function (err, users) {
         res.locals.listUsers = users;
-        users.forEach(function (user) {
-            console.log(user)
+        Mensaje.find({}).populate("emisor").exec(function (err, mensajes) {
+            res.locals.listMsg = mensajes;
+            console.log(mensajes)
+            //Metodo que elimina los msg
+            /*
+            mensajes.forEach(function (element) {
+                console.log(element);
+                Mensaje.findByIdAndRemove({ _id: element._id }, function (err) {
+                    console.log("eliminado...")
+                });
+            });
+            */
+            next();
         });
+
     });
+
 });
 app.get("/", function (req, res) {
     res.render("index");

@@ -8,10 +8,24 @@ var fs = require("fs");
 var redis = require("redis");
 var client = redis.createClient();
 router.use(function (req, res, next) {
-    Mensaje.find({}).populate("emisor").exec(function (err, mensajes) {
-        res.locals.listMsg = mensajes;
-        res.locals.ID=req.session.user_id;
-        next();
+    User.find({}, function (err, users) {
+        res.locals.ID = req.session.user_id;
+        res.locals.listUsers = users;
+        Mensaje.find({}).populate("emisor").exec(function (err, mensajes) {
+            res.locals.listMsg = mensajes;
+            //Metodo que elimina los msg
+            /*
+            mensajes.forEach(function (element) {
+                console.log(element);
+                Mensaje.findByIdAndRemove({ _id: element._id }, function (err) {
+                    console.log("eliminado...")
+                });
+            });
+            */
+            console.log(res.locals)
+            next();
+        });
+
     });
 });
 router.get("/", function (req, res) {
@@ -21,6 +35,7 @@ router.get("/", function (req, res) {
         }
         res.render("app/home", { imagenes: imagenes });
     });
+
 });
 router.get("/imagenes/new", function (req, res) {
     res.render("app/imagenes/new")
@@ -65,8 +80,9 @@ router.route("/imagenes").get(
         });
     }).post(function (req, res) {
         var extension = req.files.archivo.name.split(".").pop();
-        var data = { titulo: req.fields.title, creator: res.locals.user._id, extension: extension };
+        var data = { titulo: req.fields.title, creator: req.session.user_id, extension: extension };
         var imagen = new Imagen(data);
+        console.log(data)
         imagen.save(function (err) {
             if (!err) {
                 var nombre = imagen._id + "." + req.files.archivo.name.split(".").pop();

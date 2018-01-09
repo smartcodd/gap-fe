@@ -37,7 +37,9 @@ div(id="chat_window_1",class=["row","chat-window"],style="margin-left:2px;")
                         div(class=["row","msg_container","base_sent"])
                             +columna(10,10,10)
                                 div(class=["messages","msg_sent"])
-                                    p #{mensaje.msg}
+                                    p #{mensaje.msg} 
+                                    if mensaje.emisor
+                                        p #{mensaje.emisor.username}
                                     - var fecha=mensaje.fechaEnvio.getTime();
                                     time(datetime=mensaje.fechaEnvio.getTime()) Timothy • 51 min
                             +columna(2,2,2,"padding-left: 2px;padding-right: 2px;")
