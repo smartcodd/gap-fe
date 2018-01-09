@@ -1,6 +1,6 @@
 mixin nav(name, id, style)
     - var style = (typeof style === 'undefined') ? "default" : style
-    nav( role="navigation", class=["navbar", "navbar-" + style] )
+    nav( role="navigation", class=["navbar", "navbar-" + style,"navbar-fixed-top","navbar-dark","flex-column","flex-md-row","bd-navbar"] )
         .navbar-header
             button.navbar-toggle.collapsed( type="button", data-toggle="collapse", data-target="#" + id, aria-expanded="false", aria-controls="navbar")
                 span.sr-only Toggle navigation
@@ -66,6 +66,10 @@ mixin button(style, href, size)
 mixin columna(md,sm,xs,style)
     - var style = (typeof style === 'undefined') ? "default" : style
     div( class=["col-md-"+md, "col-sm-"+sm , "col-xs-" + xs] style=style)
+        block
+mixin columnaAll(col,md,xl,sm,xs,pymd,plmd,styleClss)
+    - var styleClss = (typeof styleClss === 'undefined') ? "default" : styleClss
+    div( class=["col-"+col,"col-md-"+md,"col-xl-"+xl, "col-sm-"+sm , "col-xs-" + xs,"py-md"+pymd,"pl-md"+plmd,styleClss])
         block
 
 //- Button mixin
