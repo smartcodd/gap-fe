@@ -31,10 +31,10 @@ html(lang="en")
                         if listUsers
                             for user in listUsers
                                 if user.conected=="S"
-                                    a(class=["list-group-item","list-group-item-action","list-group-item-primary"] href="#") #{user.username} #{user.conected}
+                                    a(class=["list-group-item","list-group-item-action","list-group-item-success","#{user._id}"] href="#") #{user.username}
                                         span(class=["badge","badge-primary","badge-pill"]) 1
                                 else
-                                    .list-group-item.d-flex.justify-content-between.align-items-center #{user.username}
+                                    a(class=["list-group-item","list-group-item-action","#{user._id}"] href="#") #{user.username} 
                                         span(class=["badge","badge-primary","badge-pill"]) 2
                     include chat
                 +columnaAll(12,10,10,10,10,4,5,"bd-content")
