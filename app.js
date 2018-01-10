@@ -16,14 +16,10 @@ var realtime = require("./realtime.js");
 var http = require("http");
 var server = http.Server(app);
 var router_app = require("./rutas_app.js");
-var bcrypt = require('bcrypt');
-var BCRYPT_SALT_ROUNDS = 12;
 var sessionMiddleware = expressSession({
     store: new RedisStore({}),
     secret: "mi clave secreta"
 });
-var redis = require("redis");
-var client = redis.createClient();
 
 realtime(server, sessionMiddleware);
 app.use("/docs", express.static("public"));
@@ -35,20 +31,17 @@ app.use(sessionMiddleware);
 
 app.use(formidable({
     encoding: 'utf-8',
-    uploadDir: 'F:',
+    uploadDir: 'D:',
     multiples: false
 }));
 
 app.set("view engine", "jade");
-
 app.use(function (req, res, next) {
-
     User.find({}, function (err, users) {
-        res.locals.ID = req.session.user_id;
+        res.locals.USER = req.session.user;
         res.locals.listUsers = users;
         Mensaje.find({}).populate("emisor").exec(function (err, mensajes) {
             res.locals.listMsg = mensajes;
-            console.log(mensajes)
             //Metodo que elimina los msg
             /*
             mensajes.forEach(function (element) {
@@ -76,9 +69,8 @@ app.get("/signup", function (req, res) {
     });
 });
 app.get("/logout", function (req, res) {
-    User.findOne({ _id: req.session.user_id },
+    User.findOne({ _id: req.session.user._id },
         function (err, doc) {
-            console.log(doc)
             if (doc) {
                 doc.conected = "N";
                 doc.password_conf = doc.password;
@@ -98,53 +90,46 @@ app.get("/logout", function (req, res) {
     res.render("index");
 });
 app.post("/users", function (req, res) {
-    bcrypt.genSalt(BCRYPT_SALT_ROUNDS, function (err, salt) {
-        bcrypt.hash(req.body.password, salt, function (err, hash) {
-            var user = new User({
-                email: req.body.email,
-                password: req.body.password,
-                username: req.body.username,
-                password_conf: req.body.password_confirmation,
-                hashedPassword: hash,
-                conected: "S"
-            });
-            user.save(function (err) {
-                if (err) {
-                    res.send(String(err));
-                } else {
-                    req.session.user_id = user._id;
-                    res.render("index");
-                }
-            });
-        });
+    var user = new User({
+        email: req.body.email,
+        password: req.body.password,
+        username: req.body.username,
+        password_conf: req.body.password_confirmation,
+        conected: "S"
     });
-
-
+    User.findOne({ email: req.body.email, password: req.body.password },
+        function (err, doc) {
+            if (doc) {
+                res.render("index");
+            } else {
+                user.save(function (err) {
+                    if (err) {
+                        res.send(String(err));
+                    } else {
+                        req.session.user = user;
+                        res.render("index");
+                    }
+                });
+            }
+        }
+    );
 });
 app.post("/sessions", function (req, res) {
     User.findOne({ email: req.body.email, password: req.body.password },
         function (err, doc) {
             if (doc) {
-                // Load hash from your password DB.
-                bcrypt.compare(req.body.password, doc.hashedPassword, function (err, resp) {
-                    if (err) {
-                        res.redirect("/signup");
-                    } else if (resp) {
-                        req.session.user_id = doc._id;
-                        doc.conected = "S";
-                        doc.password_conf = doc.password;
-                        doc.save(
-                            function (err) {
-                                if (err)
-                                    console.log(err)
-                            }
-                        );
-                        res.redirect("/app");
-                    } else {
-                        res.redirect("/signup");
+                req.session.user = doc;
+                req.session.id_user = doc._id;
+                doc.conected = "S";
+                doc.password_conf = doc.password;
+                doc.save(
+                    function (err) {
+                        if (err)
+                            console.log(err)
                     }
-
-                });
+                );
+                res.redirect("/app");
+                // Load hash from your password DB.
             } else {
                 res.redirect("/signup");
             }

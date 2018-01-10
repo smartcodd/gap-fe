@@ -1,9 +1,6 @@
-var socket = io();
-var logi_id = "";
-$(document).on('click', '.panel-heading span.icon_minim', function (e) {
 
+$(document).on('click', '.panel-heading span.icon_minim', function (e) {
     var $this = $(this);
-    console.log($this)
     if (!$this.hasClass('panel-collapsed')) {
         $this.parents('.panel').find('.panel-body').slideUp();
         $this.addClass('panel-collapsed');
@@ -42,14 +39,6 @@ $(document).on('click', '.icon_close', function (e) {
     //$(this).parent().parent().parent().parent().remove();
     $("#chat_window_1").remove();
 });
-
-socket.on("new imagen", function (data) {
-    data = JSON.parse(data);
-    var container = document.querySelector("#container");
-    var source = document.querySelector("#image-template").innerHTML;
-    var template = Handlebars.compile(source);
-    container.innerHTML += template(data);
-});
 $(document).on('click', '.panel-footer button.btn-chat', function (e) {
     var $this = $(this);
     var listInput = $this.parents('.panel-footer').find('.chat_input');
@@ -69,25 +58,3 @@ $(document).on('click', '.panel-footer button.btn-chat', function (e) {
     }
     return false;
 });
-
-socket.on("greeting", function (data) {
-    console.log("... lega msg " + data)
-});
-socket.on("login", function (data) {
-    data = JSON.parse(data);
-    if (socket.id == data.id_socket) {
-        logi_id = data.id_;
-        alert(logi_id)
-    }
-    console.log("... lega msg,,,,,,,,,,,,,,,,,,,,,,,, " + data)
-});
-
-socket.on("nuevoMsg", function (data) {
-    data = JSON.parse(data);
-    var container = document.querySelector("#msg_container");
-    var source_reciver = document.querySelector("#msg_receiver").innerHTML;
-    var template = Handlebars.compile(source_reciver);
-    container.innerHTML = container.innerHTML + template(data);
-});
-
-

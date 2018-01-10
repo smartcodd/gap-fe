@@ -9,7 +9,7 @@ var redis = require("redis");
 var client = redis.createClient();
 router.use(function (req, res, next) {
     User.find({}, function (err, users) {
-        res.locals.ID = req.session.user_id;
+        res.locals.USER = req.session.user;
         res.locals.listUsers = users;
         Mensaje.find({}).populate("emisor").exec(function (err, mensajes) {
             res.locals.listMsg = mensajes;
@@ -22,7 +22,6 @@ router.use(function (req, res, next) {
                 });
             });
             */
-            console.log(res.locals)
             next();
         });
 
@@ -70,11 +69,12 @@ router.route("/imagenes/:id").get(
     });
 router.route("/imagenes").get(
     function (req, res) {
-        Imagen.find({ creator: res.locals.user._id }, function (err, imagenes) {
+        Imagen.find({ creator: res.locals.USER._id }, function (err, imagenes) {
             if (err) {
                 res.redirect("/app");
                 return;
             } else {
+                
                 res.render("app/imagenes/index", { imagenes: imagenes });
             }
         });
