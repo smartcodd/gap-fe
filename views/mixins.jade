@@ -1,6 +1,6 @@
 mixin nav(name, id, style)
     - var style = (typeof style === 'undefined') ? "default" : style
-    nav( role="navigation", class=["navbar", "navbar-" + style,"navbar-fixed-top","navbar-dark","flex-column","flex-md-row","bd-navbar"] )
+    nav( role="navigation", class=["navbar", "navbar-" + style,"navbar-fixed-top"] )
         .navbar-header
             button.navbar-toggle.collapsed( type="button", data-toggle="collapse", data-target="#" + id, aria-expanded="false", aria-controls="navbar")
                 span.sr-only Toggle navigation
@@ -14,6 +14,21 @@ mixin nav(name, id, style)
                     block
                 else
                     p No content provided
+mixin navBar(name,navStyle,fixed)
+    nav(class=["navbar","navbar-"+navStyle,"navbar-fixed-"+fixed],role="navigation")
+        .navbar-header
+            a.navbar-brand(href="#")= name
+        if block
+            block
+        else
+            p No content provided
+
+mixin navBarNav(position)
+    div(calss=["nav","navbar-nav","navbar-"+position])
+        if block
+            block
+        else
+            p No content provided
 
 mixin nav_item(href, active)
     li(class=active): a( href=href )

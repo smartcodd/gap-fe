@@ -14,6 +14,11 @@ html(lang="en")
         script(src="/docs/js/handlebars.js")
         script(src="/docs/js/gap.js")
     body(style="")
+        +navBar("SAAP","expand","top")
+            +navBarNav("left")
+                +nav_item( "/", "active" ) Home
+            +navBarNav("rigth")
+                +nav_item( "/login" ) Iniciar Sessión
         +nav("Project name", "expand")
             +nav_item( "/", "active" ) Home
             +nav_item( "/login" ) Iniciar Sessión
