@@ -21,7 +21,8 @@ var user_schema= new Schema({
     email:{type: String,required:"El correo es obligatorio"},
     date_of_birth:Date,
     sexo:{type:String,enum:{values:["Masculino","Femenino"],message:"El vaor no es correcto"}},
-    conected:String
+    conected:String,
+    date_desconected:Date
 });
 user_schema.virtual("password_conf").get(function(){
     return this.pass_c;

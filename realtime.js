@@ -11,33 +11,48 @@ module.exports = function (server, sessionMiddleware) {
 	});
 
 	io.on('connection', function (socket) {
+		console.log("...conectado");
 		io.set('authorization', function (data, accept) {
 			if (data.session && data.session.user != undefined) {
 				accept(null, true);
-			}else{
+			} else {
 				accept("Debe autentificarse", false);
 			}
 		});
-		console.log(".....se conecta....");
-		console.log(socket.request.session.id_user)
-		console.log("Socket id:" + socket.id);
-		console.log("Usuarios Conectados:");
-		myMap.set(socket.id, socket.request.session.id_user);
-		for (var [key, value] of myMap) {
-			console.log(key + " = " + value)
-		}
+		User.findOne({ _id: socket.request.session.user_id },
+			function (err, doc) {
+				if (doc) {
+					doc.conected = "S";
+					doc.password_conf = doc.password;
+					doc.save(
+						function (err) {
+							if (err) {
+								console.log(err)
+							}
+						}
+					);
+				}
+			}
+		);
 		//io.sockets.connected[socket.id].emit("greeting", "usermae");
 		//socket.emit('newclientconnect', { description: 'Hey, welcome!' });
 		socket.on('disconnect', function () {
-			console.log(".....se desconecta....");
-			console.log("Socket id:" + socket.id);
-			console.log("Usuarios Conectados:");
-			var eliminado=myMap.delete(socket.id);
-			console.log(eliminado)
-			for (var [key, value] of myMap) {
-				console.log(key + " = " + value)
-			}
-			
+			User.findOne({ _id: socket.request.session.user_id },
+				function (err, doc) {
+					if (doc) {
+						doc.date_desconected = new Date();
+						doc.conected = "N";
+						doc.password_conf = doc.password;
+						doc.save(
+							function (err) {
+								if (err) {
+									console.log(err)
+								}
+							}
+						);
+					}
+				}
+			);
 		});
 
 		socket.on('nuevoMsg', function (data) {

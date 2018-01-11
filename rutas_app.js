@@ -10,6 +10,7 @@ var client = redis.createClient();
 router.use(function (req, res, next) {
     User.find({}, function (err, users) {
         res.locals.USER = req.session.user;
+        res.locals.ID =req.session.user_id;
         res.locals.listUsers = users;
         Mensaje.find({}).populate("emisor").exec(function (err, mensajes) {
             res.locals.listMsg = mensajes;

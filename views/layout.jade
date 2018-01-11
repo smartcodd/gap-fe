@@ -13,26 +13,29 @@ html(lang="en")
         script(src="/socket.io/socket.io.js")
         script(src="/docs/js/handlebars.js")
         script(src="/docs/js/gap.js")
-    body(style="")
-        +navBar("SAAP","expand","top")
+    body
+        +navBar("SAAP","default","top","expand")
             +navBarNav("left")
-                +nav_item( "/", "active" ) Home
-            +navBarNav("rigth")
-                +nav_item( "/login" ) Iniciar Sessión
-        +nav("Project name", "expand")
-            +nav_item( "/", "active" ) Home
-            +nav_item( "/login" ) Iniciar Sessión
-            +nav_item( "/logout" ) Salir
-            +nav_item_dropdown( "#" )( label="Opciones")
-                +nav_item( "/signup" ) Registrarse
-                +nav_divider
-                +nav_item( "/app/imagenes/new" ) Subir Imagen
-                +nav_item( "/app" )  Inicio
-                +nav_item( "/app/imagenes" )  Mis Imagenes 
-            
+                if USER
+                    +nav_item( "/app" ,"nav-link")  Inicio
+                    +nav_item_dropdown( "#" )( label="Opciones")    
+                        +nav_divider
+                        +nav_item( "/app/imagenes/new" ) Subir Imagen
+                        +nav_item( "/app/imagenes" )  Mis Imagenes
+            +navBarNav("right")
+                if USER
+                    +nav_item( "/logout" ) Salir
+                else
+                    +nav_item( "/login" ) Iniciar Sessión
+                    +nav_item( "/signup" ) Registrarse
+            +nav_divider
         div(class=["container-fluid"] style="padding-top:6rem;",id="container_gap")
             .row.flex-xl-nowrap
                 +columnaAll(12,2,2,2,2,2,1,"bd-sidebar")
+                    form(action="" class=["form-inline","my-2 my-lg-0"])
+                        input(type="search" class=["form-control","mr-sm-2"] placeholder="Buscar" aria-label="Buscar")
+                        button(class=["btn","btn-outline-success","my-2 my-sm-0"]  type="submit") Buscar
+                    
                     .list-group
                         if listUsers
                             for user in listUsers

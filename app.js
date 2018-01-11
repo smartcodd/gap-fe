@@ -35,10 +35,12 @@ app.use(formidable({
     multiples: false
 }));
 
+
 app.set("view engine", "jade");
 app.use(function (req, res, next) {
     User.find({}, function (err, users) {
         res.locals.USER = req.session.user;
+        res.locals.ID = req.session.user_id
         res.locals.listUsers = users;
         Mensaje.find({}).populate("emisor").exec(function (err, mensajes) {
             res.locals.listMsg = mensajes;
@@ -69,25 +71,29 @@ app.get("/signup", function (req, res) {
     });
 });
 app.get("/logout", function (req, res) {
-    User.findOne({ _id: req.session.user._id },
+    var id = req.session.user_id;
+    req.session.user_id = undefined;
+    req.session.user = undefined;
+    User.findOne({ _id: id },
         function (err, doc) {
             if (doc) {
                 doc.conected = "N";
+                doc.date_desconected=  new Date();
                 doc.password_conf = doc.password;
                 doc.save(
                     function (err) {
-                        if (err)
+                        if (err) {
                             console.log(err)
+                        } else {
+                            res.redirect("/");
+                        }
                     }
                 );
             } else {
-                res.redirect("/signup");
+                res.redirect("/");
             }
         }
     );
-
-    req.session.user_id = "";
-    res.render("index");
 });
 app.post("/users", function (req, res) {
     var user = new User({
@@ -107,6 +113,7 @@ app.post("/users", function (req, res) {
                         res.send(String(err));
                     } else {
                         req.session.user = user;
+                        req.session.user_id=user._id;
                         res.render("index");
                     }
                 });
@@ -119,16 +126,19 @@ app.post("/sessions", function (req, res) {
         function (err, doc) {
             if (doc) {
                 req.session.user = doc;
-                req.session.id_user = doc._id;
+                req.session.user_id = doc._id;
                 doc.conected = "S";
                 doc.password_conf = doc.password;
                 doc.save(
                     function (err) {
-                        if (err)
+                        if (err) {
                             console.log(err)
+                        }
+                        else {
+                            res.redirect("/");
+                        }
                     }
                 );
-                res.redirect("/app");
                 // Load hash from your password DB.
             } else {
                 res.redirect("/signup");
