@@ -11,7 +11,6 @@ module.exports = function (server, sessionMiddleware) {
 	});
 
 	io.on('connection', function (socket) {
-		console.log("...conectado");
 		io.set('authorization', function (data, accept) {
 			if (data.session && data.session.user != undefined) {
 				accept(null, true);
@@ -57,7 +56,8 @@ module.exports = function (server, sessionMiddleware) {
 
 		socket.on('nuevoMsg', function (data) {
 			data = JSON.parse(data);
-			var dataMensaje = { msg: data.msg, fechaEnvio: new Date(), emisor: data.user_id };
+			console.log(data)
+			var dataMensaje = { msg: data.msg, fechaEnvio: new Date(), emisor: socket.request.session.user };
 			var mensaje = new Mensaje(dataMensaje);
 			mensaje.save(function (err) {
 				if (!err) {
@@ -67,26 +67,14 @@ module.exports = function (server, sessionMiddleware) {
 				}
 			});
 		});
-		socket.on('login', function (msg) {
-			users.push({
-				id: socket.id,
-				login: msg
-			});
-			console.log(users)
-		});
+		
 
 		redisClient.on("message", function (channel, message) {
 			if (channel === "mensaje") {
 				io.emit("new imagen", message);
 			} else if (channel == "chat") {
 				io.emit("chat message", message);
-			} else if (channel == "login") {
-				var msg = {
-					id_: message,
-					id_socket: socket.id
-				}
-				io.emit("login", JSON.stringify(msg));
-			}
+			} 
 		});
 		redisClient.subscribe("mensaje");
 		redisClient.subscribe("chat");

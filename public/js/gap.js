@@ -39,22 +39,3 @@ $(document).on('click', '.icon_close', function (e) {
     //$(this).parent().parent().parent().parent().remove();
     $("#chat_window_1").remove();
 });
-$(document).on('click', '.panel-footer button.btn-chat', function (e) {
-    var $this = $(this);
-    var listInput = $this.parents('.panel-footer').find('.chat_input');
-    if (listInput.length > 0) {
-        msgInput = listInput[0].value;
-        var user_id = document.getElementById("hiddenSecret").value;
-        var data = {
-            msg: msgInput,
-            user_id: user_id
-        };
-        var container = document.querySelector("#msg_container");
-        var source_send = document.querySelector("#msg_sent").innerHTML;
-        var template = Handlebars.compile(source_send);
-        container.innerHTML = container.innerHTML + template(data);
-        socket.emit("nuevoMsg", JSON.stringify(data));
-        listInput[0].value = "";
-    }
-    return false;
-});

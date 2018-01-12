@@ -30,21 +30,63 @@ html(lang="en")
                     +nav_item( "/signup" ) Registrarse
             +nav_divider
         div(class=["container-fluid"] style="padding-top:6rem;",id="container_gap")
-            .row.flex-xl-nowrap
+            .row
                 +columnaAll(12,2,2,2,2,2,1,"bd-sidebar")
                     form(action="" class=["form-inline","my-2 my-lg-0"])
                         input(type="search" class=["form-control","mr-sm-2"] placeholder="Buscar" aria-label="Buscar")
                         button(class=["btn","btn-outline-success","my-2 my-sm-0"]  type="submit") Buscar
                     
-                    .list-group
-                        if listUsers
-                            for user in listUsers
-                                if user.conected=="S"
-                                    a(class=["list-group-item","list-group-item-action","list-group-item-success","#{user._id}"] href="#") #{user.username}
-                                        span(class=["badge","badge-primary","badge-pill"]) 1
-                                else
-                                    a(class=["list-group-item","list-group-item-action","#{user._id}"] href="#") #{user.username} 
-                                        span(class=["badge","badge-primary","badge-pill"]) 2
+                    if listUsers
+                        for user in listUsers
+                            .sidebar-name
+                                a(href="javascript:register_popup(#{user}, 'Narayan Prusty');")
+                                    if user.conected=="S"
+                                        button( type="button" class="btn btn-success btn-circle" disabled="disabled")
+                                    else
+                                        button( type="button" class="btn btn-default btn-circle" disabled="disabled")
+                                    span( class=["glyphicon", "glyphicon-user"])
+                                    span #{user.username}
+                                    span(class=["badge"] style="margin-left: 5px;font-size:8px;") 2
+                                    
+                                    if user.conected=="N"
+                                        - var tiempo=user.date_desconected.getTime();
+                                        - var tiempoActual=(new Date()).getTime();
+                                        - var tiempoMiliSe=tiempoActual-tiempo;
+                                        - var tiempoSeg=tiempoMiliSe/1000;
+                                        - tiempoSeg=tiempoSeg.toFixed(0);
+                                        - var tiempoConectado="";
+                                        if tiempoSeg < 60
+                                            - tiempoConectado=tiempoSeg+" seg";
+                                        else
+                                            - var tiempoMinutos=tiempoSeg/60;
+                                            - tiempoMinutos=tiempoMinutos.toFixed(0);
+                                            if tiempoMinutos < 60
+                                                - tiempoConectado=tiempoMinutos+" min";
+                                            else
+                                                - var tiempoHoras=tiempoMinutos/60;
+                                                - tiempoHoras=tiempoHoras.toFixed(0);
+                                                if tiempoHoras < 24
+                                                    - tiempoConectado=tiempoHoras+" h";
+                                                else
+                                                    - var tiempoDias=tiempoHoras/24;
+                                                    - tiempoDias=tiempoDias.toFixed(0);
+                                                    if tiempoHoras < 7
+                                                        - tiempoConectado=tiempoDias+" d";
+                                                    else
+                                                        - var tiempoSemanas=tiempoDias/7;
+                                                        - tiempoSemanas=tiempoSemanas.toFixed(0);
+                                                        if tiempoSemanas < 4
+                                                            - tiempoConectado=tiempoSemanas+" sem";
+                                                        else
+                                                            - var tiempoMeses=tiempoSemanas/4;
+                                                            - tiempoMeses=tiempoMeses.toFixed(0);
+                                                            if tiempoMeses < 12
+                                                                - tiempoConectado=tiempoMeses+" meses";
+                                                            else
+                                                                - var tiempoAnios=tiempoSemanas/12;
+                                                                - tiempoAnios=tiempoMeses.toFixed(0);
+                                                                - tiempoConectado=tiempoAnios+" años"; 
+                                        div(class=["floatRight"] style="margin-left: 5px;font-size:10px;") #{tiempoConectado}
                     if USER
                         include chat
                 +columnaAll(12,10,10,10,10,4,5,"bd-content")
