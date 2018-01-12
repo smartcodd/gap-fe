@@ -32,18 +32,16 @@ html(lang="en")
         div(class=["container-fluid"] style="padding-top:6rem;",id="container_gap")
             .row
                 +columnaAll(12,2,2,2,2,2,1,"bd-sidebar")
-                    form(action="" class=["form-inline","my-2 my-lg-0"])
-                        input(type="search" class=["form-control","mr-sm-2"] placeholder="Buscar" aria-label="Buscar")
-                        button(class=["btn","btn-outline-success","my-2 my-sm-0"]  type="submit") Buscar
+                
                     
                     if listUsers
                         for user in listUsers
                             .sidebar-name
                                 a(href="javascript:register_popup(#{user}, 'Narayan Prusty');")
                                     if user.conected=="S"
-                                        button( type="button" class="btn btn-success btn-circle" disabled="disabled")
+                                        button( type="button" class=["btn", "btn-success", "btn-circle","#{user._id}"] disabled="disabled" )
                                     else
-                                        button( type="button" class="btn btn-default btn-circle" disabled="disabled")
+                                        button( type="button" class=["btn", "btn-default", "btn-circle","#{user._id}"] disabled="disabled")
                                     span( class=["glyphicon", "glyphicon-user"])
                                     span #{user.username}
                                     span(class=["badge"] style="margin-left: 5px;font-size:8px;") 2
