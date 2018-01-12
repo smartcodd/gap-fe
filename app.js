@@ -1,8 +1,11 @@
 
 var express = require("express");
 var app = express();
+//MODELOS
 var User = require("./models/user").User;
 var Mensaje = require("./models/mensaje").Mensaje;
+var Amistad = require("./models/amistad").Amistad;
+
 var session = require("express-session");
 var cookieSession = require("cookie-session");
 var expressSession = require("express-session");
@@ -38,25 +41,17 @@ app.use(formidable({
 
 app.set("view engine", "jade");
 app.use(function (req, res, next) {
-    User.find({}, function (err, users) {
-        res.locals.USER = req.session.user;
-        res.locals.ID = req.session.user_id
-        res.locals.listUsers = users;
-        Mensaje.find({}).populate("emisor").exec(function (err, mensajes) {
-            res.locals.listMsg = mensajes;
-            //Metodo que elimina los msg
-            /*
-            mensajes.forEach(function (element) {
-                console.log(element);
-                Mensaje.findByIdAndRemove({ _id: element._id }, function (err) {
-                    console.log("eliminado...")
-                });
-            });
-            */
+    Amistad.find({ emisor: req.session.user_id }).populate("receptor").populate("emisor").
+        exec(function (err, amistades) {
+            if (err)
+                return handleError(err);
+            res.locals.USER = req.session.user;
+            res.locals.ID = req.session.user_id;
+            res.locals.listFriends = amistades;
             next();
         });
+    //{$ne: value}
 
-    });
 
 });
 app.get("/", function (req, res) {
@@ -78,7 +73,7 @@ app.get("/logout", function (req, res) {
         function (err, doc) {
             if (doc) {
                 doc.conected = "N";
-                doc.date_desconected=  new Date();
+                doc.date_desconected = new Date();
                 doc.password_conf = doc.password;
                 doc.save(
                     function (err) {
@@ -113,7 +108,7 @@ app.post("/users", function (req, res) {
                         res.send(String(err));
                     } else {
                         req.session.user = user;
-                        req.session.user_id=user._id;
+                        req.session.user_id = user._id;
                         res.render("index");
                     }
                 });

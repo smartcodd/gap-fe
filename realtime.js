@@ -53,10 +53,30 @@ module.exports = function (server, sessionMiddleware) {
 				}
 			);
 		});
+		socket.on('newChat', function (data) {
+			var id_user_to = data;
+			User.findOne({ _id: id_user_to },
+				function (err, doc) {
+					if (doc) {
+						doc.date_desconected = new Date();
+						doc.conected = "N";
+						doc.password_conf = doc.password;
+						doc.save(
+							function (err) {
+								if (err) {
+									console.log(err)
+								} else {
+									io.sockets.connected[socket.id].emit("newChat", "usermae");
+								}
+							}
+						);
+					}
+				}
+			);
 
+		});
 		socket.on('nuevoMsg', function (data) {
 			data = JSON.parse(data);
-			console.log(data)
 			var dataMensaje = { msg: data.msg, fechaEnvio: new Date(), emisor: socket.request.session.user };
 			var mensaje = new Mensaje(dataMensaje);
 			mensaje.save(function (err) {
@@ -67,14 +87,14 @@ module.exports = function (server, sessionMiddleware) {
 				}
 			});
 		});
-		
+
 
 		redisClient.on("message", function (channel, message) {
 			if (channel === "mensaje") {
 				io.emit("new imagen", message);
 			} else if (channel == "chat") {
 				io.emit("chat message", message);
-			} 
+			}
 		});
 		redisClient.subscribe("mensaje");
 		redisClient.subscribe("chat");

@@ -16,13 +16,12 @@ var user_schema= new Schema({
         },
         minlength:5
     },
-    hashedPassword:String,
     age:{type:Number,min:[5,"El valor minimo es 5"],max:[100,"El valor máximo es 100"]},
     email:{type: String,required:"El correo es obligatorio"},
     date_of_birth:Date,
     sexo:{type:String,enum:{values:["Masculino","Femenino"],message:"El vaor no es correcto"}},
     conected:String,
-    date_desconected:Date
+    date_desconected:Date    
 });
 user_schema.virtual("password_conf").get(function(){
     return this.pass_c;
