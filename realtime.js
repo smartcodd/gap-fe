@@ -18,6 +18,11 @@ module.exports = function (server, sessionMiddleware) {
 				accept("Debe autentificarse", false);
 			}
 		});
+		if(myMap.get(socket.request.session.user_id)!=undefined){
+			myMap.get(socket.request.session.user_id).push(socket.id)
+		}else{
+			myMap.set(socket.request.session.user_id,[socket.id])
+		}
 		User.findOne({ _id: socket.request.session.user_id },
 			function (err, doc) {
 				if (doc) {
@@ -27,6 +32,8 @@ module.exports = function (server, sessionMiddleware) {
 						function (err) {
 							if (err) {
 								console.log(err)
+							}else{
+								socket.broadcast.emit("newclientconnect", doc._id);
 							}
 						}
 					);
@@ -36,6 +43,8 @@ module.exports = function (server, sessionMiddleware) {
 		//io.sockets.connected[socket.id].emit("greeting", "usermae");
 		//socket.emit('newclientconnect', { description: 'Hey, welcome!' });
 		socket.on('disconnect', function () {
+			var index = myMap.get(socket.request.session.user_id).indexOf(socket.id);
+			myMap.get(socket.request.session.user_id).splice(index, 1);
 			User.findOne({ _id: socket.request.session.user_id },
 				function (err, doc) {
 					if (doc) {
@@ -46,6 +55,8 @@ module.exports = function (server, sessionMiddleware) {
 							function (err) {
 								if (err) {
 									console.log(err)
+								}else{
+									socket.broadcast.emit("newclientdesconnect", JSON.stringify({id:doc._id,date:doc.date_desconected}));
 								}
 							}
 						);
@@ -98,7 +109,6 @@ module.exports = function (server, sessionMiddleware) {
 		});
 		redisClient.subscribe("mensaje");
 		redisClient.subscribe("chat");
-		redisClient.subscribe("login");
 	});
 
 }

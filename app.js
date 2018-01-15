@@ -1,16 +1,17 @@
 
 var express = require("express");
 var app = express();
+
+//SOCKET IO
+var redis = require("redis");
+var client = redis.createClient();
 //MODELOS
 var User = require("./models/user").User;
 var Mensaje = require("./models/mensaje").Mensaje;
-var Amistad = require("./models/amistad").Amistad;
-
 var session = require("express-session");
 var cookieSession = require("cookie-session");
 var expressSession = require("express-session");
 var methodOverride = require("method-override");
-
 var session_middleware = require("./middlewares/session.js");
 var bodyParcer = require("body-parser")
 var formidable = require("express-formidable");
@@ -42,40 +43,15 @@ app.use(formidable({
 app.set("view engine", "jade");
 app.use("/app", session_middleware);
 app.use("/app", router_app);
-
 app.use(function (req, res, next) {
-    console.log("realiza una peticion")
-    if (!req.session.user_id) {
-        res.redirect("/login");
-    } else {
-        Amistad.find({ emisor: req.session.user_id }).populate("receptor").populate("emisor").
-            exec(function (err, amistades) {
-                if (err)
-                    return handleError(err);
-                res.locals.USER = req.session.user;
-                res.locals.ID = req.session.user_id;
-                res.locals.listFriends = amistades;
-                next();
-
-            });
+    if (req.session.user_id) {
+        res.locals.USER = req.session.user;
+        res.locals.ID = req.session.user_id;
     }
-
-    /*
-        User.find({ _id: { $ne: req.session.user_id } },
-        function (err, listUsuarios) {
-            console.log(listUsuarios)
-            listUsuarios.forEach(function(element){
-                console.log(element)
-                var amistad=new Amistad({emisor:req.session.user_id,
-                receptor:element._id,
-                fechaInicio:new Date()})
-                amistad.save(function(err){if(err)console.log(err)});
-            });
-        });*/
-
-    //{$ne: value}
-
-
+    next();
+});
+app.use(function (req, res, next) {
+    next();
 });
 app.get("/", function (req, res) {
     res.render("index");
@@ -84,36 +60,14 @@ app.get("/login", function (req, res) {
     res.render("login");
 });
 app.get("/signup", function (req, res) {
-    User.find(function (err, doc) {
-        res.render("signup");
-    });
+    res.render("signup");
 });
 app.get("/logout", function (req, res) {
-    var id = req.session.user_id;
     req.session.user_id = undefined;
     req.session.user = undefined;
-    User.findOne({ _id: id },
-        function (err, doc) {
-            if (doc) {
-                doc.conected = "N";
-                doc.date_desconected = new Date();
-                doc.password_conf = doc.password;
-                doc.save(
-                    function (err) {
-                        if (err) {
-                            console.log(err)
-                        } else {
-                            res.redirect("/");
-                        }
-                    }
-                );
-            } else {
-                res.redirect("/");
-            }
-        }
-    );
+    res.redirect("/");
 });
-app.post("/users", function (req, res) {
+app.post("/register", function (req, res) {
     var user = new User({
         email: req.body.email,
         password: req.body.password,
@@ -145,24 +99,11 @@ app.post("/sessions", function (req, res) {
             if (doc) {
                 req.session.user = doc;
                 req.session.user_id = doc._id;
-                doc.conected = "S";
-                doc.password_conf = doc.password;
-                doc.save(
-                    function (err) {
-                        if (err) {
-                            console.log(err)
-                        }
-                        else {
-                            res.redirect("/");
-                        }
-                    }
-                );
-                // Load hash from your password DB.
+                res.redirect("/");
             } else {
                 res.redirect("/signup");
             }
         }
     );
 });
-
 server.listen(8080, "0.0.0.0");

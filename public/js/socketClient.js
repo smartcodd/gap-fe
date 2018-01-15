@@ -6,8 +6,29 @@ socket.on("new imagen", function (data) {
     var template = Handlebars.compile(source);
     container.innerHTML += template(data);
 });
-socket.on("greeting", function (data) {
-    console.log("... lega msg " + data)
+socket.on("newclientconnect", function (data) {
+    var divUser = $(".btn_cone" + data)
+    if (divUser.hasClass('btn-default')) {
+        divUser.removeClass('btn-default').addClass('btn-success');
+    }
+    var time = divUser.parents('.sidebar-name').find('.timeConeccted');
+    if (time)
+        time.css("display", "none");
+});
+socket.on("newclientdesconnect", function (dates) {
+    dates = JSON.parse(dates);
+    console.log(dates)
+    var divUser = $(".btn_cone" + dates.id)
+    if (divUser.hasClass('btn-success')) {
+        divUser.removeClass('btn-success').addClass('btn-default');
+    }
+    var time = divUser.parents('.sidebar-name').find('.timeConeccted');
+    var timeDisconected=dates.date;
+    
+    if (time){
+
+        time.css("display", "default");
+    }
 });
 
 socket.on("nuevoMsg", function (data) {

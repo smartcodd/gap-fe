@@ -41,20 +41,20 @@ html(lang="en")
                                     .sidebar-name
                                         a(href="javascript:register_popup('#{friend._id}');")
                                             if friend.receptor.conected=="S"
-                                                button( type="button" class=["btn", "btn-success", "btn-circle","#{friend._id}"] disabled="disabled" )
+                                                button( type="button" class=["btn", "btn-success", "btn-circle","btn_cone"+"#{friend.receptor._id}"]  )
                                             else
-                                                button( type="button" class=["btn", "btn-default", "btn-circle","#{friend._id}"] disabled="disabled")
+                                                button( type="button" class=["btn", "btn-default", "btn-circle","btn_cone"+"#{friend.receptor._id}"] )
                                             span( class=["glyphicon", "glyphicon-user"])
                                             span #{friend.receptor.username}
                                             span(class=["badge"] style="margin-left: 5px;font-size:8px;") 2
-                                            
+                                            - var tiempoConectado="";
                                             if friend.receptor.conected=="N" && friend.receptor.date_desconected
                                                 - var tiempo=friend.receptor.date_desconected.getTime();
                                                 - var tiempoActual=(new Date()).getTime();
                                                 - var tiempoMiliSe=tiempoActual-tiempo;
                                                 - var tiempoSeg=tiempoMiliSe/1000;
                                                 - tiempoSeg=tiempoSeg.toFixed(0);
-                                                - var tiempoConectado="";
+                                                
                                                 if tiempoSeg < 60
                                                     - tiempoConectado=tiempoSeg+" seg";
                                                 else
@@ -86,7 +86,9 @@ html(lang="en")
                                                                         - var tiempoAnios=tiempoSemanas/12;
                                                                         - tiempoAnios=tiempoMeses.toFixed(0);
                                                                         - tiempoConectado=tiempoAnios+" años"; 
-                                                div(class=["floatRight"] style="margin-left: 5px;font-size:10px;") #{tiempoConectado}
+                                                div(class=["floatRight","timeConeccted"] style="margin-left: 5px;font-size:10px;") #{tiempoConectado}
+                                            else
+                                                div(class=["floatRight","timeConeccted"] style="margin-left: 5px;font-size:10px;display:none") #{tiempoConectado}
                             
                     if USER
                         include chat

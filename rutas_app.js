@@ -2,12 +2,29 @@ var express = require("express");
 var router = express.Router();
 var Imagen = require("./models/imagenes").Imagen;
 var Mensaje = require("./models/mensaje").Mensaje;
+var Amistad = require("./models/amistad").Amistad;
 var User = require("./models/user").User;
 var image_find_middleware = require("./middlewares/find_image");
 var fs = require("fs");
 var redis = require("redis");
 var client = redis.createClient();
 router.use(function (req, res, next) {
+    if (!req.session.user_id) {
+        res.redirect("/login");
+    } else {
+        Amistad.find({ emisor: req.session.user_id }).populate("receptor").populate("emisor").
+            exec(function (err, amistades) {
+                if (err)
+                    return handleError(err);
+                res.locals.USER = req.session.user;
+                res.locals.ID = req.session.user_id;
+                res.locals.listFriends = amistades;
+                next();
+
+            });
+    }
+//{$ne: value}
+    /*
     User.find({}, function (err, users) {
         res.locals.USER = req.session.user;
         res.locals.ID =req.session.user_id;
@@ -15,18 +32,18 @@ router.use(function (req, res, next) {
         Mensaje.find({}).populate("emisor").exec(function (err, mensajes) {
             res.locals.listMsg = mensajes;
             //Metodo que elimina los msg
-            /*
+           
             mensajes.forEach(function (element) {
                 console.log(element);
                 Mensaje.findByIdAndRemove({ _id: element._id }, function (err) {
                     console.log("eliminado...")
                 });
             });
-            */
+          
             next();
         });
 
-    });
+    });*/
 });
 router.get("/", function (req, res) {
     Imagen.find({}).populate("creator").exec(function (err, imagenes) {
