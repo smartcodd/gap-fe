@@ -2,9 +2,36 @@ module.exports = function (server, sessionMiddleware) {
 	var io = require("socket.io")(server);
 	var redis = require('redis');
 	var redisClient = redis.createClient();
+	//Modelos
 	var Mensaje = require("./models/mensaje").Mensaje;
 	var User = require("./models/user").User;
-	var userConected = [];
+
+	var cronjob = require('cron-job');
+	var job = function (options) {//only one parameters 
+		if(options.event==="loadUser"){
+			User.find({conected:"N"}, function (err, users) {
+			
+			});
+		}
+	};
+
+	//do it after 5s,and do it every 3s 
+	var first_time = cronjob.date_util.getNowTimestamp();//timestamp,unit is seconds 
+	var timegap = 60;//seconds 
+	var options = {//method's parameters 
+		event: 'loadUser'
+	};
+
+	cronjob.startJobEveryTimegap(first_time + 5, timegap, job, options);
+
+	//do it at tomorrow's 0 o'clock,and do it every day. 
+	var tomorrowtimestamp = cronjob.date_util.getToday() + cronjob.ONE_DAY;//it must bigger than the current timestamp,unit is seconds 
+	var options = {//method's parameters 
+		param1: '3',
+		param2: '4'
+	};
+	cronjob.startJobEveryDay(tomorrowtimestamp, job, options);
+
 	var myMap = new Map();
 	io.use(function (socket, next) {
 		sessionMiddleware(socket.request, socket.request.res, next);
@@ -18,10 +45,10 @@ module.exports = function (server, sessionMiddleware) {
 				accept("Debe autentificarse", false);
 			}
 		});
-		if(myMap.get(socket.request.session.user_id)!=undefined){
+		if (myMap.get(socket.request.session.user_id) != undefined) {
 			myMap.get(socket.request.session.user_id).push(socket.id)
-		}else{
-			myMap.set(socket.request.session.user_id,[socket.id])
+		} else {
+			myMap.set(socket.request.session.user_id, [socket.id])
 		}
 		User.findOne({ _id: socket.request.session.user_id },
 			function (err, doc) {
@@ -32,7 +59,7 @@ module.exports = function (server, sessionMiddleware) {
 						function (err) {
 							if (err) {
 								console.log(err)
-							}else{
+							} else {
 								socket.broadcast.emit("newclientconnect", doc._id);
 							}
 						}
@@ -55,8 +82,8 @@ module.exports = function (server, sessionMiddleware) {
 							function (err) {
 								if (err) {
 									console.log(err)
-								}else{
-									socket.broadcast.emit("newclientdesconnect", JSON.stringify({id:doc._id,date:doc.date_desconected}));
+								} else {
+									socket.broadcast.emit("newclientdesconnect", JSON.stringify({ id: doc._id, date: doc.date_desconected }));
 								}
 							}
 						);

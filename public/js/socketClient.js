@@ -24,9 +24,7 @@ socket.on("newclientdesconnect", function (dates) {
     }
     var time = divUser.parents('.sidebar-name').find('.timeConeccted');
     var timeDisconected=dates.date;
-    
     if (time){
-
         time.css("display", "default");
     }
 });
