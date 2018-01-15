@@ -48,8 +48,8 @@ html(lang="en")
                                             span #{friend.receptor.username}
                                             span(class=["badge"] style="margin-left: 5px;font-size:8px;") 2
                                             
-                                            if friend.receptor.conected=="N" && friend.receptordate_desconected
-                                                - var tiempo=friend.date_desconected.getTime();
+                                            if friend.receptor.conected=="N" && friend.receptor.date_desconected
+                                                - var tiempo=friend.receptor.date_desconected.getTime();
                                                 - var tiempoActual=(new Date()).getTime();
                                                 - var tiempoMiliSe=tiempoActual-tiempo;
                                                 - var tiempoSeg=tiempoMiliSe/1000;

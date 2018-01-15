@@ -40,16 +40,39 @@ app.use(formidable({
 */
 
 app.set("view engine", "jade");
+app.use("/app", session_middleware);
+app.use("/app", router_app);
+
 app.use(function (req, res, next) {
-    Amistad.find({ emisor: req.session.user_id }).populate("receptor").populate("emisor").
-        exec(function (err, amistades) {
-            if (err)
-                return handleError(err);
-            res.locals.USER = req.session.user;
-            res.locals.ID = req.session.user_id;
-            res.locals.listFriends = amistades;
-            next();
-        });
+    console.log("realiza una peticion")
+    if (!req.session.user_id) {
+        res.redirect("/login");
+    } else {
+        Amistad.find({ emisor: req.session.user_id }).populate("receptor").populate("emisor").
+            exec(function (err, amistades) {
+                if (err)
+                    return handleError(err);
+                res.locals.USER = req.session.user;
+                res.locals.ID = req.session.user_id;
+                res.locals.listFriends = amistades;
+                next();
+
+            });
+    }
+
+    /*
+        User.find({ _id: { $ne: req.session.user_id } },
+        function (err, listUsuarios) {
+            console.log(listUsuarios)
+            listUsuarios.forEach(function(element){
+                console.log(element)
+                var amistad=new Amistad({emisor:req.session.user_id,
+                receptor:element._id,
+                fechaInicio:new Date()})
+                amistad.save(function(err){if(err)console.log(err)});
+            });
+        });*/
+
     //{$ne: value}
 
 
@@ -141,6 +164,5 @@ app.post("/sessions", function (req, res) {
         }
     );
 });
-app.use("/app", session_middleware);
-app.use("/app", router_app);
+
 server.listen(8080, "0.0.0.0");
