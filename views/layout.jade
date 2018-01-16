@@ -104,14 +104,14 @@ script(id="user_connect" type="text/x-handlebars-template" src="/docs/js/socketC
             span( class=["glyphicon", "glyphicon-user"])
             span {{username}}
             span(class=["badge"] style="margin-left: 5px;font-size:8px;") 2
-            - var tiempoConectado="nose";
-            if (conected=="N" && date_desconected)
+            p {{date_desconected}}
+            if(date_desconected)
+                - var tiempoConectado="";
                 - var tiempo=date_desconected.getTime();
                 - var tiempoActual=(new Date()).getTime();
                 - var tiempoMiliSe=tiempoActual-tiempo;
                 - var tiempoSeg=tiempoMiliSe/1000;
                 - tiempoSeg=tiempoSeg.toFixed(0);
-                
                 if tiempoSeg < 60
                     - tiempoConectado=tiempoSeg+" seg";
                 else
@@ -144,16 +144,6 @@ script(id="user_connect" type="text/x-handlebars-template" src="/docs/js/socketC
                                         - tiempoAnios=tiempoMeses.toFixed(0);
                                         - tiempoConectado=tiempoAnios+" años"; 
                 div(class=["floatRight","timeConeccted"] style="margin-left: 5px;font-size:10px;") {{tiempoConectado}}
-            else
-                div(class=["floatRight","timeConeccted"] style="margin-left: 5px;font-size:10px;display:none") {{tiempoConectado}}
-
-    div(class=["row","msg_container","base_sent"])
-        +columna(10,10,10)
-            div(class=["messages","msg_sent"])
-                p {{msg}}
-                time(datetime="2009-11-13T20:00") Timothy • 51 min
-        +columna(2,2,2,"padding-left: 2px;padding-right: 2px;")
-            img(src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class="img-responsive")
 
 
                 

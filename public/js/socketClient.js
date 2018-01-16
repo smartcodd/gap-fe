@@ -9,17 +9,13 @@ socket.on("new imagen", function (data) {
 socket.on("updateChatStatus", function (data) {
     data = JSON.parse(data);
     console.log(data)
-    var container = $(".btn_cone" + data._id)
-    console.log(container)
+    var container = $(".btn_cone" + data._id);
     if (container) {
         var parent = container.parents('.sidebar-name');
-        console.log(parent)
         var source = document.querySelector("#user_connect").innerHTML;
         var template = Handlebars.compile(source);
-        console.log("--------------------Inicia....")
         console.log(template(data))
         parent.innerHTML = template(data);
-        console.log(parent)
         console.log("processdo cron")
     }
 
