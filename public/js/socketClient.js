@@ -6,6 +6,24 @@ socket.on("new imagen", function (data) {
     var template = Handlebars.compile(source);
     container.innerHTML += template(data);
 });
+socket.on("updateChatStatus", function (data) {
+    data = JSON.parse(data);
+    console.log(data)
+    var container = $(".btn_cone" + data._id)
+    console.log(container)
+    if (container) {
+        var parent = container.parents('.sidebar-name');
+        console.log(parent)
+        var source = document.querySelector("#user_connect").innerHTML;
+        var template = Handlebars.compile(source);
+        console.log("--------------------Inicia....")
+        console.log(template(data))
+        parent.innerHTML = template(data);
+        console.log(parent)
+        console.log("processdo cron")
+    }
+
+});
 socket.on("newclientconnect", function (data) {
     var divUser = $(".btn_cone" + data)
     if (divUser.hasClass('btn-default')) {
@@ -17,14 +35,13 @@ socket.on("newclientconnect", function (data) {
 });
 socket.on("newclientdesconnect", function (dates) {
     dates = JSON.parse(dates);
-    console.log(dates)
     var divUser = $(".btn_cone" + dates.id)
     if (divUser.hasClass('btn-success')) {
         divUser.removeClass('btn-success').addClass('btn-default');
     }
     var time = divUser.parents('.sidebar-name').find('.timeConeccted');
-    var timeDisconected=dates.date;
-    if (time){
+    var timeDisconected = dates.date;
+    if (time) {
         time.css("display", "default");
     }
 });

@@ -8,22 +8,50 @@ var image_find_middleware = require("./middlewares/find_image");
 var fs = require("fs");
 var redis = require("redis");
 var client = redis.createClient();
+var cronjob = require('cron-job');
+var job = function (options) {//only one parameters 
+    if (options.event === "loadUser") {
+        User.find({ conected: "N" }, function (err, users) {
+            users.forEach(function (element) {
+                client.publish("updateChatStatus", JSON.stringify(element));
+            });
+        });
+    }
+};
+
+//do it after 5s,and do it every 3s 
+var first_time = cronjob.date_util.getNowTimestamp();//timestamp,unit is seconds 
+var timegap = 60;//seconds 
+var options = {//method's parameters 
+    event: 'loadUser'
+};
+
+cronjob.startJobEveryTimegap(first_time + 5, timegap, job, options);
+
+//do it at tomorrow's 0 o'clock,and do it every day. 
+var tomorrowtimestamp = cronjob.date_util.getToday() + cronjob.ONE_DAY;//it must bigger than the current timestamp,unit is seconds 
+var options = {//method's parameters 
+    param1: '3',
+    param2: '4'
+};
+cronjob.startJobEveryDay(tomorrowtimestamp, job, options);
 router.use(function (req, res, next) {
     if (!req.session.user_id) {
         res.redirect("/login");
     } else {
-        Amistad.find({ emisor: req.session.user_id }).populate("receptor").populate("emisor").
+        
+        res.locals.USER = req.session.user;
+        res.locals.ID = req.session.user_id;
+        Amistad.find({emisor:req.session.user_id}).populate("receptor").populate("emisor").
             exec(function (err, amistades) {
                 if (err)
                     return handleError(err);
-                res.locals.USER = req.session.user;
-                res.locals.ID = req.session.user_id;
+
                 res.locals.listFriends = amistades;
                 next();
-
             });
     }
-//{$ne: value}
+    //{$ne: value}
     /*
     User.find({}, function (err, users) {
         res.locals.USER = req.session.user;
@@ -92,7 +120,7 @@ router.route("/imagenes").get(
                 res.redirect("/app");
                 return;
             } else {
-                
+
                 res.render("app/imagenes/index", { imagenes: imagenes });
             }
         });
