@@ -21,7 +21,7 @@ var job = function (options) {//only one parameters
 
 //do it after 5s,and do it every 3s 
 var first_time = cronjob.date_util.getNowTimestamp();//timestamp,unit is seconds 
-var timegap = 60;//seconds 
+var timegap = 3;//seconds 
 var options = {//method's parameters 
     event: 'loadUser'
 };

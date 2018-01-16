@@ -96,16 +96,16 @@ html(lang="en")
                     block contenido
 script(id="user_connect" type="text/x-handlebars-template" src="/docs/js/socketClient.js")
     .sidebar-name
-        a(href="javascript:register_popup('#{{_id}}');")
+        a(href="javascript:register_popup('{{_id}}');")
             if conected=="S"
-                button( type="button" class=["btn", "btn-success", "btn-circle","btn_cone"+"#{{_id}}"]  )
+                button( type="button" class=["btn", "btn-success", "btn-circle","btn_cone"+"{{_id}}"]  )
             else
-                button( type="button" class=["btn", "btn-default", "btn-circle","btn_cone"+"#{{_id}}"] )
+                button( type="button" class=["btn", "btn-default", "btn-circle","btn_cone"+"{{_id}}"] )
             span( class=["glyphicon", "glyphicon-user"])
-            span #{{username}}
+            span {{username}}
             span(class=["badge"] style="margin-left: 5px;font-size:8px;") 2
-            - var tiempoConectado="";
-            if conected=="N" && date_desconected
+            - var tiempoConectado="nose";
+            if (conected=="N" && date_desconected)
                 - var tiempo=date_desconected.getTime();
                 - var tiempoActual=(new Date()).getTime();
                 - var tiempoMiliSe=tiempoActual-tiempo;
@@ -143,9 +143,9 @@ script(id="user_connect" type="text/x-handlebars-template" src="/docs/js/socketC
                                         - var tiempoAnios=tiempoSemanas/12;
                                         - tiempoAnios=tiempoMeses.toFixed(0);
                                         - tiempoConectado=tiempoAnios+" años"; 
-                div(class=["floatRight","timeConeccted"] style="margin-left: 5px;font-size:10px;") #{tiempoConectado}
+                div(class=["floatRight","timeConeccted"] style="margin-left: 5px;font-size:10px;") {{tiempoConectado}}
             else
-                div(class=["floatRight","timeConeccted"] style="margin-left: 5px;font-size:10px;display:none") #{tiempoConectado}
+                div(class=["floatRight","timeConeccted"] style="margin-left: 5px;font-size:10px;display:none") {{tiempoConectado}}
 
     div(class=["row","msg_container","base_sent"])
         +columna(10,10,10)
