@@ -53,6 +53,7 @@ app.use(function (req, res, next) {
     next();
 });
 app.use(function (req, res, next) {
+    console.log("login.........")
     if (req.session.user_id) {
         if (!req.session.user_id) {
             res.redirect("/login");
@@ -67,6 +68,8 @@ app.use(function (req, res, next) {
                     next();
                 });
         }
+    }else{
+        next();
     }
 });
 app.get("/", function (req, res) {
