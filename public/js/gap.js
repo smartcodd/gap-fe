@@ -20,25 +20,10 @@ $(document).on('focus', '.panel-footer input.chat_input', function (e) {
         nodeMini.removeClass('glyphicon-plus').addClass('glyphicon-minus');
     }
 });
-$(document).on('click', '#new_chat', function (e) {
-    var size = $(".chat-window:last-child").css("margin-left");
-    if (size)
-        size_total = parseInt(size) + 400;
-    else
-        size_total = 420;
-    var clone = $("#chat_window_base").clone();
-    clone.appendTo("#container_gap");
-    clone.css("margin-left", size_total);
-    clone.css("display", "");
-    if (clone.hasClass('panel-collapsed')) {
-        clone.removeClass('panel-collapsed');
-        clone.removeClass('glyphicon-plus').addClass('glyphicon-minus');
-    }
-});
+
 $(document).on('click', '.icon_close', function (e) {
     //$(this).parent().parent().parent().parent().remove();
     $("#chat_window_1").remove();
 });
-function register_popup(obj){
-    console.log(obj)
-}
+
+

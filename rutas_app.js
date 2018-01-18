@@ -13,6 +13,10 @@ var job = function (options) {//only one parameters
     if (options.event === "loadUser") {
         User.find({ conected: "N" }, function (err, users) {
             users.forEach(function (element) {
+                var tiempoActual = new Date();
+                if (element.date_desconected) {
+                    element.tiempo_current = tiempoActual.getTime() - element.date_desconected.getTime();
+                }
                 client.publish("updateChatStatus", JSON.stringify(element));
             });
         });
@@ -21,35 +25,27 @@ var job = function (options) {//only one parameters
 
 //do it after 5s,and do it every 3s 
 var first_time = cronjob.date_util.getNowTimestamp();//timestamp,unit is seconds 
-var timegap = 5;//seconds 
+var timegap = 10;//seconds 
 var options = {//method's parameters 
     event: 'loadUser'
 };
-
 cronjob.startJobEveryTimegap(first_time + 5, timegap, job, options);
 
-//do it at tomorrow's 0 o'clock,and do it every day. 
-var tomorrowtimestamp = cronjob.date_util.getToday() + cronjob.ONE_DAY;//it must bigger than the current timestamp,unit is seconds 
-var options = {//method's parameters 
-    param1: '3',
-    param2: '4'
-};
-cronjob.startJobEveryDay(tomorrowtimestamp, job, options);
 router.use(function (req, res, next) {
-    if (!req.session.user_id) {
-        res.redirect("/login");
-    } else {
-        
-        res.locals.USER = req.session.user;
-        res.locals.ID = req.session.user_id;
-        Amistad.find({emisor:req.session.user_id}).populate("receptor").populate("emisor").
-            exec(function (err, amistades) {
-                if (err)
-                    return handleError(err);
-
-                res.locals.listFriends = amistades;
-                next();
-            });
+    if (req.session.user_id) {
+        if (!req.session.user_id) {
+            res.redirect("/login");
+        } else {
+            res.locals.USER = req.session.user;
+            res.locals.ID = req.session.user_id;
+            Amistad.find({ $or: [{ emisor: req.session.user_id }, { receptor: req.session.user_id }] }).populate("receptor").populate("emisor").
+                exec(function (err, amistades) {
+                    if (err)
+                        console.log(err);
+                    res.locals.listFriends = amistades;
+                    next();
+                });
+        }
     }
     //{$ne: value}
     /*

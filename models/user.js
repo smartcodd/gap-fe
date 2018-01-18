@@ -21,7 +21,8 @@ var user_schema= new Schema({
     date_of_birth:Date,
     sexo:{type:String,enum:{values:["Masculino","Femenino"],message:"El vaor no es correcto"}},
     conected:String,
-    date_desconected:Date    
+    date_desconected:Date,
+    tiempo_current:Number
 });
 user_schema.virtual("password_conf").get(function(){
     return this.pass_c;

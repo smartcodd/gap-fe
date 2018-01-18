@@ -8,6 +8,8 @@ var client = redis.createClient();
 //MODELOS
 var User = require("./models/user").User;
 var Mensaje = require("./models/mensaje").Mensaje;
+var Amistad = require("./models/amistad").Amistad;
+
 var session = require("express-session");
 var cookieSession = require("cookie-session");
 var expressSession = require("express-session");
@@ -51,7 +53,21 @@ app.use(function (req, res, next) {
     next();
 });
 app.use(function (req, res, next) {
-    next();
+    if (req.session.user_id) {
+        if (!req.session.user_id) {
+            res.redirect("/login");
+        } else {
+            res.locals.USER = req.session.user;
+            res.locals.ID = req.session.user_id;
+            Amistad.find({ $or: [{ emisor: req.session.user_id }, { receptor: req.session.user_id }] }).populate("receptor").populate("emisor").
+                exec(function (err, amistades) {
+                    if (err)
+                        console.log(err);
+                    res.locals.listFriends = amistades;
+                    next();
+                });
+        }
+    }
 });
 app.get("/", function (req, res) {
     res.render("index");

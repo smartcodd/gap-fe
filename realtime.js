@@ -5,7 +5,7 @@ module.exports = function (server, sessionMiddleware) {
 	//Modelos
 	var Mensaje = require("./models/mensaje").Mensaje;
 	var User = require("./models/user").User;
-
+	var Amistad = require("./models/amistad").Amistad;
 
 
 	var myMap = new Map();
@@ -91,24 +91,67 @@ module.exports = function (server, sessionMiddleware) {
 		});
 		socket.on('nuevoMsg', function (data) {
 			data = JSON.parse(data);
-			var dataMensaje = { msg: data.msg, fechaEnvio: new Date(), emisor: socket.request.session.user };
+			var dataMensaje = { 
+					msg: data.msg, 
+					fechaEnvio: new Date(), 
+					emisor: socket.request.session.user_id,
+					amistad:data.amigo
+				};
 			var mensaje = new Mensaje(dataMensaje);
 			mensaje.save(function (err) {
 				if (!err) {
+					var chats = myMap.get(data.to);
+					console.log(chats)
 					socket.broadcast.emit("nuevoMsg", JSON.stringify(mensaje));
 				} else {
 					console.log(err)
 				}
 			});
 		});
+		socket.on("openChat", function (id_to) {
+			if (socket.request.session.user_id && id_to) {
+				if (!socket.request.session.user_id || !id_to) {
+					res.redirect("/login");
+				} else {
+					Amistad.findOne(
+						{
+							$and: [
+								{ $or: [{ emisor: socket.request.session.user_id }, { receptor: socket.request.session.user_id }] },
+								{ $or: [{ emisor: id_to }, { receptor: id_to }] }
+							]
+						}
+					).populate("receptor").populate("emisor").
+						exec(function (err, amistades) {
+							if (err)
+								console.log(err);
+							else{
+								Mensaje.find({amistad:amistades._id}).populate("emisor").exec(function (err, mensajes) {
+									if(mensajes){
+										var userTo;
+										if (amistades.emisor._id!=socket.request.session.user_id){
+											userTo=amistades.emisor;
+										}else  if (amistades.receptor._id!=socket.request.session.user_id){
+											userTo=amistades.receptor;
+										}
+										var msgs=mensajes;
+										var data={userTo:userTo,msgs:msgs,_id:amistades._id,tiene_ms:mensajes.length>0?"S":"N"}
+										io.sockets.connected[socket.id].emit("createChat", JSON.stringify(data));
+									}
+								});
 		
+							}
+						});
+				}
+			}
+		});
+
 	});
 	redisClient.on("message", function (channel, message) {
 		if (channel === "mensaje") {
 			io.emit("new imagen", message);
 		} else if (channel == "chat") {
 			io.emit("chat message", message);
-		}else if (channel == "updateChatStatus") {
+		} else if (channel == "updateChatStatus") {
 			io.emit("updateChatStatus", message);
 		}
 	});
