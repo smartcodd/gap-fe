@@ -32,21 +32,6 @@ script(id="chat_windows" type="text/x-handlebars-template" src="/docs/js/socketC
                 
                 div(class=["panel-body","msg_container_base","msg_container_"+"{{_id}}"] id="msg_container")
                     
-                
-                    each msgs
-                        p {{msg}}
-                        div(class=["row","msg_container","base_sent"])
-                            +columna(10,10,10)
-                                div(class=["messages","msg_sent"])
-                                    
-                                    p {{msg}} 
-                                    time(datetime='') Timothy • 51 min
-                            +columna(2,2,2,"padding-left: 2px;padding-right: 2px;")
-                                img(src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class="img-responsive")
-                    
-                            
-                    
-                    
                 div(class=["panel-footer"])
                     .input-group
                         input(type="hidden" name="target" class="hidden-reg" value="{{_id}}")
@@ -54,4 +39,13 @@ script(id="chat_windows" type="text/x-handlebars-template" src="/docs/js/socketC
                         input(type="text"   class=["form-control","input-sm","chat_input"] placeholder="Escribe tu mensaje aqui..s")
                         span(class="input-group-btn")
                             button(class=["btn", "btn-primary" ,"btn-sm","btn-chat"] ) Enviar
+
+script(id="chat_msg" type="text/x-handlebars-template" src="/docs/js/socketClient.js")
+    div(class=["row","msg_container","base_sent"])
+        +columna(10,10,10)
+            div(class=["messages","msg_sent"])
+                p {{msg}} 
+                time(datetime='') Timothy • 51 min
+        +columna(2,2,2,"padding-left: 2px;padding-right: 2px;")
+            img(src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class="img-responsive")
 script(src="/docs/js/socketClient.js")

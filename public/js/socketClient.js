@@ -114,7 +114,15 @@ socket.on("createChat", function (data) {
             chat.removeClass('panel-collapsed');
             chat.removeClass('glyphicon-plus').addClass('glyphicon-minus');
         }
-    
+        var containerMsg=chat.find('.msg_container_base');
+        var html="";
+        data.msgs.forEach(element => {
+            var msg_template = document.querySelector("#chat_msg").innerHTML;
+            var template = Handlebars.compile(msg_template);  
+            html+=template(element);  
+        });
+        console.log(html)
+        containerMsg.html(html);
     } else {
         if (layoutChat.hasClass('panel-collapsed')) {
             layoutChat.removeClass('panel-collapsed');
