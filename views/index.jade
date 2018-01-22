@@ -1,21 +1,18 @@
 extends ./header.jade
 block cuerpo
-    .navbar.navbar-fixed-top
-        nav.navbar-inner.header
-            .container
-                ul.nav.pull-right
-                    if USER
-                        li
-                            a(href="/logout").nav-link Ingresar
-                        span.navbar-text #{USER.username}
-                    else
-                        li
-                            a(href="/login").nav-link Iniciar Sessión
-                        li
-                            a(href="/signup").nav-link Registrarse
-                        
-
-    div(class=["container-fluid"] style="padding-top:6rem;",id="container_gap")
+    nav( class="navbar navbar-light bg-light")
+        button( class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation")
+            span( class="navbar-toggler-icon")
+        div( class="collapse navbar-collapse" id="navbarToggleExternalContent")
+            ul( class="navbar-nav mr-auto mt-2 mt-lg-0")
+                li( class="nav-item active")
+                    a( class="nav-link" href="#") Home 
+                li( class="nav-item")
+                    a( class="nav-link" href="#") Link
+                li( class="nav-item")
+                    a( class="nav-link disabled" href="#") Disabled
+                
+    div(class=["container-fluid"] ,id="container_gap")
             .row
                 +column(2,2,1,"bd-sidebar")
                     
@@ -42,5 +39,10 @@ block cuerpo
                         path( d="M150 0 L75 200 L225 200 Z" )
                
                 +column(2,2,1,"bd-sidebar")
-
-                   
+    div(class=["container-fluid"] ,id="other")
+        .jumbotron
+            h1( class="display-4") GEAP
+            h1 Bienvenido!
+            p Gestión de Agua Potable
+            kbd ctrl 
+            kbd *
