@@ -46,6 +46,25 @@ app.set("view engine", "jade");
 app.use("/app", session_middleware);
 app.use("/app", router_app);
 app.use(function (req, res, next) {
+    /*User.find({ _id: { $ne: req.session.user_id } },
+        function (err, doc) {
+            doc.forEach(element => {
+                var amistad = {
+                    emisor: req.session.user_id,
+                    receptor: element._id,
+                    fechaInicio: new Date()
+                };
+                var amis = new Amistad(amistad);
+                amis.save(function (err) {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        console.log("creado.........")
+                    }
+                });
+
+            });
+        });*/
     if (req.session.user_id) {
         res.locals.USER = req.session.user;
         res.locals.ID = req.session.user_id;
@@ -53,7 +72,6 @@ app.use(function (req, res, next) {
     next();
 });
 app.use(function (req, res, next) {
-    console.log("login.........")
     if (req.session.user_id) {
         if (!req.session.user_id) {
             res.redirect("/login");
@@ -68,7 +86,7 @@ app.use(function (req, res, next) {
                     next();
                 });
         }
-    }else{
+    } else {
         next();
     }
 });

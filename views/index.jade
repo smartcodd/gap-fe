@@ -1,5 +1,46 @@
-extends ./layout.jade
-block contenido
-    .jumbotron
-        h1 Bienvenido a GAP!
-        p Gestión de Agua Potable
+extends ./header.jade
+block cuerpo
+    .navbar.navbar-fixed-top
+        nav.navbar-inner.header
+            .container
+                ul.nav.pull-right
+                    if USER
+                        li
+                            a(href="/logout").nav-link Ingresar
+                        span.navbar-text #{USER.username}
+                    else
+                        li
+                            a(href="/login").nav-link Iniciar Sessión
+                        li
+                            a(href="/signup").nav-link Registrarse
+                        
+
+    div(class=["container-fluid"] style="padding-top:6rem;",id="container_gap")
+            .row
+                +column(2,2,1,"bd-sidebar")
+                    
+                +column(8,8,10,"bd-content")
+                    
+                    .jumbotron
+                        h1( class="display-4") GEAP
+                        h1 Bienvenido!
+                        p Gestión de Agua Potable
+                        kbd ctrl 
+                        kbd *
+                    div( class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups")
+                        div( class="btn-group mr-2" role="group" aria-label="First group")
+                            button( type="button" class="btn btn-secondary linkMenu") Emnu
+                            button( type="button" class="btn btn-secondary") 2
+                        div( class="btn-group mr-2" role="group" aria-label="Second group")
+                            button( type="button" class="btn btn-secondary") 5
+                        div( class="btn-group" role="group" aria-label="Third group" )    
+                            button( type="button" class="btn btn-secondary") 8
+                    nav( class="nav")
+                        a( class="nav-link active" href="#") Active
+                        a( class="nav-link" href="#") Link
+                    svg( height="210" width="400")
+                        path( d="M150 0 L75 200 L225 200 Z" )
+               
+                +column(2,2,1,"bd-sidebar")
+
+                   

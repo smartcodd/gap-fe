@@ -1,4 +1,30 @@
+$(document).on('click','.triangle-down',function(e){
+    e.preventDefault();
+    if ($(this).hasClass("isDown") ) {
+        $( ".navbar-fixed-top" ).animate({ "margin-top": "-62px" }, "fast" );  
+        $( "#content" ).animate({ "margin-top": "5px" }, "fast" );
+        $(this).removeClass("isDown");
+    } else {
+        $( ".navbar-fixed-top" ).animate({ "margin-top": "0px" }, "fast" );
+        $( "#content" ).animate({ "margin-top": "80px" }, "fast" );
+        $(this).addClass("isDown");
+    }
+    return false;
+});
 
+$(document).on('click','.navbar-toggler',function(e){
+    var $this = $(this);
+    if (!$this.hasClass('collapsed')) {
+        //$this.parents('.navbar').removeClass('navbar-light').addClass('navbar-inverse').addClass('bg-inverse');
+        //$this.find('.navbar-toggler-icon').html('X');
+        //$this.find('.navbar-toggler-icon').removeClass('navbar-toggler-icon').addClass('close');
+        
+    } else {
+        //$this.parents('.navbar').removeClass('bg-inverse').removeClass('navbar-inverse').addClass('navbar-light');
+        //$this.find('.close').html('');
+        //$this.find('.close').removeClass('close').addClass('navbar-toggler-icon');
+    }
+});
 $(document).on('click', '.panel-heading span.icon_minim', function (e) {
     var $this = $(this);
     if (!$this.hasClass('panel-collapsed')) {
