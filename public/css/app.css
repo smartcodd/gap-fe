@@ -1,7 +1,9 @@
+.navbar {display: flex; flex-flow: row nowrap;}
+.navbar .navbar-collapse,li {margin-left: 7px;}
+.navbar-nav { display: flex; flex-flow: row nowrap; }
 
-.navbar-inner li:hover ul {
-    display: block;
-}
+
+
 
 .sidebar-name 
 {
