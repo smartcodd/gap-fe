@@ -1,29 +1,33 @@
 extends ./header.jade
 block cuerpo
-    nav( class="navbar navbar-light bg-light")
-        button( class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation")
-            span( class="navbar-toggler-icon")
+    nav( class="navbar navbar-light bg-light fixed-top")
+        div( class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation")
+            span.bar1
+            span.bar2
+            span.bar3
         div( class="collapse navbar-collapse" id="navbarToggleExternalContent")
             ul( class="navbar-nav mr-auto mt-2 mt-lg-0")
                 li( class="nav-item active")
-                    a( class="nav-link" href="#") Home 
+                    a( class="nav-link" href="#") GEAP 
                 li( class="nav-item")
-                    a( class="nav-link" href="#") Link
+                    a( class="nav-link" href="#") Ingresar
                 li( class="nav-item")
-                    a( class="nav-link disabled" href="#") Disabled
+                    a( class="nav-link disabled" href="#") Registrarse
                 
     div(class=["container-fluid"] ,id="container_gap")
             .row
                 +column(2,2,1,"bd-sidebar")
-                    
                 +column(8,8,10,"bd-content")
-                    
                     .jumbotron
                         h1( class="display-4") GEAP
+                        svg( width="100%" height="100")
+                            circle( cx="25" cy="25" r="20" fill="rgba(128, 0, 128, 1.0)")
+                            circle( cx="50" cy="25" r="20" fill="rgba(0, 0, 255, 0.75)")
+                            circle( cx="75" cy="25" r="20" fill="rgba(0, 255, 0, 0.5)")
+                            circle( cx="100" cy="25" r="20" fill="rgba(255, 255, 0, 0.25)")
+                            circle( cx="125" cy="25" r="20" fill="rgba(255, 0, 0, 0.1)")
                         h1 Bienvenido!
                         p Gestión de Agua Potable
-                        kbd ctrl 
-                        kbd *
                     div( class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups")
                         div( class="btn-group mr-2" role="group" aria-label="First group")
                             button( type="button" class="btn btn-secondary linkMenu") Emnu
@@ -35,14 +39,6 @@ block cuerpo
                     nav( class="nav")
                         a( class="nav-link active" href="#") Active
                         a( class="nav-link" href="#") Link
-                    svg( height="210" width="400")
-                        path( d="M150 0 L75 200 L225 200 Z" )
                
                 +column(2,2,1,"bd-sidebar")
-    div(class=["container-fluid"] ,id="other")
-        .jumbotron
-            h1( class="display-4") GEAP
-            h1 Bienvenido!
-            p Gestión de Agua Potable
-            kbd ctrl 
-            kbd *
+    

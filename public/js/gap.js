@@ -1,24 +1,18 @@
 
-$(document).on('click', '.navbar-toggler-iconn', function (e) {
-    e.preventDefault();
-    console.log("event.......")
-    return false;
-});
 
-$(document).on('click', '.navbar-toggler', function (e) {
+$(document).on('click', '.navbar-toggle', function (e) {
+    //e.preventDefault();
     //e.preventDefault();
     var $this = $(this);
-    console.log("event.......")
-    if (!$this.hasClass('collapsed')) {
-        //$this.parents('.navbar').removeClass('navbar-light').addClass('navbar-inverse').addClass('bg-inverse');
-        //$this.find('.navbar-toggler-icon').html('X');
-        //$this.find('.navbar-toggler-icon').removeClass('navbar-toggler-icon').addClass('close');
-
+    if ($($this).hasClass('collapsed')) {
+        $this.parents('.navbar').removeClass('navbar-inverse').removeClass('bg-inverse').addClass('navbar-light').addClass('bg-light');
+        //$($this).removeClass('collapsed');
     } else {
-        //$this.parents('.navbar').removeClass('bg-inverse').removeClass('navbar-inverse').addClass('navbar-light');
-        //$this.find('.close').html('');
-        //$this.find('.close').removeClass('close').addClass('navbar-toggler-icon');
+        $this.parents('.navbar').removeClass('navbar-light').removeClass('bg-light').addClass('navbar-inverse').addClass('bg-inverse');
+        //$($this).addClass('collapsed');
     }
+    console.log($this.parents('.navbar'))
+
 });
 $(document).on('click', '.panel-heading span.icon_minim', function (e) {
     var $this = $(this);
