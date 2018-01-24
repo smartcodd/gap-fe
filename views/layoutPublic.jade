@@ -1,0 +1,21 @@
+extends ./header.jade
+block cuerpo
+    nav( class="navbar navbar-light bg-light fixed-top")
+        div( class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation")
+            span.bar1
+            span.bar2
+            span.bar3
+        div( class="collapse navbar-collapse" id="navbarToggleExternalContent")
+            ul( class="navbar-nav mr-auto mt-2 mt-lg-0")
+                li( class="nav-item active")
+                    a( class="nav-link" href="/") GEAP 
+                li( class="nav-item")
+                    a( class="nav-link" href="/login") Ingresar
+                li( class="nav-item")
+                    a( class="nav-link " href="/signup") Registrarse
+                
+    div(class=["container-fluid"] ,id="container_gap" )
+            .row
+                block cotenido
+                
+    
