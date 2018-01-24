@@ -136,7 +136,7 @@ app.post("/sessions", function (req, res) {
             if (doc) {
                 req.session.user = doc;
                 req.session.user_id = doc._id;
-                res.redirect("/");
+                res.redirect("/app");
             } else {
                 res.redirect("/signup");
             }

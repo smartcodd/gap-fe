@@ -1,44 +1,16 @@
-extends ./header.jade
-block cuerpo
-    nav( class="navbar navbar-light bg-light fixed-top")
-        div( class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation")
-            span.bar1
-            span.bar2
-            span.bar3
-        div( class="collapse navbar-collapse" id="navbarToggleExternalContent")
-            ul( class="navbar-nav mr-auto mt-2 mt-lg-0")
-                li( class="nav-item active")
-                    a( class="nav-link" href="#") GEAP 
-                li( class="nav-item")
-                    a( class="nav-link" href="#") Ingresar
-                li( class="nav-item")
-                    a( class="nav-link disabled" href="#") Registrarse
-                
-    div(class=["container-fluid"] ,id="container_gap")
-            .row
-                +column(2,2,1,"bd-sidebar")
-                +column(8,8,10,"bd-content")
-                    .jumbotron
-                        h1( class="display-4") GEAP
-                        svg( width="100%" height="100")
-                            circle( cx="25" cy="25" r="20" fill="rgba(128, 0, 128, 1.0)")
-                            circle( cx="50" cy="25" r="20" fill="rgba(0, 0, 255, 0.75)")
-                            circle( cx="75" cy="25" r="20" fill="rgba(0, 255, 0, 0.5)")
-                            circle( cx="100" cy="25" r="20" fill="rgba(255, 255, 0, 0.25)")
-                            circle( cx="125" cy="25" r="20" fill="rgba(255, 0, 0, 0.1)")
-                        h1 Bienvenido!
-                        p Gestión de Agua Potable
-                    div( class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups")
-                        div( class="btn-group mr-2" role="group" aria-label="First group")
-                            button( type="button" class="btn btn-secondary linkMenu") Emnu
-                            button( type="button" class="btn btn-secondary") 2
-                        div( class="btn-group mr-2" role="group" aria-label="Second group")
-                            button( type="button" class="btn btn-secondary") 5
-                        div( class="btn-group" role="group" aria-label="Third group" )    
-                            button( type="button" class="btn btn-secondary") 8
-                    nav( class="nav")
-                        a( class="nav-link active" href="#") Active
-                        a( class="nav-link" href="#") Link
-               
-                +column(2,2,1,"bd-sidebar")
+extends ./layoutPublic.jade
+block cotenido
+    +column(2,2,1,"bd-sidebar")
+    +column(8,8,10,"bd-content")
+        .jumbotron
+            h1( class="display-4") GEAP
+            svg( width="100%" height="100")
+                circle( cx="25" cy="25" r="20" fill="rgba(128, 0, 128, 1.0)")
+                circle( cx="50" cy="25" r="20" fill="rgba(0, 0, 255, 0.75)")
+                circle( cx="75" cy="25" r="20" fill="rgba(0, 255, 0, 0.5)")
+                circle( cx="100" cy="25" r="20" fill="rgba(255, 255, 0, 0.25)")
+                circle( cx="125" cy="25" r="20" fill="rgba(255, 0, 0, 0.1)")
+            h1 Bienvenido!
+            p Gestión de Agua Potable
+    +column(2,2,1,"bd-sidebar")
     

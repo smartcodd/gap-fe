@@ -1,6 +1,7 @@
-extends ./layout.jade
-block contenido
-    div(class="col-md-8 remove-float center-block  big-top-space")
+extends ./layoutPublic.jade
+block cotenido
+    +column(3,3,2,"bd-sidebar")
+    +column(6,6,8,"bd-content")
         form(action="/sessions", method="post")
             div(class="form-group")
                 label(for="email") Email
@@ -10,4 +11,4 @@ block contenido
                 input(type="password", id="password" name="password" , placeholder="Contraseña" class="form-control") 
             div
                 input(type="submit" value="Ingresar" class="btn btn-info")    
-                
+    +column(3,3,2,"bd-sidebar")            
