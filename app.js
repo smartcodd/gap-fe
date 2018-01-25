@@ -34,13 +34,13 @@ app.use(methodOverride("_method"));
 app.use(bodyParcer.urlencoded({ extended: true }));
 
 app.use(sessionMiddleware);
-/*
+
 app.use(formidable({
     encoding: 'utf-8',
     uploadDir: 'D:',
     multiples: false
 }));
-*/
+
 
 app.set("view engine", "jade");
 app.use("/app", session_middleware);

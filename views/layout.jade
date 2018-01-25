@@ -1,23 +1,31 @@
 extends ./header.jade
 block cuerpo
     body
-        +navBar("SAAP","default","top","expand")
-            +navBarNav("left")
-                if USER
-                    +nav_item( "/app" ,"nav-link")  Inicio
-                    +nav_item_dropdown( "#" )( label="Opciones")    
-                        +nav_divider
-                        +nav_item( "/app/imagenes/new" ) Subir Imagen
-                        +nav_item( "/app/imagenes" )  Mis Imagenes
-            +navBarNav("right")
-                if USER
-                    +nav_item( "/logout" ) Salir
+        nav(class="navbar navbar-light bg-light fixed-top ")
+            div( class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation")
+                span.bar1
+                span.bar2
+                span.bar3
+            div( class="collapse navbar-collapse" id="navbarToggleExternalContent" style="width:100%")
+                ul( class="navbar-nav mr-auto mt-2 mt-lg-0")
+                    li( class="nav-item active")
+                        a( class="nav-link" href="/app") Inicio 
+                    li( class="nav-item")
+                        a( class="nav-link" href="/app/imagenes/new") Subir Imagen
+                    li( class="nav-item")
+                        a( class="nav-link " href="/app/imagenes") Mis Imagenes
+                ul( class="nav navbar-nav navbar-right")        
+                    li( class="nav-item")
+                        a( class="nav-link " href="/logout") Salir
                     span.navbar-text #{USER.username}
-                else
-                    +nav_item( "/login" ) Iniciar Sessión
-                    +nav_item( "/signup" ) Registrarse
-            +nav_divider
-        div(class=["container-fluid"] style="padding-top:6rem;",id="container_gap")
+        svg( width="100%" height="100")
+            defs
+                linearGradient(id="Gradient-1"  x1="50%"  y1="100%" x2="50%" y2="-5%" spreadMethod="pad")
+                    stop(offset="0%" stop-color="#FFFFFF" stop-opacity="0") 
+                    stop(offset="100%" stop-color="#000000" stop-opacity="1") 
+            rect( x="0" y="0" width="100%" height="100" fill="url(#Gradient-1)" stroke="#333333" stroke-width="0px")    
+        
+        div(class=["container-fluid"] ,id="container_gap")
             .row
                 +columnaAll(12,2,2,2,2,2,1,"bd-sidebar")
                     .panel.panel-default
@@ -102,17 +110,17 @@ block cuerpo
                         include chat
                 +columnaAll(12,10,10,10,10,4,5,"bd-content")
                     block contenido
-script(id="user_connect" type="text/x-handlebars-template" src="/docs/js/socketClient.js")
-    .sidebar-name
-        a(href="javascript:register_popup('{{_id}}');")
-            if conected=="S"
-                button( type="button" class=["btn", "btn-success", "btn-circle","btn_cone"+"{{_id}}"]  )
-            else
-                button( type="button" class=["btn", "btn-default", "btn-circle","btn_cone"+"{{_id}}"] )
-            span( class=["glyphicon", "glyphicon-user"])
-            span {{username}}
-            span(class=["badge"] style="margin-left: 5px;font-size:8px;") 2     
-            div(class=["floatRight","timeConeccted"] style="margin-left: 5px;font-size:10px;") {{tiempo_current}}
+        script(id="user_connect" type="text/x-handlebars-template" src="/docs/js/socketClient.js")
+            .sidebar-name
+                a(href="javascript:register_popup('{{_id}}');")
+                    if conected=="S"
+                        button( type="button" class=["btn", "btn-success", "btn-circle","btn_cone"+"{{_id}}"]  )
+                    else
+                        button( type="button" class=["btn", "btn-default", "btn-circle","btn_cone"+"{{_id}}"] )
+                    span( class=["glyphicon", "glyphicon-user"])
+                    span {{username}}
+                    span(class=["badge"] style="margin-left: 5px;font-size:8px;") 2     
+                    div(class=["floatRight","timeConeccted"] style="margin-left: 5px;font-size:10px;") {{tiempo_current}}
             
 
                 

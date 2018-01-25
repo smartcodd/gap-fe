@@ -1,7 +1,15 @@
-.navbar {display: flex; flex-flow: row nowrap;}
+.navbar , .navbar-nav,.show .navbar-nav  {display: flex; flex-flow: row nowrap;}
 .navbar .navbar-collapse,li {margin-left: 7px;}
-.navbar-nav { display: flex; flex-flow: row nowrap; }
+.navbar-collapse { display: none; flex-flow: row nowrap; }
+.show{display: flex !important; flex-flow: row nowrap !important;  }
 
+.bg-inverse{
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+88,ffffff+100,000000+100&1+12,1+52,0+100 */
+    background: -moz-linear-gradient(top, rgba(0,0,0,1) 12%, rgba(0,0,0,1) 52%, rgba(0,0,0,0.25) 88%, rgba(0,0,0,0) 100%) !important; /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(0,0,0,1) 12%,rgba(0,0,0,1) 52%,rgba(0,0,0,0.25) 88%,rgba(0,0,0,0) 100%) !important; /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(0,0,0,1) 12%,rgba(0,0,0,1) 52%,rgba(0,0,0,0.25) 88%,rgba(0,0,0,0) 100%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#00000000',GradientType=0 ) !important; /* IE6-9 */
+}
 .navbar-toggle *,.navbar-collapse *,.navbar {
 	-ms-transition: all 1s ease;
   -webkit-transition: all 1s ease;
@@ -9,13 +17,12 @@
 	-o-transition: all 1s ease;
 	transition: all 1s ease;
 }
-
 .navbar-toggle {
 	color: #fff;
 	cursor: pointer;
 	border-radius: 0px;
     border: 1px solid transparent;
-    border-color: rgba(0,0,0,.1);
+    border-color: rgba(255, 255, 255, 0.897);
     padding: .6rem .6rem .3rem .6rem;
     border-radius: .25rem
 }
@@ -26,7 +33,7 @@
 	width: 30px;
 	height: 2px;
     margin-bottom: 6px;
-	background-color: #999;
+	background-color: rgb(233, 233, 233);
     display: block;
 }
 .navbar-toggle span.bar1 {
