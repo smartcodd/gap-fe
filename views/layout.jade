@@ -25,8 +25,6 @@ block cuerpo
             .row
                 +columnaAll(12,2,2,2,2,2,1,"bd-sidebar")
                     .panel.panel-default
-                        .panel-heading
-                            input( class="form-control" id="myInput" type="text" placeholder="Search..")
                         .panel-body
                              if listFriends
                                 for friend in listFriends
@@ -82,7 +80,7 @@ block cuerpo
                                                 else
                                                     button( type="button" class=["btn", "btn-default", "btn-circle","btn_cone"+"#{friend.receptor._id}"] )
                                                 span( class=["glyphicon", "glyphicon-user"])
-                                                span #{friend.receptor.username}
+                                                span #{friend.receptor.nickname} 
                                                 span(class=["badge"] style="margin-left: 5px;font-size:8px;") 2
                                                 if tiempoConectado!=""
                                                     div(class=["floatRight","timeConeccted"] style="margin-left: 5px;font-size:10px;") #{tiempoConectado}
