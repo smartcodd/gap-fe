@@ -5,7 +5,9 @@ mongoose.connect("mongodb://localhost:27017/gap");
 var match_validacion=["^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$","Emial Incorrecto"]
 var user_schema= new Schema({
     name:String,
-    username:{type: String,minlength:5,required:true},
+    nickname:{type: String},
+    nombres:{type: String,required:true},
+    apellidos:{type: String,required:true},
     password:{
         type: String,
         validate:{

@@ -8,16 +8,12 @@ block cuerpo
                 span.bar3
             div( class="collapse navbar-collapse" id="navbarToggleExternalContent" style="width:100%")
                 ul( class="navbar-nav mr-auto mt-2 mt-lg-0")
-                    li( class="nav-item active")
-                        a( class="nav-link" href="/app") Inicio 
                     li( class="nav-item")
                         a( class="nav-link" href="/app/imagenes/new") Subir Imagen
                     li( class="nav-item")
                         a( class="nav-link " href="/app/imagenes") Mis Imagenes
-                ul( class="nav navbar-nav navbar-right")        
-                    li( class="nav-item")
-                        a( class="nav-link " href="/logout") Salir
-                    span.navbar-text #{USER.username}
+                
+                    
         svg( width="100%" height="100")
             defs
                 linearGradient(id="Gradient-1"  x1="50%"  y1="100%" x2="50%" y2="-5%" spreadMethod="pad")
@@ -110,6 +106,15 @@ block cuerpo
                         include chat
                 +columnaAll(12,10,10,10,10,4,5,"bd-content")
                     block contenido
+        nav( class="navbar fixed-bottom navbar-light bg-light")
+            a( class="navbar-brand" href="/app") Inicio
+            ul( class="nav navbar-nav navbar-right")        
+                span.navbar-text #{USER.nombres}  #{USER.apellidos}
+                li( class="nav-item")
+                    a( class="nav-link " href="/logout") Salir
+                
+            
+            
         script(id="user_connect" type="text/x-handlebars-template" src="/docs/js/socketClient.js")
             .sidebar-name
                 a(href="javascript:register_popup('{{_id}}');")

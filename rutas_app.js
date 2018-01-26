@@ -121,24 +121,28 @@ router.route("/imagenes").get(
             }
         });
     }).post(function (req, res) {
+        let fileArchivo = req.files.archivo;
         var extension = req.files.archivo.name.split(".").pop();
-        var data = { titulo: req.fields.title, creator: req.session.user_id, extension: extension };
+        var data = { titulo: req.body.title, creator: req.session.user_id, extension: extension };
         var imagen = new Imagen(data);
-        console.log(data)
         imagen.save(function (err) {
             if (!err) {
                 var nombre = imagen._id + "." + req.files.archivo.name.split(".").pop();
-                fs.rename(req.files.archivo.path, "public/imagenes/" + nombre)
-                User.findById(imagen.creator, function (err, user) {
-                    var imgJson = {
-                        id: imagen._id,
-                        titulo: imagen.titulo,
-                        creator: user,
-                        extension: imagen.extension
-                    }
-                    client.publish("mensaje", JSON.stringify(imgJson));
+                fileArchivo.mv("public/imagenes/" + nombre, function (err) {
+                    if (err)
+                        return res.status(500).send(err);
+                    else
+                        User.findById(imagen.creator, function (err, user) {
+                            var imgJson = {
+                                id: imagen._id,
+                                titulo: imagen.titulo,
+                                creator: user,
+                                extension: imagen.extension
+                            }
+                            client.publish("mensaje", JSON.stringify(imgJson));
+                            res.redirect("/app/imagenes/" + imagen._id)
+                        });
                 });
-                res.redirect("/app/imagenes/" + imagen._id)
             } else {
                 res.render(err);
             }

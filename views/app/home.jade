@@ -17,13 +17,13 @@ block contenido
                             each imagen, i in imagenes
                                 if i==0
                                     div( class="carousel-item active" )
-                                        img(  src="/docs/imagenes/#{imagen._id}.#{imagen.extension}" alt="First slide"  class="img-responsive mr-3 img-fluid")
+                                        img(  src="/docs/imagenes/#{imagen._id}.#{imagen.extension}" alt="First slide"  class="img-responsive")
                                         div( class="carousel-caption d-none d-md-block")
                                             h2 #{imagen.titulo}
                                             p por #{imagen.creator.email}
                                 else
                                     div( class="carousel-item" )
-                                        img(  src="/docs/imagenes/#{imagen._id}.#{imagen.extension}" alt="First slide"   class="img-responsive mr-3 img-fluid")
+                                        img(  src="/docs/imagenes/#{imagen._id}.#{imagen.extension}" alt="First slide"   class="img-responsive")
                                         div( class="carousel-caption d-none d-md-block")
                                             h2 #{imagen.titulo}
                                             p por #{imagen.creator.email}

@@ -1,6 +1,10 @@
+//FILES
+const fileUpload = require('express-fileupload');
 
 var express = require("express");
 var app = express();
+
+app.use(fileUpload());
 
 //SOCKET IO
 var redis = require("redis");
@@ -10,13 +14,13 @@ var User = require("./models/user").User;
 var Mensaje = require("./models/mensaje").Mensaje;
 var Amistad = require("./models/amistad").Amistad;
 
+
 var session = require("express-session");
 var cookieSession = require("cookie-session");
 var expressSession = require("express-session");
 var methodOverride = require("method-override");
 var session_middleware = require("./middlewares/session.js");
 var bodyParcer = require("body-parser")
-var formidable = require("express-formidable");
 var RedisStore = require("connect-redis")(expressSession);
 var realtime = require("./realtime.js");
 var http = require("http");
@@ -34,17 +38,16 @@ app.use(methodOverride("_method"));
 app.use(bodyParcer.urlencoded({ extended: true }));
 
 app.use(sessionMiddleware);
-
+app.set("view engine", "jade");
+app.use("/app", session_middleware);
+app.use("/app", router_app);
+/*
 app.use(formidable({
     encoding: 'utf-8',
     uploadDir: 'D:',
     multiples: false
 }));
-
-
-app.set("view engine", "jade");
-app.use("/app", session_middleware);
-app.use("/app", router_app);
+*/
 app.use(function (req, res, next) {
     /*User.find({ _id: { $ne: req.session.user_id } },
         function (err, doc) {
@@ -105,12 +108,16 @@ app.get("/logout", function (req, res) {
     res.redirect("/");
 });
 app.post("/register", function (req, res) {
+    
     var user = new User({
         email: req.body.email,
         password: req.body.password,
-        username: req.body.username,
+        nickname: req.body.nickname,
+        nombres: req.body.nombres,
+        apellidos: req.body.apellidos,
         password_conf: req.body.password_confirmation,
-        conected: "S"
+        conected: "S",
+        date_of_birth: req.body.fechaNacimiento
     });
     User.findOne({ email: req.body.email, password: req.body.password },
         function (err, doc) {

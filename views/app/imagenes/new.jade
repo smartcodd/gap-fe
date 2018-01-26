@@ -7,10 +7,13 @@ block contenido
                 div(class="form-group")
                     label(for="title") Titulo
                     input(type="text", id="title", name="title" , placeholder="Titulo de la imagen" class="form-control")
-                    
-                div
-                    label(for="archivo") Archivo
-                    input( type="file" class="form-control-file" id="archivo" name="archivo")
+                
+                div( class="input-group mb-3")
+                    div( class="input-group-prepend")
+                        span( class="input-group-text") Archivo
+                    div( class="custom-file")
+                        input( type="file" class="custom-file-input" id="archivo" name="archivo")
+                        label(for="archivo" class="custom-file-label") Archivo
                 div
                     +button("primary","","submit","Guardar")
                     

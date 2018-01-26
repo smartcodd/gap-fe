@@ -2,7 +2,9 @@
 .navbar .navbar-collapse,li {margin-left: 7px;}
 .navbar-collapse { display: none; flex-flow: row nowrap; }
 .show{display: flex !important; flex-flow: row nowrap !important;  }
-
+.bg-light{
+    background-color: transparent !important;
+}
 .bg-inverse{
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+88,ffffff+100,000000+100&1+12,1+52,0+100 */
     background: -moz-linear-gradient(top, rgba(0,0,0,1) 12%, rgba(0,0,0,1) 52%, rgba(0,0,0,0.25) 88%, rgba(0,0,0,0) 100%) !important; /* FF3.6-15 */
@@ -211,6 +213,11 @@ img {
     left:0px;
     bottom:0;
 }
+.carousel-inner > .carousel-item  {
+    width:100%;
+    height:800px;
+  }
+
 
   
   
