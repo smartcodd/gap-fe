@@ -267,67 +267,25 @@ img {
 	bottom: 0;
 }
 
-.carousel-inner>.carousel-item {
-	width: 100%;
-	height: 800px;
-}
-/*Galeria de Iamgenes*/
-.gallery {
-	width: 100%;
-	margin: 0 auto;
-	padding: 5px;
-	background: transparent;
-}
 
-.gallery>div {
-	position: relative;
-	float: left;
-	padding: 10px;
-}
 
-.gallery>div>img {
-	display: block;
-	max-width: 200px;
-	transition: .1s transform;
-	transform: translateZ(0) rotate(7deg);; /* hack */
-}
-
-.gallery>div>.text {
-	font-family: 'Open Sans';
-	padding-top: 5px;
-	display: none;
+.demos {
 	text-align: center;
+	margin-top: 20px;
 	width: 100%;
-	transform: translate(0px);
-	-webkit-transition: all 500ms ease-in-out;
-	-moz-transition: all 500ms ease-in-out;
-	-ms-transition: all 500ms ease-in-out;
-	-o-transition: all 500ms ease-in-out;
-    transition: transfom  display 10.5s;
+	margin: auto;
+}
+  
+.demo-image {
+	cursor: url("http://tholman.com/intense-images/img/plus_cursor.png") 25 25, auto;
+	display: inline-block;
+	width: 220px;
+	height: 220px;
+	background-size: cover;
+	background-position: 50% 50%;
+	margin-left: 8px;
+	margin-right: 8px;
+	margin-bottom: 16px;
 }
 
-.gallery>div:hover  .text {
-	transform: translate(0px, -20px);
-    display: block;
-}
-
-
-.gallery>div:hover {
-	z-index: 1;
-}
-
-.gallery>div:hover>img {
-	transform: scale(2.6, 2.6);
-	transition: .3s transform;
-	border-radius: 10px;
-}
-
-.cf:before, .cf:after {
-	display: table;
-	content: "";
-	line-height: 0;
-}
-
-.cf:after {
-	clear: both;
-}
+  

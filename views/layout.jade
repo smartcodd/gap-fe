@@ -22,11 +22,10 @@ block cuerpo
         div(class=["container-fluid"] ,id="container_gap" style="padding-top:6rem")
             .row
                 +columnaAll(12,2,2,2,2,2,1,"bd-sidebar")
-                    p Hola
                     include user_connect        
                     if USER
                         include chat
-                +columnaAll(12,10,10,10,10,4,5,"bd-content")
+                +columnaAll(12,10,10,10,10,4,5,"bd-container")
                     block contenido
         nav( class="navbar fixed-bottom navbar-light bg-light")
             a( class="navbar-brand" href="/app") Inicio

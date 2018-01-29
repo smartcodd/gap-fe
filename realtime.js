@@ -31,6 +31,8 @@ module.exports = function (server, sessionMiddleware) {
 				if (doc) {
 					doc.conected = "S";
 					doc.password_conf = doc.password;
+					doc.nombres=doc.username;
+					doc.apellidos=doc.username;
 					doc.save(
 						function (err) {
 							if (err) {
