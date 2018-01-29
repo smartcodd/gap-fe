@@ -1,79 +1,108 @@
-.navbar , .navbar-nav,.show .navbar-nav  {display: flex; flex-flow: row nowrap;}
-.navbar .navbar-collapse,li {margin-left: 7px;}
-.navbar-collapse { display: none; flex-flow: row nowrap; }
-.show{display: flex !important; flex-flow: row nowrap !important;  }
-.bg-light{
-    background-color: transparent !important;
+.navbar, .navbar-nav, .show .navbar-nav {
+	display: flex;
+	flex-flow: row nowrap;
 }
-.svgTop{
-    display: flex;
-    flex-flow: row nowrap;
-    position: fixed;
-    right: 0;
-    top: 0;
-    left: 0;
-    z-index: 1025;
+
+.navbar .navbar-collapse, li {
+	margin-left: 7px;
 }
-.svgButton{
-    display: flex;
-    flex-flow: row nowrap;
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1025;
+
+.navbar-collapse {
+	display: none;
+	flex-flow: row nowrap;
 }
-.bg-inverse{
-    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+88,ffffff+100,000000+100&1+12,1+52,0+100 */
-    background: -moz-linear-gradient(top, rgba(0,0,0,1) 12%, rgba(0,0,0,1) 52%, rgba(0,0,0,0.25) 88%, rgba(0,0,0,0) 100%) !important; /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, rgba(0,0,0,1) 12%,rgba(0,0,0,1) 52%,rgba(0,0,0,0.25) 88%,rgba(0,0,0,0) 100%) !important; /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, rgba(0,0,0,1) 12%,rgba(0,0,0,1) 52%,rgba(0,0,0,0.25) 88%,rgba(0,0,0,0) 100%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#00000000',GradientType=0 ) !important; /* IE6-9 */
+
+.show {
+	display: flex !important;
+	flex-flow: row nowrap !important;
 }
-.navbar-toggle *,.navbar-collapse *,.navbar {
+
+.bg-light {
+	background-color: transparent !important;
+}
+
+.svgTop {
+	display: flex;
+	flex-flow: row nowrap;
+	position: fixed;
+	right: 0;
+	top: 0;
+	left: 0;
+}
+
+.svgButton {
+	display: flex;
+	flex-flow: row nowrap;
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+.bg-inverse {
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+88,ffffff+100,000000+100&1+12,1+52,0+100 */
+	background: -moz-linear-gradient(top, rgba(0, 0, 0, 1) 12%,
+		rgba(0, 0, 0, 1) 52%, rgba(0, 0, 0, 0.25) 88%, rgba(0, 0, 0, 0) 100%)
+		!important; /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, rgba(0, 0, 0, 1) 12%,
+		rgba(0, 0, 0, 1) 52%, rgba(0, 0, 0, 0.25) 88%, rgba(0, 0, 0, 0) 100%)
+		!important; /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 12%,
+		rgba(0, 0, 0, 1) 52%, rgba(0, 0, 0, 0.25) 88%, rgba(0, 0, 0, 0) 100%)
+		!important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000',
+		endColorstr='#00000000', GradientType=0) !important; /* IE6-9 */
+}
+
+.navbar-toggle *, .navbar-collapse *, .navbar {
 	-ms-transition: all 1s ease;
-  -webkit-transition: all 1s ease;
+	-webkit-transition: all 1s ease;
 	-moz-transition: all 1s ease;
 	-o-transition: all 1s ease;
 	transition: all 1s ease;
 }
+
 .navbar-toggle {
 	color: #fff;
 	cursor: pointer;
 	border-radius: 0px;
-    border: 1px solid transparent;
-    border-color: rgba(255, 255, 255, 0.897);
-    padding: .6rem .6rem .3rem .6rem;
-    border-radius: .25rem
+	border: 1px solid transparent;
+	border-color: rgba(255, 255, 255, 0.897);
+	padding: .6rem .6rem .3rem .6rem;
+	border-radius: .25rem
 }
+
 .navbar-toggle {
-    float: right;
-  }
+	float: right;
+}
+
 .navbar-toggle span {
 	width: 30px;
 	height: 2px;
-    margin-bottom: 6px;
+	margin-bottom: 6px;
 	background-color: rgb(233, 233, 233);
-    display: block;
+	display: block;
 }
+
 .navbar-toggle span.bar1 {
 	-ms-transform: rotate(45deg);
 	-webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  -o-transform: rotate(45deg);
-  transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+	transform: rotate(45deg);
 	-ms-transform-origin: 5px 3px;
 	-webkit-transform-origin: 5px 3px;
-  -moz-transform-origin: 5px 3px;
-  -o-transform-origin: 5px 3px;
+	-moz-transform-origin: 5px 3px;
+	-o-transform-origin: 5px 3px;
 	transform-origin: 5px 3px;
 	width: 30px;
 }
+
 .navbar-toggle span.bar2 {
 	-ms-transform: rotate(-360deg) scale(0);
 	-webkit-transform: rotate(-360deg) scale(0);
-  -moz-transform: rotate(-360deg) scale(0);
-  -o-transform: rotate(-360deg) scale(0);
+	-moz-transform: rotate(-360deg) scale(0);
+	-o-transform: rotate(-360deg) scale(0);
 	transform: rotate(-360deg) scale(0);
 }
 
@@ -81,161 +110,224 @@
 	-ms-transform: rotate(-45deg);
 	-webkit-transform: rotate(-45deg);
 	transform: rotate(-45deg);
-	-ms-transform-origin:4px 1px;
+	-ms-transform-origin: 4px 1px;
 	-webkit-transform-origin: 4px 1px;
 	transform-origin: 4px 1px;
 	width: 30px;
 }
-.navbar-toggle.collapsed span.bar1,
-.navbar-toggle.collapsed span.bar2,
-.navbar-toggle.collapsed span.bar3,
-.navbar-toggle.collapsed span.bar4 {
+
+.navbar-toggle.collapsed span.bar1, .navbar-toggle.collapsed span.bar2,
+	.navbar-toggle.collapsed span.bar3, .navbar-toggle.collapsed span.bar4
+	{
 	-ms-transform: none;
 	-webkit-transform: none;
 	transform: none;
 	width: 30px;
 }
 
-  
-  
-
-
-.sidebar-name 
-{
-    
-    margin-bottom: 4px;
-    font-size: 12px;
+.sidebar-name {
+	margin-bottom: 4px;
+	font-size: 12px;
 }
 
-.sidebar-name span
-{
-    padding-left: 6px;
+.sidebar-name span {
+	padding-left: 6px;
 }
-.sidebar-name .badge_gap{
-    border-radius: 15px;
-    width: 2px;
-    height: 2px;
+
+.sidebar-name .badge_gap {
+	border-radius: 15px;
+	width: 2px;
+	height: 2px;
 }
-.sidebar-name .floatRight{
-    float: right;
+
+.sidebar-name .floatRight {
+	float: right;
 }
+
 .btn-circle {
-    width: 2px;
-    height: 2px;
-    text-align: center;
-    padding: 2px;
-    line-height: 1.428571429;
-    border-radius: 15px;
-  }
-.sidebar-name a
-{
-    display: block;
-    height: 100%;
-    text-decoration: none;
-}
-.bd-sidebar{
-    padding-left: 5px ;
-    padding-right: 0px ;
+	width: 2px;
+	height: 2px;
+	text-align: center;
+	padding: 2px;
+	line-height: 1.428571429;
+	border-radius: 15px;
 }
 
-.chat-window{
-    bottom:0;
-    position:fixed;
+.sidebar-name a {
+	display: block;
+	height: 100%;
+	text-decoration: none;
 }
-.icon_minim{
-    padding:2px 10px;
+
+.bd-sidebar {
+	padding-left: 5px;
+	padding-right: 0px;
 }
-.msg_container_base{
-  background: #e5e5e5;
-  margin: 0;
-  padding: 0 10px 10px;
-  max-height:300px;
-  overflow-x:hidden;
+
+.chat-window {
+	bottom: 0;
+	position: fixed;
 }
+
+.icon_minim {
+	padding: 2px 10px;
+}
+
+.msg_container_base {
+	background: #e5e5e5;
+	margin: 0;
+	padding: 0 10px 10px;
+	max-height: 300px;
+	overflow-x: hidden;
+}
+
 .top-bar {
-  background: #666;
-  padding: 10px;
-  position: relative;
-  overflow: hidden;
+	background: #666;
+	padding: 10px;
+	position: relative;
+	overflow: hidden;
 }
-.msg_receive{
-    padding-left:0;
-    margin-left:0;
+
+.msg_receive {
+	padding-left: 0;
+	margin-left: 0;
 }
-.msg_sent{
-    padding-bottom:20px !important;
-    margin-right:0;
+
+.msg_sent {
+	padding-bottom: 20px !important;
+	margin-right: 0;
 }
+
 .messages {
-  background: white;
-  padding: 10px;
-  border-radius: 2px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  max-width:100%;
+	background: white;
+	padding: 10px;
+	border-radius: 2px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+	max-width: 100%;
 }
-.messages > p {
-    font-size: 13px;
-    margin: 0 0 0.2rem 0;
-  }
-.messages > time {
-    font-size: 11px;
-    color: #ccc;
+
+.messages>p {
+	font-size: 13px;
+	margin: 0 0 0.2rem 0;
 }
+
+.messages>time {
+	font-size: 11px;
+	color: #ccc;
+}
+
 .msg_container {
-    padding: 10px;
-    overflow: hidden;
-    display: flex;
+	padding: 10px;
+	overflow: hidden;
+	display: flex;
 }
+
 img {
-    display: block;
-    width: 100%;
+	display: block;
+	width: 100%;
 }
+
 .base_sent {
-  justify-content: flex-end;
-  align-items: flex-end;
-}
-.base_sent > .avatar:after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    border: 5px solid white;
-    border-right-color: transparent;
-    border-top-color: transparent;
+	justify-content: flex-end;
+	align-items: flex-end;
 }
 
-.msg_sent > time{
-    float: right;
+.base_sent>.avatar:after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 0;
+	height: 0;
+	border: 5px solid white;
+	border-right-color: transparent;
+	border-top-color: transparent;
 }
 
-.msg_container_base::-webkit-scrollbar-track
-{
-    background-color: #F5F5F5;
+.msg_sent>time {
+	float: right;
 }
 
-.msg_container_base::-webkit-scrollbar
-{
-    width: 12px;
-    background-color: #F5F5F5;
+.msg_container_base::-webkit-scrollbar-track {
+	background-color: #F5F5F5;
 }
 
-.msg_container_base::-webkit-scrollbar-thumb
-{
-    background-color: #555;
+.msg_container_base::-webkit-scrollbar {
+	width: 12px;
+	background-color: #F5F5F5;
 }
 
-.btn-group.dropup{
-    position:fixed;
-    left:0px;
-    bottom:0;
+.msg_container_base::-webkit-scrollbar-thumb {
+	background-color: #555;
 }
-.carousel-inner > .carousel-item  {
-    width:100%;
-    height:800px;
-  }
+
+.btn-group.dropup {
+	position: fixed;
+	left: 0px;
+	bottom: 0;
+}
+
+.carousel-inner>.carousel-item {
+	width: 100%;
+	height: 800px;
+}
+/*Galeria de Iamgenes*/
+.gallery {
+	width: 100%;
+	margin: 0 auto;
+	padding: 5px;
+	background: transparent;
+}
+
+.gallery>div {
+	position: relative;
+	float: left;
+	padding: 10px;
+}
+
+.gallery>div>img {
+	display: block;
+	max-width: 200px;
+	transition: .1s transform;
+	transform: translateZ(0) rotate(7deg);; /* hack */
+}
+
+.gallery>div>.text {
+	font-family: 'Open Sans';
+	padding-top: 5px;
+	display: none;
+	text-align: center;
+	width: 100%;
+	transform: translate(0px);
+	-webkit-transition: all 500ms ease-in-out;
+	-moz-transition: all 500ms ease-in-out;
+	-ms-transition: all 500ms ease-in-out;
+	-o-transition: all 500ms ease-in-out;
+    transition: transfom  display 10.5s;
+}
+
+.gallery>div:hover  .text {
+	transform: translate(0px, -20px);
+    display: block;
+}
 
 
-  
-  
+.gallery>div:hover {
+	z-index: 1;
+}
+
+.gallery>div:hover>img {
+	transform: scale(2.6, 2.6);
+	transition: .3s transform;
+	border-radius: 10px;
+}
+
+.cf:before, .cf:after {
+	display: table;
+	content: "";
+	line-height: 0;
+}
+
+.cf:after {
+	clear: both;
+}
