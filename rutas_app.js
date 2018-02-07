@@ -70,7 +70,8 @@ router.use(function (req, res, next) {
     });*/
 });
 router.get("/", function (req, res) {
-    Imagen.find({}).populate("creator").exec(function (err, imagenes) {
+    Imagen.find({tipo:"U"}).populate("creator").exec(function (err, imagenes) {
+        console.log(imagenes)
         if (err) {
             console.log(err);
         }
@@ -81,6 +82,12 @@ router.get("/", function (req, res) {
 router.get("/imagenes/new", function (req, res) {
     res.render("app/imagenes/new")
 });
+
+router.get("/imagenes/new_carousel", function (req, res) {
+    res.render("app/imagenes/new_carousel")
+});
+
+
 router.all("/imagenes/:id*", image_find_middleware);
 router.get("/imagenes/:id/edit", function (req, res) {
     res.render("app/imagenes/edit");
@@ -111,7 +118,7 @@ router.route("/imagenes/:id").get(
     });
 router.route("/imagenes").get(
     function (req, res) {
-        Imagen.find({ creator: res.locals.USER._id }, function (err, imagenes) {
+        Imagen.find({ creator: res.locals.USER._id ,tipo:"U"}, function (err, imagenes) {
             if (err) {
                 res.redirect("/app");
                 return;
@@ -123,7 +130,7 @@ router.route("/imagenes").get(
     }).post(function (req, res) {
         let fileArchivo = req.files.archivo;
         var extension = req.files.archivo.name.split(".").pop();
-        var data = { titulo: req.body.title, creator: req.session.user_id, extension: extension };
+        var data = { titulo: req.body.title, creator: req.session.user_id, extension: extension ,tipo:"U"};
         var imagen = new Imagen(data);
         imagen.save(function (err) {
             if (!err) {
@@ -137,7 +144,8 @@ router.route("/imagenes").get(
                                 id: imagen._id,
                                 titulo: imagen.titulo,
                                 creator: user,
-                                extension: imagen.extension
+                                extension: imagen.extension,
+                                tipo:imagen.tipo
                             }
                             client.publish("mensaje", JSON.stringify(imgJson));
                             res.redirect("/app/imagenes/" + imagen._id)
@@ -148,4 +156,43 @@ router.route("/imagenes").get(
             }
         });
     });
+router.route("/carousel").get(
+        function (req, res) {
+            Imagen.find({ creator: res.locals.USER._id }, function (err, imagenes) {
+                if (err) {
+                    res.redirect("/app");
+                    return;
+                } else {
+    
+                    res.render("app/imagenes/index", { imagenes: imagenes });
+                }
+            });
+        }).post(function (req, res) {
+            let fileArchivo = req.files.archivo;
+            var extension = req.files.archivo.name.split(".").pop();
+            var data = { titulo: req.body.title, creator: req.session.user_id, extension: extension ,tipo:"C"};
+            var imagen = new Imagen(data);
+            imagen.save(function (err) {
+                if (!err) {
+                    var nombre = imagen._id + "." + req.files.archivo.name.split(".").pop();
+                    fileArchivo.mv("public/imagenes/" + nombre, function (err) {
+                        if (err)
+                            return res.status(500).send(err);
+                        else
+                            User.findById(imagen.creator, function (err, user) {
+                                var imgJson = {
+                                    id: imagen._id,
+                                    titulo: imagen.titulo,
+                                    creator: user,
+                                    extension: imagen.extension,
+                                    tipo:imagen.tipo
+                                }
+                                res.redirect("/app/carousel/" + imagen._id)
+                            });
+                    });
+                } else {
+                    res.render(err);
+                }
+            });
+        });
 module.exports = router;

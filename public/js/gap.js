@@ -376,20 +376,7 @@ window.onload = function () {
     Intense(elements);
 }
 
-$(document).on('click', '.navbar-toggle', function (e) {
-  //e.preventDefault();
-  //e.preventDefault();
-  var $this = $(this);
-  if ($($this).hasClass('collapsed')) {
-    $this.parents('.navbar').removeClass('navbar-inverse').removeClass('bg-inverse').addClass('navbar-light').addClass('bg-light');
-    //$($this).removeClass('collapsed');
-  } else {
-    $this.parents('.navbar').removeClass('navbar-light').removeClass('bg-light').addClass('navbar-inverse').addClass('bg-inverse');
-    //$($this).addClass('collapsed');
-  }
-  console.log($this.parents('.navbar'))
 
-});
 $(document).on('click', '.panel-heading span.icon_minim', function (e) {
   var $this = $(this);
   if (!$this.hasClass('panel-collapsed')) {

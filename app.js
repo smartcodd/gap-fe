@@ -13,7 +13,7 @@ var client = redis.createClient();
 var User = require("./models/user").User;
 var Mensaje = require("./models/mensaje").Mensaje;
 var Amistad = require("./models/amistad").Amistad;
-
+var Imagen = require("./models/imagenes").Imagen;
 
 var session = require("express-session");
 var cookieSession = require("cookie-session");
@@ -36,18 +36,10 @@ app.use("/docs", express.static("public"));
 app.use(bodyParcer.json());
 app.use(methodOverride("_method"));
 app.use(bodyParcer.urlencoded({ extended: true }));
-
 app.use(sessionMiddleware);
 app.set("view engine", "jade");
 app.use("/app", session_middleware);
 app.use("/app", router_app);
-/*
-app.use(formidable({
-    encoding: 'utf-8',
-    uploadDir: 'D:',
-    multiples: false
-}));
-*/
 app.use(function (req, res, next) {
     /*User.find({ _id: { $ne: req.session.user_id } },
         function (err, doc) {
@@ -72,27 +64,16 @@ app.use(function (req, res, next) {
         res.locals.USER = req.session.user;
         res.locals.ID = req.session.user_id;
     }
-    next();
-});
-app.use(function (req, res, next) {
-    if (req.session.user_id) {
-        if (!req.session.user_id) {
-            res.redirect("/login");
-        } else {
-            res.locals.USER = req.session.user;
-            res.locals.ID = req.session.user_id;
-            Amistad.find({ $or: [{ emisor: req.session.user_id }, { receptor: req.session.user_id }] }).populate("receptor").populate("emisor").
-                exec(function (err, amistades) {
-                    if (err)
-                        console.log(err);
-                    res.locals.listFriends = amistades;
-                    next();
-                });
+    Imagen.find({ tipo: "C" }).populate("creator").exec(function (err, imagenes) {
+        console.log(imagenes)
+        res.locals.listCarousel = imagenes;
+        if (err) {
+            console.log(err);
         }
-    } else {
         next();
-    }
+    });
 });
+
 app.get("/", function (req, res) {
     res.render("index");
 });
@@ -108,7 +89,7 @@ app.get("/logout", function (req, res) {
     res.redirect("/");
 });
 app.post("/register", function (req, res) {
-    
+
     var user = new User({
         email: req.body.email,
         password: req.body.password,

@@ -6,7 +6,8 @@ try {
     var img_schema = new Schema({
         titulo: { type: String, require: true },
         creator: { type: Schema.Types.ObjectId, ref: "User" },
-        extension: { type: String, require: true }
+        extension: { type: String, require: true },
+        tipo: { type: String }
     });
     var Imagen = mongoose.model("Imagen", img_schema);
     module.exports.Imagen = Imagen;

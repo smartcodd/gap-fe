@@ -1,17 +1,28 @@
 extends ./header.jade
 block cuerpo
     body
-        nav(class="navbar navbar-light bg-light fixed-top ")
+        nav(class="navbar navbar-dark bg-dark fixed-top nav-menu")
             div( class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation")
                 span.bar1
                 span.bar2
                 span.bar3
-            div( class="collapse navbar-collapse" id="navbarToggleExternalContent" style="width:100%")
-                ul( class="navbar-nav mr-auto mt-2 mt-lg-0")
+            div( class="collapse navbar-collapse" id="navbarToggleExternalContent")
+                ul( class="navbar-nav mr-auto")
                     li( class="nav-item")
                         a( class="nav-link" href="/app/imagenes/new") Subir Imagen
                     li( class="nav-item")
                         a( class="nav-link " href="/app/imagenes") Mis Imagenes
+                    li( class="nav-item")
+                        a( class="nav-link " href="/app/imagenes/new_carousel") Nuevo Carousel
+            ul( class="nav justify-content-end")
+                li( class="nav-item")
+                    a( class="nav-link active" href="/app") Inicio
+                li( class="nav-item")
+                    a( class="nav-link " href="/logout") Salir
+                form.form-inline.my-2.my-lg-0
+                    input( class="form-control" type="search" placeholder="Nombres" aria-label="Search")
+                    
+    
         svg( width="100%" height="150" class="svgTop")
             defs
                 linearGradient(id="Gradient-1"  x1="50%"  y1="100%" x2="50%" y2="-5%" spreadMethod="pad")
@@ -28,11 +39,9 @@ block cuerpo
                 +columnaAll(12,10,10,10,10,4,5,"bd-container")
                     block contenido
         nav( class="navbar fixed-bottom navbar-light bg-light")
-            a( class="navbar-brand" href="/app") Inicio
-            ul( class="nav navbar-nav navbar-right")        
+            ul( class="nav navbar-nav navbar-right justify-content-end")        
                 span.navbar-text #{USER.nombres}  #{USER.apellidos}
-                li( class="nav-item")
-                    a( class="nav-link " href="/logout") Salir
+                
                     
         
             
