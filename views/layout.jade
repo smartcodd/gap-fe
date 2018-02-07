@@ -14,14 +14,13 @@ block cuerpo
                         a( class="nav-link " href="/app/imagenes") Mis Imagenes
                     li( class="nav-item")
                         a( class="nav-link " href="/app/imagenes/new_carousel") Nuevo Carousel
-            ul( class="nav justify-content-end")
-                li( class="nav-item")
-                    a( class="nav-link active" href="/app") Inicio
-                li( class="nav-item")
-                    a( class="nav-link " href="/logout") Salir
-                form.form-inline.my-2.my-lg-0
-                    input( class="form-control" type="search" placeholder="Nombres" aria-label="Search")
-                    
+            
+        .header-user.text-right.position-fixed
+            a(  href="/app") Inicio
+            a(  href="/logout") Salir
+            span.navbar-text #{USER.nombres}  #{USER.apellidos}
+                
+            
     
         svg( width="100%" height="150" class="svgTop")
             defs
@@ -38,9 +37,7 @@ block cuerpo
                         include chat
                 +columnaAll(12,10,10,10,10,4,5,"bd-container")
                     block contenido
-        nav( class="navbar fixed-bottom navbar-light bg-light")
-            ul( class="nav navbar-nav navbar-right justify-content-end")        
-                span.navbar-text #{USER.nombres}  #{USER.apellidos}
+        
                 
                     
         
