@@ -30,10 +30,8 @@ $(function () {
           });
 
           marker.addListener('click', function () {
-            infowindow.setContent(this.html);
+            console.log("click")
             infowindow.open(map, marker);
-            map.setCenter(this.getPosition());
-            map.setZoom(10);
           });
         }, function (err) {
           console.log(err)

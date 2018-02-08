@@ -175,7 +175,7 @@ body{
 	
 	padding: 5px;
 	z-index: 1030 ;
-	top: 0;
+	top: -20px;
 	right: 0;
 	background: rgb(102, 19, 19);
 	border-radius: 0px 0px 0px 15px;
@@ -188,7 +188,7 @@ body{
 	transition: all 5s ease;
 }
 .header-user:hover{
-	top: 0;
+	top: 0px;
 	background: rgba(255,255,255,1);
 	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(173,173,173,1) 100%);
 	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(47%, rgba(246,246,246,1)), color-stop(100%, rgba(173,173,173,1)));
