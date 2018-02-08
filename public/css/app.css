@@ -172,9 +172,23 @@ body{
 
 
 .header-user{
+	
+	padding: 5px;
 	z-index: 1030 ;
 	top: 0;
 	right: 0;
+	background: rgb(102, 19, 19);
+	border-radius: 0px 0px 0px 15px;
+	-moz-border-radius: 0px 0px 0px 15px;
+	-webkit-border-radius: 0px 0px 0px 15px;
+	-ms-transition: all 5s ease;
+	-webkit-transition: all 5s ease;
+	-moz-transition: all 5s ease;
+	-o-transition: all 5s ease;
+	transition: all 5s ease;
+}
+.header-user:hover{
+	top: 0;
 	background: rgba(255,255,255,1);
 	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(173,173,173,1) 100%);
 	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(47%, rgba(246,246,246,1)), color-stop(100%, rgba(173,173,173,1)));
@@ -183,7 +197,23 @@ body{
 	background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(173,173,173,1) 100%);
 	background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(173,173,173,1) 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#adadad', GradientType=0 );
+	-ms-transition: all 1s ease;
+	-webkit-transition: all 1s ease;
+	-moz-transition: all 1s ease;
+	-o-transition: all 1s ease;
+	transition: all 1s ease;
 }
+.header-user  a,.header-user  span{
+	padding-left: 0.5rem;
+	text-decoration: none;
+}
+#map {
+	height: 400px;
+	width: 100%;
+   }
+
+
+
 
 
 
