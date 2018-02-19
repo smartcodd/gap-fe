@@ -55,60 +55,62 @@ $(function () {
   var mapLoaded = 0;
 
   function initMap() {
-    map = new google.maps.Map(document.getElementById("map"), myOptions);
-    var options = {};
-    geocoder = new google.maps.Geocoder;
-    setTimeout(checkMap, trans.CheckMapDelay);
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        function (position) {
-          var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-          console.log(position.coords)
-          marker = new google.maps.Marker({
-            map: map,
-            position: pos
-          });
-          map.setCenter(pos);
-          mapLoaded = 1;
-          geocoder.geocode({
-            latLng: pos
-          }, function (results, status) {
-            console.log(results);
-            console.log(status);
-            if (status == google.maps.GeocoderStatus.OK) {
-              if (results[0]) {
-                console.log(position.coords)
+    if (document.getElementById("map") != undefined) {
+      map = new google.maps.Map(document.getElementById("map"), myOptions);
+      var options = {};
+      geocoder = new google.maps.Geocoder;
+      setTimeout(checkMap, trans.CheckMapDelay);
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            console.log(position.coords)
+            marker = new google.maps.Marker({
+              map: map,
+              position: pos
+            });
+            map.setCenter(pos);
+            mapLoaded = 1;
+            geocoder.geocode({
+              latLng: pos
+            }, function (results, status) {
+              console.log(results);
+              console.log(status);
+              if (status == google.maps.GeocoderStatus.OK) {
+                if (results[0]) {
+                  console.log(position.coords)
+                  if (marker != null)
+                    marker.setMap(null);
+                  marker = new google.maps.Marker({
+                    position: pos,
+                    map: map
+                  });
+                  console.log(marker)
+                  console.log(results[0].formatted_address)
+                  var infoText = "<strong>" + trans.Geolocation + '</strong> <span id="geocodedAddress">' + results[0].formatted_address + "</span>";
+                  infowindow.setContent(infowindowContent(infoText, position.coords.latitude, position.coords.longitude));
+                }
+              } else {
                 if (marker != null)
                   marker.setMap(null);
                 marker = new google.maps.Marker({
                   position: pos,
                   map: map
                 });
-                console.log(marker)
-                console.log(results[0].formatted_address)
-                var infoText = "<strong>" + trans.Geolocation + '</strong> <span id="geocodedAddress">' + results[0].formatted_address + "</span>";
+                var infoText = "<strong>" + trans.Geolocation + '</strong> <span id="geocodedAddress">' + trans.NoResolvedAddress + "</span>";
                 infowindow.setContent(infowindowContent(infoText, position.coords.latitude, position.coords.longitude));
               }
-            } else {
-              if (marker != null)
-                marker.setMap(null);
-              marker = new google.maps.Marker({
-                position: pos,
-                map: map
-              });
-              var infoText = "<strong>" + trans.Geolocation + '</strong> <span id="geocodedAddress">' + trans.NoResolvedAddress + "</span>";
-              infowindow.setContent(infowindowContent(infoText, position.coords.latitude, position.coords.longitude));
-            }
-          },{location_type:{RANGE_INTERPOLATED:''}})
-        }, function (err) {
-          defaultMap()
-        }, {
-          maximumAge: 75000,
-          timeout: 15000
-        });
-    }
-    else {
-      defaultMap()
+            }, { location_type: { RANGE_INTERPOLATED: '' } })
+          }, function (err) {
+            defaultMap()
+          }, {
+            maximumAge: 75000,
+            timeout: 15000
+          });
+      }
+      else {
+        defaultMap()
+      }
     }
   }
   function infowindowContent(text, latres, lngres) {
@@ -122,14 +124,14 @@ $(function () {
   function defaultMap() {
     map.setCenter(defaultLatLng);
     mapLoaded = 1;
-    
+
     if (marker != null) marker.setMap(null);
     marker = new google.maps.Marker({
-      map : map,
-      position : defaultLatLng
+      map: map,
+      position: defaultLatLng
     });
-    infowindow.setContent(infowindowContent(trans.DefaultAddress, defaultLatLng.lat(), defaultLatLng.lng()));infowindow.open(map, marker);
-    
+    infowindow.setContent(infowindowContent(trans.DefaultAddress, defaultLatLng.lat(), defaultLatLng.lng())); infowindow.open(map, marker);
+
   }
   google.maps.event.addDomListener(window, 'load', initMap);
 });

@@ -13,9 +13,8 @@ var redondearTiempo = function (tiempo, division) {
 }
 socket.on("updateChatStatus", function (data) {
     data = JSON.parse(data);
-    var container = $(".btn_cone" + data._id);
-    if (container) {
-        var parent = container.parents('.sidebar-name');
+    var $link = $(".chat_" + data._id);
+    if ($link) {
         var source = document.querySelector("#user_connect").innerHTML;
         var template = Handlebars.compile(source);
         var tiempoConectado = "";
@@ -58,30 +57,25 @@ socket.on("updateChatStatus", function (data) {
             }
         }
         data.tiempo_current = tiempoConectado;
-        parent.html(template(data));
+        $link.html(template(data));
     }
 
 });
 socket.on("newclientconnect", function (data) {
-    var divUser = $(".btn_cone" + data)
-    if (divUser.hasClass('btn-default')) {
-        divUser.removeClass('btn-default').addClass('btn-success');
-    }
-    var time = divUser.parents('.sidebar-name').find('.timeConeccted');
-    if (time)
-        time.css("display", "none");
+    var $link = $(".chat_" + data);
+    var $svgCont = $link.find("svg");
+    $svgCont.attr('data-prefix', "fas")
+    var $time = $link.find('.timeConeccted');
+    $time.addClass('hide');
 });
 socket.on("newclientdesconnect", function (dates) {
     dates = JSON.parse(dates);
-    var divUser = $(".btn_cone" + dates.id)
-    if (divUser.hasClass('btn-success')) {
-        divUser.removeClass('btn-success').addClass('btn-default');
-    }
-    var time = divUser.parents('.sidebar-name').find('.timeConeccted');
+    var $link = $(".chat_" + dates.id);
+    var $svgCont = $link.find("svg");
+    $svgCont.attr('data-prefix', "far")
+    var $time = $link.find('.timeConeccted');
     var timeDisconected = dates.date;
-    if (time) {
-        time.css("display", "default");
-    }
+    $time.removeClass('hide');
 });
 
 socket.on("nuevoMsg", function (data) {
@@ -91,9 +85,20 @@ socket.on("nuevoMsg", function (data) {
     var template = Handlebars.compile(source_reciver);
     container.innerHTML = container.innerHTML + template(data);
 });
+socket.on("filterSearchResult", function (data) {
+    data = JSON.parse(data);
+    var containerMsg = $('.result-users');
+    var html = "";
+    data.forEach(element => {
+        var msg_template = document.querySelector("#filter_result").innerHTML;
+        var template = Handlebars.compile(msg_template);
+        html += template(element);
+    });
+    containerMsg.html(html);
+});
+
 socket.on("createChat", function (data) {
     data = JSON.parse(data);
-    console.log(data)
     var classId = ".chat_" + data._id;
     var layoutChat = $(classId);
     if (layoutChat.length == 0) {
@@ -114,14 +119,13 @@ socket.on("createChat", function (data) {
             chat.removeClass('panel-collapsed');
             chat.removeClass('glyphicon-plus').addClass('glyphicon-minus');
         }
-        var containerMsg=chat.find('.msg_container_base');
-        var html="";
+        var containerMsg = chat.find('.msg_container_base');
+        var html = "";
         data.msgs.forEach(element => {
             var msg_template = document.querySelector("#chat_msg").innerHTML;
-            var template = Handlebars.compile(msg_template);  
-            html+=template(element);  
+            var template = Handlebars.compile(msg_template);
+            html += template(element);
         });
-        console.log(html)
         containerMsg.html(html);
     } else {
         if (layoutChat.hasClass('panel-collapsed')) {
@@ -144,8 +148,8 @@ $(document).on('click', '.panel-footer button.btn-chat', function (e) {
         var to = $this.parents('.panel-default').find('.target_to');
         var data = {
             msg: msgInput,
-            amigo:chat[0].value,
-            to:to[0].value
+            amigo: chat[0].value,
+            to: to[0].value
         };
         var container = $this.parents('.panel-default').find('.msg_container_base');
         var source_send = document.querySelector("#msg_sent").innerHTML;
@@ -156,6 +160,15 @@ $(document).on('click', '.panel-footer button.btn-chat', function (e) {
     }
     return false;
 });
+var timeoutSeachFriens;
+$(document).on('keypress', '#txt_filter_search', function (e) {
+    var $this = $(this);
+    clearTimeout(timeoutSeachFriens);
+    timeoutSeachFriens = setTimeout(function () {
+        socket.emit("filterSearch", $this[0].value);
+    }, 2000);
+});
+
 
 
 

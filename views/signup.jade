@@ -3,7 +3,7 @@ block cotenido
     .row
         +column(3,2,1,"")
         +column(6,8,10,"")
-            form(action="/register", method="post")
+            form(action="/register", method="post" enctype="multipart/form-data")
                 .form-group
                     label(for="nombres") Nombres 
                     input(type="text", id="nombres", name="nombres" , placeholder="Nombres Completos" class="form-control" required)
@@ -11,20 +11,23 @@ block cotenido
                     label(for="apellidos") Apellidos 
                     input(type="text", id="apellidos", name="apellidos" , placeholder="Apellidos Completos" class="form-control" required)
                 .form-group
-                    label(for="email") Email 
-                    input(type="text", id="email", name="email" , placeholder="example@empresa.com" class="form-control" required)
+                    label(for="photo_perfil") Foto de Perfil
+                    div( class="custom-file")
+                        input( type="file" class="custom-file-input" id="photo_perfil" name="archivo" required)
+                        label(for="photo_perfil" class="custom-file-label") Seleccione
                 .form-group
-                    label(for="nickname") Como te gusta que le llamen
-                    input(type="text", id="nickname", name="nickname" , class="form-control" )                     
+                    label(for="email") Email 
+                    input(type="email", id="email", name="email" , placeholder="example@empresa.com" class="form-control" required)        
                 .form-group
                     label(for="fechaNacimiento") Fecha de Nacimiento
                     input(type="date", id="fechaNacimiento", name="fechaNacimiento" ,  class="form-control" required)
                 .form-group
                     label(for="password") Contraseña
-                    input(type="text", id="password", name="password" ,  class="form-control" required)  
+                    input(type="password", id="password", name="password" ,  class="form-control" required)  
                 .form-group
                     label(for="password_confirmation") Confirma tu Contraseña
-                    input(type="text", id="password_confirmation", name="password_confirmation" ,  class="form-control" required)
+                    input(type="password", id="password_confirmation",  name="password_confirmation" ,  class="form-control" required)
+               
                 .form-group
                     input(type="submit" value="Registrarse" class="btn btn-info")    
          +column(3,2,1,"")

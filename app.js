@@ -65,7 +65,6 @@ app.use(function (req, res, next) {
         res.locals.ID = req.session.user_id;
     }
     Imagen.find({ tipo: "C" }).populate("creator").exec(function (err, imagenes) {
-        console.log(imagenes)
         res.locals.listCarousel = imagenes;
         if (err) {
             console.log(err);
@@ -89,19 +88,23 @@ app.get("/logout", function (req, res) {
     res.redirect("/");
 });
 app.post("/register", function (req, res) {
-
+    
     var user = new User({
         email: req.body.email,
         password: req.body.password,
-        nickname: req.body.nickname,
         nombres: req.body.nombres,
         apellidos: req.body.apellidos,
         password_conf: req.body.password_confirmation,
         conected: "S",
-        date_of_birth: req.body.fechaNacimiento
+        date_of_birth: req.body.fechaNacimiento,
+        countRequestFriends:0
     });
+    user.profile_img.data=req.files.archivo.data.toString('base64');
+    user.profile_img.contentType= req.files.archivo.mimetype;
+    user.profile_img.name= req.files.archivo.name;
     User.findOne({ email: req.body.email, password: req.body.password },
         function (err, doc) {
+            
             if (doc) {
                 res.render("index");
             } else {

@@ -31,8 +31,6 @@ module.exports = function (server, sessionMiddleware) {
 				if (doc) {
 					doc.conected = "S";
 					doc.password_conf = doc.password;
-					doc.nombres=doc.username;
-					doc.apellidos=doc.username;
 					doc.save(
 						function (err) {
 							if (err) {
@@ -93,12 +91,12 @@ module.exports = function (server, sessionMiddleware) {
 		});
 		socket.on('nuevoMsg', function (data) {
 			data = JSON.parse(data);
-			var dataMensaje = { 
-					msg: data.msg, 
-					fechaEnvio: new Date(), 
-					emisor: socket.request.session.user_id,
-					amistad:data.amigo
-				};
+			var dataMensaje = {
+				msg: data.msg,
+				fechaEnvio: new Date(),
+				emisor: socket.request.session.user_id,
+				amistad: data.amigo
+			};
 			var mensaje = new Mensaje(dataMensaje);
 			mensaje.save(function (err) {
 				if (!err) {
@@ -109,6 +107,20 @@ module.exports = function (server, sessionMiddleware) {
 					console.log(err)
 				}
 			});
+		});
+
+		socket.on("filterSearch", function (data) {
+			var dataSplit = data.trim().split(" ");
+			var querryDin = {}; // declare the query object
+			querryDin['$or'] = []; // filter the search by any criteria given by the user
+			for (let index = 0; index < dataSplit.length; index++) {
+				const element = dataSplit[index];
+				querryDin["$or"].push({ nombres: { $regex: element.trim() } });
+			}
+			User.find({ $and: [{ _id: { $ne: socket.request.session.user_id } }, querryDin] },
+				function (err, users) {
+					io.sockets.connected[socket.id].emit("filterSearchResult", JSON.stringify(users));
+				}).limit(10);
 		});
 		socket.on("openChat", function (id_to) {
 			if (socket.request.session.user_id && id_to) {
@@ -126,21 +138,21 @@ module.exports = function (server, sessionMiddleware) {
 						exec(function (err, amistades) {
 							if (err)
 								console.log(err);
-							else{
-								Mensaje.find({amistad:amistades._id}).populate("emisor").exec(function (err, mensajes) {
-									if(mensajes){
+							else {
+								Mensaje.find({ amistad: amistades._id }).populate("emisor").exec(function (err, mensajes) {
+									if (mensajes) {
 										var userTo;
-										if (amistades.emisor._id!=socket.request.session.user_id){
-											userTo=amistades.emisor;
-										}else  if (amistades.receptor._id!=socket.request.session.user_id){
-											userTo=amistades.receptor;
+										if (amistades.emisor._id != socket.request.session.user_id) {
+											userTo = amistades.emisor;
+										} else if (amistades.receptor._id != socket.request.session.user_id) {
+											userTo = amistades.receptor;
 										}
-										var msgs=mensajes;
-										var data={userTo:userTo,msgs:msgs,_id:amistades._id,tiene_ms:mensajes.length>0?"S":"N"}
+										var msgs = mensajes;
+										var data = { userTo: userTo, msgs: msgs, _id: amistades._id, tiene_ms: mensajes.length > 0 ? "S" : "N" }
 										io.sockets.connected[socket.id].emit("createChat", JSON.stringify(data));
 									}
 								});
-		
+
 							}
 						});
 				}

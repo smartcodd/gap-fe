@@ -97,6 +97,10 @@ mixin column(lg,md,sm,styleClss)
     - var styleClss = (typeof styleClss === 'undefined') ? "default" : styleClss
     div( class=["col-lg-"+lg,"col-md-"+md,"col-sm-"+sm,styleClss])
         block
+mixin columnXS(lg,md,sm,xs,styleClss)
+    - var styleClss = (typeof styleClss === 'undefined') ? "default" : styleClss
+    div( class=["col-lg-"+lg,"col-md-"+md,"col-sm-"+sm,"py-md-"+xs,styleClss])
+        block
 
 //- Button mixin
 mixin button(style,size,typeButon,valueText)

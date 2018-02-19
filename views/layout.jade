@@ -14,49 +14,61 @@ block cuerpo
                         a( class="nav-link " href="/app/imagenes") Mis Imagenes
                     li( class="nav-item")
                         a( class="nav-link " href="/app/imagenes/new_carousel") Nuevo Carousel
-            
-        .header-user.text-right.position-fixed
+        <!--Menu Flotante-->
+        .header-user.text-right.position-fixed        
+            a(href="/app" title="Inicio")
+                i.fab.fa-phoenix-framework.fa-1x
+            a(href="#" data-toggle="popover" data-container="body" data-placement="bottom"  data-html="true"  id="search") 
+                i.fas.fa-search.fa-1x
+            if USER.countRequestFriends>0
+                a(href="#" data-toggle="popover" data-container="body" data-placement="bottom"  data-html="true"  id="notifications_friends") 
+                    span( class="badge badge-light notification-friends") #{USER.countRequestFriends}
+                    i.fas.fa-users
             a(href="#" data-toggle="modal" data-target="#exampleModal") 
                 i.fas.fa-street-view.fa-1x
-            a(href="/app") Inicio
-            a(href="/logout") Salir
-            span.header-user-text #{USER.nombres}  #{USER.apellidos}
-                
+            a(href="/app/user/#{USER._id}") 
+                span.header-user-text #{USER.nombres}  #{USER.apellidos}
+                if USER.profile_img
+                    img(  src="data:#{USER.profile_img.contentType};base64, #{USER.profile_img.data}" alt="#{USER.profile_img.name}" )
+            a(href="#" data-toggle="popover" data-container="body" data-placement="bottom"  data-html="true"  id="options") 
+                i.fas.fa-angle-down.fa-1x
+        <!--Usuarios Conectados-->
+        .user-connected.position-fixed
+            a(href="javascript:" id="control_chat")
+                i.fas.fa-angle-double-right.fa-2x
+            div( class="position-absolute content-conected" )
+                include user_connect
         
-    
-        svg( width="100%" height="150" class="svgTop")
-            defs
-                linearGradient(id="Gradient-1"  x1="50%"  y1="100%" x2="50%" y2="-5%" spreadMethod="pad")
-                    stop(offset="0%" stop-color="#FFFFFF" stop-opacity="0") 
-                    stop(offset="100%" stop-color="#000000" stop-opacity="1") 
-            rect( x="0" y="0" width="100%" height="150" fill="url(#Gradient-1)" stroke="#333333" stroke-width="0px")      
-       
-        div(class=["container-fluid"] ,id="container_gap" style="padding-top:6rem")
+        div(class=["container-fluid","container-private"] ,id="container_gap" )
             .row
-                +columnaAll(12,2,2,2,2,2,1,"bd-sidebar")
-                    include user_connect        
-                    if USER
-                        include chat
-                +columnaAll(12,10,10,10,10,4,5,"bd-container")
+                +columnXS(12,12,12,12,"")
                     block contenido
+        <!--Busqueda de Usuarios-->
+        div( id="popover-content-search" class="hide")
+            .search-user
+                form( class="form-inline" role="form")
+                    input( id="txt_filter_search" class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search")
+                    i(class="fas fa-search" style="margin:0px 0px 0 -30px")
+                    .result-users.list-group
+        <!--Notificaciones de nuevos usuarios-->
+        div( id="popover-content-notifications_friends" class="hide")
+            if listSolicitudes
+                .list-group.header-user_list
+                    each solicitud, i in listSolicitudes
+                        a(href="/app/user/#{solicitud.emisor._id}/view_sol" class="list-group-item.list-group-item-action" ) #{solicitud.emisor.nombres} quiere contactarse contigo
+        <!--Opciones de Usuarios-->
+        div( id="popover-content-options" class="hide")
+            ul.nav.flex-column
+                li.nav-item
+                    a( class="nav-link active" href="/logout") Salir
+                    
         <!-- Modal Map -->
-        div( class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
-            div( class="modal-dialog" role="document")
+        div( class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+            div( class="modal-dialog modal-dialog-centered modal-lg" role="document")
                 div( class="modal-content")
-                    div( class="modal-header")
-                        h5( class="modal-title" id="exampleModalLabel") Modal title
-                        button( type="button" class="close" data-dismiss="modal" aria-label="Close")
-                            span( aria-hidden="true") &times;
                     div( class="modal-body")
-                         #map
-                    
-                    div( class="modal-footer")
-                        button( type="button" class="btn btn-secondary" data-dismiss="modal") Close
-                        button( type="button" class="btn btn-primary") Save changes
-      
-                
-                    
-        
-            
-
-                
+                            #map
+        include chat
+        script(id="filter_result" type="text/x-handlebars-template" src="/docs/js/socketClient.js")
+            a( href="/app/user/{{_id}}" class="list-group-item list-group-item-action") {{nombres}} {{apellidos}}
+        script(src="/docs/js/socketClient.js")

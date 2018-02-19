@@ -1,87 +1,94 @@
-.panel.panel-default
-    .panel-body
-            if listFriends
-            for friend in listFriends
-                .sidebar-name
-                    - var tiempoConectado="";
-                    - var tiempo=0;
-                    if friend.receptor._id!=ID
-                        if friend.receptor.conected=="N" && friend.receptor.date_desconected
-                            - tiempo=friend.receptor.date_desconected.getTime();
-                    else if friend.emisor
-                        if friend.emisor.conected=="N" && friend.emisor.date_desconected
-                            - tiempo=friend.emisor.date_desconected.getTime();
-                    if tiempo > 0
-                        - var tiempoActual=(new Date()).getTime();
-                        - var tiempoMiliSe=tiempoActual-tiempo;
-                        - var tiempoSeg=tiempoMiliSe/1000;
-                        - tiempoSeg=tiempoSeg.toFixed(0);
-                        if tiempoSeg < 60
-                            - tiempoConectado=tiempoSeg+" seg";
+.list-group
+    if listFriends
+        each friend, i in listFriends
+            - var tiempoConectado="";
+            - var tiempo=0;
+            if friend.receptor._id!=ID
+                if friend.receptor.conected=="N" && friend.receptor.date_desconected
+                    - tiempo=friend.receptor.date_desconected.getTime();
+            else if friend.emisor
+                if friend.emisor.conected=="N" && friend.emisor.date_desconected
+                    - tiempo=friend.emisor.date_desconected.getTime();
+            if tiempo > 0
+                - var tiempoActual=(new Date()).getTime();
+                - var tiempoMiliSe=tiempoActual-tiempo;
+                - var tiempoSeg=tiempoMiliSe/1000;
+                - tiempoSeg=tiempoSeg.toFixed(0);
+                if tiempoSeg < 60
+                    - tiempoConectado=tiempoSeg+" seg";
+                else
+                    - var tiempoMinutos=tiempoSeg/60;
+                    - tiempoMinutos=tiempoMinutos.toFixed(0);
+                    if tiempoMinutos < 60
+                        - tiempoConectado=tiempoMinutos+" min";
+                    else
+                        - var tiempoHoras=tiempoMinutos/60;
+                        - tiempoHoras=tiempoHoras.toFixed(0);
+                        if tiempoHoras < 24
+                            - tiempoConectado=tiempoHoras+" h";
                         else
-                            - var tiempoMinutos=tiempoSeg/60;
-                            - tiempoMinutos=tiempoMinutos.toFixed(0);
-                            if tiempoMinutos < 60
-                                - tiempoConectado=tiempoMinutos+" min";
+                            - var tiempoDias=tiempoHoras/24;
+                            - tiempoDias=tiempoDias.toFixed(0);
+                            if tiempoDias < 7
+                                - tiempoConectado=tiempoDias+" d";
                             else
-                                - var tiempoHoras=tiempoMinutos/60;
-                                - tiempoHoras=tiempoHoras.toFixed(0);
-                                if tiempoHoras < 24
-                                    - tiempoConectado=tiempoHoras+" h";
+                                - var tiempoSemanas=tiempoDias/7;
+                                - tiempoSemanas=tiempoSemanas.toFixed(0);
+                                if tiempoSemanas < 4
+                                    - tiempoConectado=tiempoSemanas+" sem";
                                 else
-                                    - var tiempoDias=tiempoHoras/24;
-                                    - tiempoDias=tiempoDias.toFixed(0);
-                                    if tiempoHoras < 7
-                                        - tiempoConectado=tiempoDias+" d";
+                                    - var tiempoMeses=tiempoSemanas/4;
+                                    - tiempoMeses=tiempoMeses.toFixed(0);
+                                    if tiempoMeses < 12
+                                        - tiempoConectado=tiempoMeses+" meses";
                                     else
-                                        - var tiempoSemanas=tiempoDias/7;
-                                        - tiempoSemanas=tiempoSemanas.toFixed(0);
-                                        if tiempoSemanas < 4
-                                            - tiempoConectado=tiempoSemanas+" sem";
-                                        else
-                                            - var tiempoMeses=tiempoSemanas/4;
-                                            - tiempoMeses=tiempoMeses.toFixed(0);
-                                            if tiempoMeses < 12
-                                                - tiempoConectado=tiempoMeses+" meses";
-                                            else
-                                                - var tiempoAnios=tiempoSemanas/12;
-                                                - tiempoAnios=tiempoAnios.toFixed(0);
-                                                - tiempoConectado=tiempoAnios+" años";
-                    if friend.receptor._id!=ID
-                        a(href="javascript:register_popup('#{friend.receptor._id}');")
-                            if friend.receptor.conected=="S"
-                                button( type="button" class=["btn", "btn-success", "btn-circle","btn_cone"+"#{friend.receptor._id}"]  )
-                            else
-                                button( type="button" class=["btn", "btn-default", "btn-circle","btn_cone"+"#{friend.receptor._id}"] )
-                            span( class=["glyphicon", "glyphicon-user"])
-                            span #{friend.receptor.nickname} 
-                            span(class=["badge"] style="margin-left: 5px;font-size:8px;") 2
-                            if tiempoConectado!=""
-                                div(class=["floatRight","timeConeccted"] style="margin-left: 5px;font-size:10px;") #{tiempoConectado}
-                            else
-                                div(class=["floatRight","timeConeccted"] style="margin-left: 5px;font-size:10px;display:none") #{tiempoConectado}
-                    else if friend.emisor
-                        a(href="javascript:register_popup('#{friend.emisor._id}');")
-                            if friend.emisor.conected=="S"
-                                button( type="button" class=["btn", "btn-success", "btn-circle","btn_cone"+"#{friend.emisor._id}"]  )
-                            else
-                                button( type="button" class=["btn", "btn-default", "btn-circle","btn_cone"+"#{friend.emisor._id}"] )
-                            span( class=["glyphicon", "glyphicon-user"])
-                            span #{friend.emisor.username}
-                            span(class=["badge"] style="margin-left: 5px;font-size:8px;") 2
-                            if tiempoConectado!=""
-                                div(class=["floatRight","timeConeccted"] style="margin-left: 5px;font-size:10px;") #{tiempoConectado}
-                            else
-                                div(class=["floatRight","timeConeccted"] style="margin-left: 5px;font-size:10px;display:none") #{tiempoConectado}
+                                        - var tiempoAnios=tiempoSemanas/12;
+                                        - tiempoAnios=tiempoAnios.toFixed(0);
+                                        - tiempoConectado=tiempoAnios+" años";
 
+            if friend.receptor._id!=ID
+                a(class="list-group-item list-group-item-action list-group-item-chat chat_#{friend.receptor._id}" href="javascript:register_popup('#{friend.receptor._id}');")
+                    if friend.receptor.conected=="S"
+                        i.fas.fa-circle.fa-1x
+                    else
+                        i.far.fa-circle.fa-1x
+                    if friend.receptor.profile_img
+                        .portrait-img
+                            img( class="rounded mx-auto d-block" src="data:#{friend.receptor.profile_img.contentType};base64, #{friend.receptor.profile_img.data}"  )
+                    span #{friend.receptor.nombres} #{friend.receptor.apellidos} 
+                    if tiempoConectado!=""
+                        span.badge.badge-pill.badge-dark.timeConeccted #{tiempoConectado}
+                    else
+                        span.badge.badge-pill.badge-dark.timeConeccted.hide #{tiempoConectado}
+                    if friend.newMsg>0
+                        span.badge.badge-primary.badge-pill #{friend.newMsg}
+            else if friend.emisor
+                a(class="list-group-item list-group-item-action list-group-item-chat chat_#{friend.emisor._id}" href="javascript:register_popup('#{friend.emisor._id}');")
+                    if friend.emisor.conected=="S"
+                        i.fas.fa-circle.fa-1x
+                    else
+                        i.far.fa-circle.fa-1x
+                    if friend.emisor.profile_img
+                        .portrait-img
+                            img( class="rounded mx-auto d-block" src="data:#{friend.emisor.profile_img.contentType};base64, #{friend.emisor.profile_img.data}"  )
+                    span #{friend.emisor.nombres} #{friend.emisor.apellidos} 
+                    if tiempoConectado!=""
+                        span.badge.badge-pill.badge-dark.timeConeccted #{tiempoConectado}
+                    else
+                        span.badge.badge-pill.badge-dark.timeConeccted.hide #{tiempoConectado}
+                    if friend.newMsg>0
+                        span.badge.badge-primary.badge-pill #{friend.newMsg}
 script(id="user_connect" type="text/x-handlebars-template" src="/docs/js/socketClient.js")
-    .sidebar-name
-        a(href="javascript:register_popup('{{_id}}');")
-            if conected=="S"
-                button( type="button" class=["btn", "btn-success", "btn-circle","btn_cone"+"{{_id}}"]  )
-            else
-                button( type="button" class=["btn", "btn-default", "btn-circle","btn_cone"+"{{_id}}"] )
-            span( class=["glyphicon", "glyphicon-user"])
-            span {{username}}
-            span(class=["badge"] style="margin-left: 5px;font-size:8px;") 2     
-            div(class=["floatRight","timeConeccted"] style="margin-left: 5px;font-size:10px;") {{tiempo_current}}
+    if conected=="S"
+        i.fas.fa-circle.fa-1x
+    else
+        i.far.fa-circle.fa-1x
+    .portrait-img
+        img( class="rounded mx-auto d-block" src="data:{{profile_img.contentType}};base64, {{profile_img.data}}"  )
+    span {{nombres}} {{apellidos}} 
+    if tiempo_current!=""
+        span.badge.badge-pill.badge-dark.timeConeccted {{tiempo_current}}
+    else
+        span.badge.badge-pill.badge-dark.timeConeccted.hide {{tiempo_current}}
+    if newMsg>0
+        span.badge.badge-primary.badge-pill {{newMsg}}

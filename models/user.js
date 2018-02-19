@@ -5,7 +5,6 @@ mongoose.connect("mongodb://localhost:27017/gap");
 var match_validacion=["^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$","Emial Incorrecto"]
 var user_schema= new Schema({
     name:String,
-    nickname:{type: String},
     nombres:{type: String,required:true},
     apellidos:{type: String,required:true},
     password:{
@@ -24,7 +23,9 @@ var user_schema= new Schema({
     sexo:{type:String,enum:{values:["Masculino","Femenino"],message:"El vaor no es correcto"}},
     conected:String,
     date_desconected:Date,
-    tiempo_current:Number
+    tiempo_current:Number,
+    profile_img: { data: String, contentType: String,name: String},
+    countRequestFriends: Number
 });
 user_schema.virtual("password_conf").get(function(){
     return this.pass_c;
