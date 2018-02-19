@@ -4,13 +4,13 @@ block contenido
         if user_show.profile_img
             img( class="card-img-top img-fluid img-thumbnail rounded mx-auto d-block" style="max-width: 20rem" src="data:#{user_show.profile_img.contentType};base64, #{user_show.profile_img.data}" alt="#{user_show.profile_img.name}" )
    
-    .card-body
-        h5.card-title Nombre y Apellido
-        p.card-text #{user_show.nombres} #{user_show.apellidos} 
-        h5.card-title Email
-        p.card-text #{user_show.email}
-        if isAcept
-            a( href="/app/user/#{user_show._id}/acept" class="btn btn-primary") Aceptar
-        else
-            if  USER._id!=user_show._id
-                a( href="/app/user/#{user_show._id}/contact" class="btn btn-primary") Contactarse
+        .card-body
+            h5.card-title Nombre y Apellido
+            p.card-text #{user_show.nombres} #{user_show.apellidos} 
+            h5.card-title Email
+            p.card-text #{user_show.email}
+            if isAcept
+                a( href="/app/user/#{user_show._id}/acept" class="btn btn-primary") Aceptar
+            else
+                if  USER._id!=user_show._id
+                    a( href="/app/user/#{user_show._id}/contact" class="btn btn-primary") Contactarse

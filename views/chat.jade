@@ -16,14 +16,14 @@ script(id="msg_receiver" type="text/x-handlebars-template" src="/docs/js/socketC
                 p {{msg}}
                 time(datetime="2009-11-13T20:00") Timothy • 51 min
 script(id="chat_windows" type="text/x-handlebars-template" src="/docs/js/socketClient.js")
-    div(class=["row","chat-window","chat_"+"{{_id}}"])
+    div(class=["card","chat-window","chat_"+"{{_id}}"])
         +columna(3,3,3)
-            div(class=["panel","panel-default"])
+            div(class=["card-body"])
                 div(class=["panel-heading","top-bar"])
                     +columna(8,8,8)
                         h3(class=["panel-title"])
                             span(class=["glyphicon","glyphicon-comment"]) 
-                            span {{userTo.username}}
+                            span {{nombres}} {{apellidos}}
                     +columna(4,4,4,"text-align: right;")
                         a(href="#" )
                             span(class=["glyphicon","glyphicon-minus","icon_minim"])

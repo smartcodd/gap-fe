@@ -64,7 +64,8 @@ socket.on("updateChatStatus", function (data) {
 socket.on("newclientconnect", function (data) {
     var $link = $(".chat_" + data);
     var $svgCont = $link.find("svg");
-    $svgCont.attr('data-prefix', "fas")
+    $svgCont.attr('data-prefix', "fas");
+    $svgCont.addClass('text-success');
     var $time = $link.find('.timeConeccted');
     $time.addClass('hide');
 });
@@ -72,7 +73,8 @@ socket.on("newclientdesconnect", function (dates) {
     dates = JSON.parse(dates);
     var $link = $(".chat_" + dates.id);
     var $svgCont = $link.find("svg");
-    $svgCont.attr('data-prefix', "far")
+    $svgCont.attr('data-prefix', "far");
+    $svgCont.removeClass('text-success');
     var $time = $link.find('.timeConeccted');
     var timeDisconected = dates.date;
     $time.removeClass('hide');

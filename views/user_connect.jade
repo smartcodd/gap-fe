@@ -49,7 +49,7 @@
             if friend.receptor._id!=ID
                 a(class="list-group-item list-group-item-action list-group-item-chat chat_#{friend.receptor._id}" href="javascript:register_popup('#{friend.receptor._id}');")
                     if friend.receptor.conected=="S"
-                        i.fas.fa-circle.fa-1x
+                        i.fas.fa-circle.fa-1x.text-success
                     else
                         i.far.fa-circle.fa-1x
                     if friend.receptor.profile_img
@@ -65,7 +65,7 @@
             else if friend.emisor
                 a(class="list-group-item list-group-item-action list-group-item-chat chat_#{friend.emisor._id}" href="javascript:register_popup('#{friend.emisor._id}');")
                     if friend.emisor.conected=="S"
-                        i.fas.fa-circle.fa-1x
+                        i.fas.fa-circle.fa-1x.text-success
                     else
                         i.far.fa-circle.fa-1x
                     if friend.emisor.profile_img
@@ -80,7 +80,7 @@
                         span.badge.badge-primary.badge-pill #{friend.newMsg}
 script(id="user_connect" type="text/x-handlebars-template" src="/docs/js/socketClient.js")
     if conected=="S"
-        i.fas.fa-circle.fa-1x
+        i.fas.fa-circle.fa-1x.text-success
     else
         i.far.fa-circle.fa-1x
     .portrait-img

@@ -18,13 +18,13 @@ block cuerpo
         .header-user.text-right.position-fixed        
             a(href="/app" title="Inicio")
                 i.fab.fa-phoenix-framework.fa-1x
-            a(href="#" data-toggle="popover" data-container="body" data-placement="bottom"  data-html="true"  id="search") 
+            a(href="javascript:" data-toggle="popover" data-container="body" data-placement="bottom"  data-html="true"  id="search") 
                 i.fas.fa-search.fa-1x
             if USER.countRequestFriends>0
-                a(href="#" data-toggle="popover" data-container="body" data-placement="bottom"  data-html="true"  id="notifications_friends") 
+                a(href="javascript:" data-toggle="popover" data-container="body" data-placement="bottom"  data-html="true"  id="notifications_friends") 
                     span( class="badge badge-light notification-friends") #{USER.countRequestFriends}
                     i.fas.fa-users
-            a(href="#" data-toggle="modal" data-target="#exampleModal") 
+            a(href="javascript:" data-toggle="modal" data-target="#exampleModal") 
                 i.fas.fa-street-view.fa-1x
             a(href="/app/user/#{USER._id}") 
                 span.header-user-text #{USER.nombres}  #{USER.apellidos}
