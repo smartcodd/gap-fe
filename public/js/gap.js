@@ -29,25 +29,37 @@ $(document).on('focus', '.panel-footer input.chat_input', function (e) {
   }
 });
 
-$(document).on('click', '.icon_close', function (e) {
-  //$(this).parent().parent().parent().parent().remove();
-  $("#chat_window_1").remove();
+$(document).on('click', '.chat_icon_close', function (e) {
+
+  e.preventDefault();
+  $(this).parents('.chat').remove();
+});
+$(document).on('click', '.chat_icon_minim', function (e) {
+  var $this = $(this);
+  var controlChat = $this.find(".chat-minus");
+  
+  if (controlChat.hasClass('fa-plus-square')) {
+    controlChat.removeClass("fa-plus-square").addClass("fa-minus");
+  } else {
+    controlChat.removeClass("fa-minus").addClass("fa-plus-square");
+  }
 });
 
+
 $(document).on('click', '#control_chat', function (e) {
-  var svgControl=$(this).find("svg");
-  var content=$(this).parent().find(".position-absolute");
+  var svgControl = $(this).find("svg");
+  var content = $(this).parent().find(".position-absolute");
   if (svgControl.hasClass('fa-angle-double-left')) {
     svgControl.removeClass('fa-angle-double-left');
     svgControl.addClass('fa-angle-double-right');
     content.removeClass('show');
-  }else{
+  } else {
     svgControl.addClass('fa-angle-double-left');
     svgControl.removeClass('fa-angle-double-right');
     content.addClass('show');
   }
- 
-  
+
+
 });
 
 $(document).ready(function () {

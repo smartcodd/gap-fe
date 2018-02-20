@@ -55,7 +55,7 @@
                     if friend.receptor.profile_img
                         .portrait-img
                             img( class="rounded mx-auto d-block" src="data:#{friend.receptor.profile_img.contentType};base64, #{friend.receptor.profile_img.data}"  )
-                    span #{friend.receptor.nombres} #{friend.receptor.apellidos} 
+                    small.text-muted #{friend.receptor.nombres} #{friend.receptor.apellidos} 
                     if tiempoConectado!=""
                         span.badge.badge-pill.badge-dark.timeConeccted #{tiempoConectado}
                     else
@@ -71,7 +71,7 @@
                     if friend.emisor.profile_img
                         .portrait-img
                             img( class="rounded mx-auto d-block" src="data:#{friend.emisor.profile_img.contentType};base64, #{friend.emisor.profile_img.data}"  )
-                    span #{friend.emisor.nombres} #{friend.emisor.apellidos} 
+                    small.text-muted #{friend.emisor.nombres} #{friend.emisor.apellidos} 
                     if tiempoConectado!=""
                         span.badge.badge-pill.badge-dark.timeConeccted #{tiempoConectado}
                     else
@@ -85,7 +85,7 @@ script(id="user_connect" type="text/x-handlebars-template" src="/docs/js/socketC
         i.far.fa-circle.fa-1x
     .portrait-img
         img( class="rounded mx-auto d-block" src="data:{{profile_img.contentType}};base64, {{profile_img.data}}"  )
-    span {{nombres}} {{apellidos}} 
+    small.text-muted {{nombres}} {{apellidos}} 
     if tiempo_current!=""
         span.badge.badge-pill.badge-dark.timeConeccted {{tiempo_current}}
     else

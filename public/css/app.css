@@ -369,29 +369,56 @@ body{
 
 /*Sliderbar End*/
 
-
-.chat-window {
+/*Chat Window*/
+.chat {
 	bottom: 0;
-	position: fixed;
 }
-
-.icon_minim {
-	padding: 2px 10px;
+.chat  .chat-header{
+	padding: .25rem 0.5rem;
 }
-
-.msg_container_base {
-	background: #e5e5e5;
+.chat  .chat-header .chat-control > a:not(:last-child){
+	padding: 0rem 0.5rem;
+}
+.chat .chat-body{
 	margin: 0;
-	padding: 0 10px 10px;
+	padding: .25rem 0.5rem;
 	max-height: 300px;
 	overflow-x: hidden;
+	
+}
+.chat .chat-body.collapse{
+	-ms-transition: all 20s ease;
+	-webkit-transition: all 20s ease;
+	-moz-transition: all 20s ease;
+	-o-transition: all 20s ease;
+	transition: all 20s ease;
+}
+.chat .chat-footer{
+	padding: .25rem 0.5rem;
+}
+.chat  .chat-body::-webkit-scrollbar-track {
+	background-color: #F5F5F5;
 }
 
-.top-bar {
-	background: #666;
+.chat  .chat-body::-webkit-scrollbar {
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+.chat  .chat-body::-webkit-scrollbar-thumb {
+	background-color: #555;
+}
+
+
+.msg_container {
 	padding: 10px;
-	position: relative;
 	overflow: hidden;
+	display: flex;
+}
+
+.msg_container img {
+	display: block;
+	width: 100%;
 }
 
 .msg_receive {
@@ -422,16 +449,6 @@ body{
 	color: #ccc;
 }
 
-.msg_container {
-	padding: 10px;
-	overflow: hidden;
-	display: flex;
-}
-
-.msg_container img {
-	display: block;
-	width: 100%;
-}
 
 .base_sent {
 	justify-content: flex-end;
@@ -454,18 +471,7 @@ body{
 	float: right;
 }
 
-.msg_container_base::-webkit-scrollbar-track {
-	background-color: #F5F5F5;
-}
 
-.msg_container_base::-webkit-scrollbar {
-	width: 12px;
-	background-color: #F5F5F5;
-}
-
-.msg_container_base::-webkit-scrollbar-thumb {
-	background-color: #555;
-}
 
 .btn-group.dropup {
 	position: fixed;

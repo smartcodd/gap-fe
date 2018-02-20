@@ -101,44 +101,49 @@ socket.on("filterSearchResult", function (data) {
 
 socket.on("createChat", function (data) {
     data = JSON.parse(data);
-    var classId = ".chat_" + data._id;
+    var classId = ".chat-" + data._id;
     var layoutChat = $(classId);
     if (layoutChat.length == 0) {
-        var size = $(".chat-window:last-child").css("margin-left");
+        var size = $(".chat:last-child").css("margin-left");
         if (size)
-            size_total = parseInt(size) + 350;
+            size_total = parseInt(size) + 230;
         else
             size_total = 0;
-        var container = document.querySelector("#container_gap");
+        var container = document.querySelector("body");
         var source_reciver = document.querySelector("#chat_windows").innerHTML;
         var template = Handlebars.compile(source_reciver);
         container.innerHTML = container.innerHTML + template(data);
-        var classId = ".chat_" + data._id;
-        var chat = $(classId);
+
+
+        var chat = $(".chat-" + data._id);
+        var chatBody=$("#chat-body-"+data._id);
+        var controlChat=chat.find(".chat-minus");
         chat.css("margin-left", size_total);
-        chat.css("display", "");
-        if (chat.hasClass('panel-collapsed')) {
-            chat.removeClass('panel-collapsed');
-            chat.removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        if (!chatBody.hasClass('show')) {
+            chatBody.addClass('show');
+            controlChat.removeClass("fa-plus-square").addClass("fa-minus");
         }
-        var containerMsg = chat.find('.msg_container_base');
+        
         var html = "";
         data.msgs.forEach(element => {
             var msg_template = document.querySelector("#chat_msg").innerHTML;
             var template = Handlebars.compile(msg_template);
             html += template(element);
         });
-        containerMsg.html(html);
+        chatBody.html(html);
     } else {
-        if (layoutChat.hasClass('panel-collapsed')) {
-            layoutChat.removeClass('panel-collapsed');
-            layoutChat.removeClass('glyphicon-plus').addClass('glyphicon-minus');
+
+        var chat=$(".chat-"+data._id);
+        var chatBody=$("#chat-body-"+data._id);
+        var controlChat=chat.find(".chat-minus");
+        if (chatBody.hasClass('show')) {
+            chatBody.addClass('show');
+            controlChat.removeClass("fa-plus-square").addClass("fa-minus");
         }
     }
 });
 function register_popup(id) {
     socket.emit("openChat", id);
-
 }
 
 $(document).on('click', '.panel-footer button.btn-chat', function (e) {
@@ -153,7 +158,7 @@ $(document).on('click', '.panel-footer button.btn-chat', function (e) {
             amigo: chat[0].value,
             to: to[0].value
         };
-        var container = $this.parents('.panel-default').find('.msg_container_base');
+        var container = $this.parents('.panel-default').find('.chat-body');
         var source_send = document.querySelector("#msg_sent").innerHTML;
         var template = Handlebars.compile(source_send);
         container.html(container.html() + template(data));
