@@ -136,6 +136,7 @@ module.exports = function (server, sessionMiddleware) {
 						}
 					).populate("receptor").populate("emisor").
 						exec(function (err, amistades) {
+							
 							if (err)
 								console.log(err);
 							else {
@@ -149,6 +150,7 @@ module.exports = function (server, sessionMiddleware) {
 										}
 										var msgs = mensajes;
 										var data = { userTo: userTo, msgs: msgs, _id: amistades._id, tiene_ms: mensajes.length > 0 ? "S" : "N" }
+										
 										io.sockets.connected[socket.id].emit("createChat", JSON.stringify(data));
 									}
 								});

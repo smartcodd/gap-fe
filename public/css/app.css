@@ -410,15 +410,22 @@ body{
 }
 
 
-.msg_container {
-	padding: 10px;
+.chat  .chat-body .chat-msg {
+	padding: 0.2rem;
 	overflow: hidden;
 	display: flex;
 }
-
-.msg_container img {
-	display: block;
-	width: 100%;
+.chat  .chat-body .chat-msg-send {
+	justify-content: flex-end;
+	align-items: flex-end;
+}
+.chat  .chat-body .chat-msg-send {
+	justify-content: flex-end;
+	align-items: flex-end;
+}
+.chat  .chat-body .chat-msg-receive {
+	justify-content: flex-start;
+	align-items: flex-start;
 }
 
 .msg_receive {
@@ -426,12 +433,12 @@ body{
 	margin-left: 0;
 }
 
-.msg_sent {
-	padding-bottom: 20px !important;
-	margin-right: 0;
-}
+	
 
 .messages {
+	padding-bottom: 0.5rem !important;
+	margin-right: 0;
+
 	background: white;
 	padding: 10px;
 	border-radius: 2px;
@@ -450,22 +457,9 @@ body{
 }
 
 
-.base_sent {
-	justify-content: flex-end;
-	align-items: flex-end;
-}
 
-.base_sent>.avatar:after {
-	content: "";
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	width: 0;
-	height: 0;
-	border: 5px solid white;
-	border-right-color: transparent;
-	border-top-color: transparent;
-}
+
+
 
 .msg_sent>time {
 	float: right;

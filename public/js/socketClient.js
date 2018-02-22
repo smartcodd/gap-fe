@@ -113,8 +113,6 @@ socket.on("createChat", function (data) {
         var source_reciver = document.querySelector("#chat_windows").innerHTML;
         var template = Handlebars.compile(source_reciver);
         container.innerHTML = container.innerHTML + template(data);
-
-
         var chat = $(".chat-" + data._id);
         var chatBody=$("#chat-body-"+data._id);
         var controlChat=chat.find(".chat-minus");
@@ -126,6 +124,7 @@ socket.on("createChat", function (data) {
         
         var html = "";
         data.msgs.forEach(element => {
+            
             var msg_template = document.querySelector("#chat_msg").innerHTML;
             var template = Handlebars.compile(msg_template);
             html += template(element);
@@ -146,19 +145,19 @@ function register_popup(id) {
     socket.emit("openChat", id);
 }
 
-$(document).on('click', '.panel-footer button.btn-chat', function (e) {
+$(document).on('click', '.chat-footer button.chat-btn', function (e) {
+    
     var $this = $(this);
-    var listInput = $this.parents('.panel-footer').find('.chat_input');
+    var listInput = $this.parents('.chat-footer').find('.chat_input');
+    console.log(listInput)
     if (listInput.length > 0) {
-        msgInput = listInput[0].value;
-        var chat = $this.parents('.panel-default').find('.hidden-reg');
-        var to = $this.parents('.panel-default').find('.target_to');
+        msgInput = listInput[0];
         var data = {
-            msg: msgInput,
-            amigo: chat[0].value,
-            to: to[0].value
+            msg: listInput.val(),
+            amigo: listInput.attr("iduser"),
+            to: listInput.attr("iduserto")
         };
-        var container = $this.parents('.panel-default').find('.chat-body');
+        var container = $this.parents('.chat').find('.chat-body');
         var source_send = document.querySelector("#msg_sent").innerHTML;
         var template = Handlebars.compile(source_send);
         container.html(container.html() + template(data));
@@ -167,6 +166,8 @@ $(document).on('click', '.panel-footer button.btn-chat', function (e) {
     }
     return false;
 });
+
+
 var timeoutSeachFriens;
 $(document).on('keypress', '#txt_filter_search', function (e) {
     var $this = $(this);
