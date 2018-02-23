@@ -59,7 +59,6 @@ socket.on("updateChatStatus", function (data) {
         data.tiempo_current = tiempoConectado;
         $link.html(template(data));
     }
-
 });
 socket.on("newclientconnect", function (data) {
     var $link = $(".chat_" + data);
@@ -82,10 +81,11 @@ socket.on("newclientdesconnect", function (dates) {
 
 socket.on("nuevoMsg", function (data) {
     data = JSON.parse(data);
-    var container = document.querySelector("#msg_container");
+    var classChat = "#chat-body-" + data.amistad;
+    var container = $(classChat);
     var source_reciver = document.querySelector("#msg_receiver").innerHTML;
     var template = Handlebars.compile(source_reciver);
-    container.innerHTML = container.innerHTML + template(data);
+    container.html(container.html() + template(data));
 });
 socket.on("filterSearchResult", function (data) {
     data = JSON.parse(data);
@@ -101,40 +101,44 @@ socket.on("filterSearchResult", function (data) {
 
 socket.on("createChat", function (data) {
     data = JSON.parse(data);
-    var classId = ".chat-" + data._id;
+    console.log(data)
+    var idAmistad = data._id;
+    var classId = ".chat-" + idAmistad;
     var layoutChat = $(classId);
     if (layoutChat.length == 0) {
         var size = $(".chat:last-child").css("margin-left");
         if (size)
             size_total = parseInt(size) + 230;
         else
-            size_total = 0;
+            size_total = 2;
         var container = document.querySelector("body");
         var source_reciver = document.querySelector("#chat_windows").innerHTML;
         var template = Handlebars.compile(source_reciver);
         container.innerHTML = container.innerHTML + template(data);
-        var chat = $(".chat-" + data._id);
-        var chatBody=$("#chat-body-"+data._id);
-        var controlChat=chat.find(".chat-minus");
+        var chat = $(".chat-" + idAmistad);
+        var chatBody = $("#chat-body-" + idAmistad);
+        var controlChat = chat.find(".chat-minus");
         chat.css("margin-left", size_total);
         if (!chatBody.hasClass('show')) {
             chatBody.addClass('show');
             controlChat.removeClass("fa-plus-square").addClass("fa-minus");
         }
-        
         var html = "";
         data.msgs.forEach(element => {
-            
-            var msg_template = document.querySelector("#chat_msg").innerHTML;
+            var msg_template;
+            if (element.emisor._id == data.userTo._id) {
+                msg_template = document.querySelector("#msg_receiver").innerHTML;
+            } else {
+                msg_template = document.querySelector("#msg_sent").innerHTML;
+            }
             var template = Handlebars.compile(msg_template);
             html += template(element);
         });
         chatBody.html(html);
     } else {
-
-        var chat=$(".chat-"+data._id);
-        var chatBody=$("#chat-body-"+data._id);
-        var controlChat=chat.find(".chat-minus");
+        var chat = $(".chat-" + idAmistad);
+        var chatBody = $("#chat-body-" + idAmistad);
+        var controlChat = chat.find(".chat-minus");
         if (chatBody.hasClass('show')) {
             chatBody.addClass('show');
             controlChat.removeClass("fa-plus-square").addClass("fa-minus");
@@ -146,21 +150,22 @@ function register_popup(id) {
 }
 
 $(document).on('click', '.chat-footer button.chat-btn', function (e) {
-    
     var $this = $(this);
     var listInput = $this.parents('.chat-footer').find('.chat_input');
-    console.log(listInput)
     if (listInput.length > 0) {
         msgInput = listInput[0];
         var data = {
             msg: listInput.val(),
-            amigo: listInput.attr("iduser"),
-            to: listInput.attr("iduserto")
+            idCont: listInput.attr("idCont"),
+            to: listInput.attr("idUserTo"),
+            date: new Date()
         };
         var container = $this.parents('.chat').find('.chat-body');
         var source_send = document.querySelector("#msg_sent").innerHTML;
         var template = Handlebars.compile(source_send);
-        container.html(container.html() + template(data));
+        console.log(container.offset().top)
+       
+        container.attr("scrollTop",container.offset().top)
         socket.emit("nuevoMsg", JSON.stringify(data));
         listInput[0].value = "";
     }
@@ -176,7 +181,3 @@ $(document).on('keypress', '#txt_filter_search', function (e) {
         socket.emit("filterSearch", $this[0].value);
     }, 2000);
 });
-
-
-
-

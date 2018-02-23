@@ -10,10 +10,10 @@ app.use(fileUpload());
 var redis = require("redis");
 var client = redis.createClient();
 //MODELOS
-var User = require("./models/user").User;
+var User = require("./models/usuario").Usuario;
 var Mensaje = require("./models/mensaje").Mensaje;
-var Amistad = require("./models/amistad").Amistad;
-var Imagen = require("./models/imagenes").Imagen;
+var Amistad = require("./models/contacto").Contacto;
+var Imagen = require("./models/imagen").Imagen;
 
 var session = require("express-session");
 var cookieSession = require("cookie-session");

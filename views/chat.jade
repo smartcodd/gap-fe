@@ -1,24 +1,15 @@
-
-
-script(id="chat_msg" type="text/x-handlebars-template" src="/docs/js/socketClient.js")
-    .row.chat-msg.chat-msg-send
-        div(class="messages")
-            p {{msg}} 
-            time(datetime='') Timothy • 51 min
-       
-
+<!--Chat Revive-->
 script(id="msg_receiver" type="text/x-handlebars-template" src="/docs/js/socketClient.js")
     div(class="chat-msg chat-msg-receive")
         div(class="messages")
             p {{msg}}
             time(datetime="2009-11-13T20:00") Timothy • 51 min
-
+<!--Chat Envio-->
 script(id="msg_sent" type="text/x-handlebars-template" src="/docs/js/socketClient.js")
     div(class="chat-msg chat-msg-send")
         div(class="messages")
             p {{msg}}
             time(datetime="2009-11-13T20:00") Timothy • 51 min
-        
 <!--Layouty Windows Chat-->
 script(id="chat_windows" type="text/x-handlebars-template" src="/docs/js/socketClient.js")
     div(class=["card chat position-fixed chat-{{_id}}"])
@@ -26,14 +17,14 @@ script(id="chat_windows" type="text/x-handlebars-template" src="/docs/js/socketC
             .float-right.chat-control
                 a( class="chat_icon_minim text-right" data-toggle="collapse" href="#chat-body-{{_id}}" role="button" aria-expanded="false" aria-controls="chat-body-{{_id}}" )
                     i.fas.fa-minus.chat-minus
-                a(href="javascript:"  class="chat_icon_close" data-id="chat_window_1")
+                a(href="javascript:"  class="chat_icon_close" )
                     i.fas.fa-times.text-right
             p.card-text
                 small.text-muted {{userTo.nombres}} {{userTo.apellidos}}
         div(class="card-body chat-body collapse" id="chat-body-{{_id}}")
         div(class="card-footer chat-footer")
             .form-inline.my-2.my-lg-0
-                input( idUser="{{_id}}" idUserTo="{{userTo._id}}" class="form-control chat_input form-control-sm" type="search" placeholder="Escribe tu mensaje aqui..." aria-label="Search")
+                input( idCont="{{_id}}" idUserTo="{{userTo._id}}" class="form-control chat_input form-control-sm" type="search" placeholder="Escribe tu mensaje aqui..." aria-label="Search")
                 button.btn.btn-outline-success.btn-sm.chat-btn
                     i.fas.fa-paper-plane
 

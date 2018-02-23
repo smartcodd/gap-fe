@@ -1,4 +1,4 @@
-var Imagen = require("../models/imagenes").Imagen;
+var Imagen = require("../models/imagen").Imagen;
 var check_user = require("./image_permission");
 module.exports=function(req,res,next){
     Imagen.findById(req.params.id).populate("creator").exec( function (err, imagen) {
@@ -9,5 +9,4 @@ module.exports=function(req,res,next){
             res.redirect("/app");
         }
     });
-    
 }

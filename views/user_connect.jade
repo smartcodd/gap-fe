@@ -47,7 +47,7 @@
                                         - tiempoConectado=tiempoAnios+" años";
 
             if friend.receptor._id!=ID
-                a(class="list-group-item list-group-item-action list-group-item-chat chat_#{friend.receptor._id}" href="javascript:register_popup('#{friend.receptor._id}');")
+                a(class="list-group-item list-group-item-action list-group-item-chat chat_#{friend.receptor._id}" href="javascript:register_popup('#{friend._id}');")
                     if friend.receptor.conected=="S"
                         i.fas.fa-circle.fa-1x.text-success
                     else
@@ -63,7 +63,7 @@
                     if friend.newMsg>0
                         span.badge.badge-primary.badge-pill #{friend.newMsg}
             else if friend.emisor
-                a(class="list-group-item list-group-item-action list-group-item-chat chat_#{friend.emisor._id}" href="javascript:register_popup('#{friend.emisor._id}');")
+                a(class="list-group-item list-group-item-action list-group-item-chat chat_#{friend.emisor._id}" href="javascript:register_popup('#{friend._id}');")
                     if friend.emisor.conected=="S"
                         i.fas.fa-circle.fa-1x.text-success
                     else

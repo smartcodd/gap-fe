@@ -3,7 +3,7 @@ var mongoose=require("mongoose");
 var Schema= mongoose.Schema;
 mongoose.connect("mongodb://localhost:27017/gap");
 var match_validacion=["^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$","Emial Incorrecto"]
-var user_schema= new Schema({
+var usuario_schema= new Schema({
     name:String,
     nombres:{type: String,required:true},
     apellidos:{type: String,required:true},
@@ -27,10 +27,10 @@ var user_schema= new Schema({
     profile_img: { data: String, contentType: String,name: String},
     countRequestFriends: Number
 });
-user_schema.virtual("password_conf").get(function(){
+usuario_schema.virtual("password_conf").get(function(){
     return this.pass_c;
 }).set(function(password){
     this.pass_c=password;
 });
-var User=mongoose.model("User",user_schema);
-module.exports.User=User;
+var Usuario=mongoose.model("Usuario",usuario_schema);
+module.exports.Usuario=Usuario;

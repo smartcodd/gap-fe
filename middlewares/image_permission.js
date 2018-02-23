@@ -1,4 +1,4 @@
-var Imagen = require("../models/imagenes").Imagen;
+var Imagen = require("../models/imagen").Imagen;
 
 module.exports=function(image,req,res){
     if(typeof image.creator=="undefined"){
