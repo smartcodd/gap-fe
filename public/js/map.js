@@ -1,3 +1,4 @@
+
 $(function () {
   var trans = {
     Geolocation: "Geolocalización:",
@@ -24,8 +25,6 @@ $(function () {
     var $contectMap = document.getElementById("map");
     if ($contectMap != undefined) {
       map = new google.maps.Map($contectMap, myOptions);
-
-
       var options = {};
       geocoder = new google.maps.Geocoder;
       if (navigator.geolocation) {
@@ -86,5 +85,5 @@ $(function () {
     return '<div id="info_window">' + text + "<br/><strong>" + trans.Latitude + "</strong> " + Math.round(latres * 1e6) / 1e6 + " | <strong>" + trans.Longitude + "</strong> " + Math.round(lngres * 1e6) / 1e6 + "<br/><br/></div>";
   }
 
-  google.maps.event.addDomListener(window, 'load', initMap);
+  google.maps.event.addDomListener(document.getElementById('viewLocation'), 'click', initMap);
 });

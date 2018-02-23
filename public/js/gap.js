@@ -67,7 +67,3 @@ $(function () {
     $('select.form-control').removeClass('form-control').css('width', '100%')
   }
 });
-
-
-
-

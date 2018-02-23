@@ -6,8 +6,6 @@ module.exports = function (server, sessionMiddleware) {
 	var Mensaje = require("./models/mensaje").Mensaje;
 	var User = require("./models/usuario").Usuario;
 	var Amistad = require("./models/contacto").Contacto;
-
-
 	var myMap = new Map();
 	io.use(function (socket, next) {
 		sessionMiddleware(socket.request, socket.request.res, next);
@@ -43,8 +41,7 @@ module.exports = function (server, sessionMiddleware) {
 				}
 			}
 		);
-		//io.sockets.connected[socket.id].emit("greeting", "usermae");
-		//socket.emit('newclientconnect', { description: 'Hey, welcome!' });
+		
 		socket.on('disconnect', function () {
 			var index = myMap.get(socket.request.session.user_id).indexOf(socket.id);
 			myMap.get(socket.request.session.user_id).splice(index, 1);
@@ -67,31 +64,9 @@ module.exports = function (server, sessionMiddleware) {
 				}
 			);
 		});
-		socket.on('newChat', function (data) {
-			var id_user_to = data;
-			User.findOne({ _id: id_user_to },
-				function (err, doc) {
-					if (doc) {
-						doc.date_desconected = new Date();
-						doc.conected = "N";
-						doc.password_conf = doc.password;
-						doc.save(
-							function (err) {
-								if (err) {
-									console.log(err)
-								} else {
-									io.sockets.connected[socket.id].emit("newChat", "usermae");
-								}
-							}
-						);
-					}
-				}
-			);
-
-		});
+		
 		socket.on('nuevoMsg', function (data) {
 			data = JSON.parse(data);
-			console.log(data)
 			var dataMensaje = {
 				msg: data.msg,
 				fechaEnvio: data.date,
@@ -111,24 +86,34 @@ module.exports = function (server, sessionMiddleware) {
 
 		socket.on("filterSearch", function (data) {
 			var dataSplit = data.trim().split(" ");
-			var querryDin = {}; // declare the query object
-			querryDin['$or'] = []; // filter the search by any criteria given by the user
+			var querryDin = {};
+			querryDin['$or'] = [];
 			for (let index = 0; index < dataSplit.length; index++) {
 				const element = dataSplit[index];
 				querryDin["$or"].push({ nombres: { $regex: element.trim() } });
 			}
 			User.find({ $and: [{ _id: { $ne: socket.request.session.user_id } }, querryDin] },
 				function (err, users) {
-					io.sockets.connected[socket.id].emit("filterSearchResult", JSON.stringify(users));
+					var simpleUsers = [];
+					users.forEach(element => {
+						var simpleUser = { _id: element._id, apellidos: element.apellidos, nombres: element.nombres };
+						simpleUsers.push(simpleUser)
+					});
+					io.sockets.connected[socket.id].emit("filterSearchResult", JSON.stringify(simpleUsers));
 				}).limit(10);
 		});
 		socket.on("openChat", function (id_to) {
 			Amistad.findById(id_to).populate("emisor").populate("receptor").exec(function (err, amis) {
 				Mensaje.find({ amistad: id_to }).populate("emisor").exec(function (err, mensajes) {
 					var userTo = (amis.emisor._id == socket.request.session.user_id ? amis.receptor : amis.emisor);
+					var simpleMsgs = [];
+					mensajes.forEach(element => {
+						var simpleMsg = { _id: element._id, amistad: element.amistad, fechaEnvio: element.fechaEnvio, msg: element.msg, emisor: { _id: element.emisor._id } };
+						simpleMsgs.push(simpleMsg);
+					});
 					if (mensajes) {
-						
-						var data = { _id: amis._id, userTo: userTo, msgs: mensajes }
+						userTo = { _id: userTo._id, apellidos: userTo.apellidos, nombres: userTo.nombres }
+						var data = { _id: amis._id, userTo: userTo, msgs: simpleMsgs }
 						io.sockets.connected[socket.id].emit("createChat", JSON.stringify(data));
 					}
 				});

@@ -163,7 +163,6 @@ $(document).on('click', '.chat-footer button.chat-btn', function (e) {
         var container = $this.parents('.chat').find('.chat-body');
         var source_send = document.querySelector("#msg_sent").innerHTML;
         var template = Handlebars.compile(source_send);
-        console.log(container.offset().top)
        
         container.attr("scrollTop",container.offset().top)
         socket.emit("nuevoMsg", JSON.stringify(data));
@@ -179,5 +178,5 @@ $(document).on('keypress', '#txt_filter_search', function (e) {
     clearTimeout(timeoutSeachFriens);
     timeoutSeachFriens = setTimeout(function () {
         socket.emit("filterSearch", $this[0].value);
-    }, 2000);
+    }, 1000);
 });
