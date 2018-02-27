@@ -43,7 +43,32 @@ router.use(function (req, res, next) {
                 exec(function (err, amistades) {
                     if (err)
                         console.log(err);
-                    res.locals.listFriends = amistades;
+                    var simpleAmistades = [];
+                    amistades.forEach(element => {
+                        var simpleAmistad = {
+                            _id: element._id,
+                            emisor: {
+                                _id: element.emisor._id,
+                                nombres: element.emisor.nombres,
+                                apellidos: element.emisor.apellidos,
+                                conected: element.emisor.conected,
+                                date_desconected: element.emisor.date_desconected,
+                            },
+                            receptor: {
+                                _id: element.receptor._id,
+                                nombres: element.receptor.nombres,
+                                apellidos: element.receptor.apellidos,
+                                conected: element.receptor.conected,
+                                date_desconected: element.receptor.date_desconected,
+                            },
+                            fechaInicio: element.fechaInicio,
+                            fechaEnvio: element.fechaEnvio,
+                            newMsg: element.newMsg,
+                            status: String
+                        };
+                        simpleAmistades.push(simpleAmistad);
+                    });
+                    res.locals.listFriends = simpleAmistades;
                     Amistad.find({ $and: [{ receptor: req.session.user_id }, { status: "SOLICITADO" }] }).populate("emisor").
                         exec(function (err, solicitudes) {
                             if (err)
@@ -239,7 +264,7 @@ router.get("/user/:id/acept", function (req, res) {
 });
 
 router.get("/user/:id/contact", function (req, res) {
-    
+
     Amistad.findOne({ $and: [{ $or: [{ emisor: res.locals.user_show._id }, { receptor: res.locals.user_show._id }] }, { $or: [{ emisor: req.session.user_id }, { receptor: req.session.user_id }] }] }, function (err, amistad) {
         if (err)
             console.log(err)

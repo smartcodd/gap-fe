@@ -6,6 +6,7 @@ module.exports = function (server, sessionMiddleware) {
 	var Mensaje = require("./models/mensaje").Mensaje;
 	var User = require("./models/usuario").Usuario;
 	var Amistad = require("./models/contacto").Contacto;
+	const dateformat = require('dateformat');
 	var myMap = new Map();
 	io.use(function (socket, next) {
 		sessionMiddleware(socket.request, socket.request.res, next);
@@ -41,7 +42,27 @@ module.exports = function (server, sessionMiddleware) {
 				}
 			}
 		);
-		
+
+		socket.on('estaEscriviendo', function (data) {
+			data = JSON.parse(data);
+			if (socket.request.session.user) {
+				var nombres = socket.request.session.user.nombres.split(" ");
+				var dataEscribiendo = { to: data.to, from: nombres[0], amistad: data.idCont, fromId: socket.request.session.user._id }
+				var chats = myMap.get(data.to);
+				if (io.sockets.connected[chats] != undefined)
+					io.sockets.connected[chats].emit("estaEscriviendoClient", JSON.stringify(dataEscribiendo));
+			}
+		});
+		socket.on('dejaEscribir', function (data) {
+			data = JSON.parse(data);
+			if (socket.request.session.user) {
+				var nombres = socket.request.session.user.nombres.split(" ");
+				var dataEscribiendo = { to: data.to, from: nombres[0], amistad: data.idCont, fromId: socket.request.session.user._id }
+				var chats = myMap.get(data.to);
+				if (io.sockets.connected[chats] != undefined)
+					io.sockets.connected[chats].emit("dejaEscribirClient", JSON.stringify(dataEscribiendo));
+			}
+		});
 		socket.on('disconnect', function () {
 			var index = myMap.get(socket.request.session.user_id).indexOf(socket.id);
 			myMap.get(socket.request.session.user_id).splice(index, 1);
@@ -64,7 +85,7 @@ module.exports = function (server, sessionMiddleware) {
 				}
 			);
 		});
-		
+
 		socket.on('nuevoMsg', function (data) {
 			data = JSON.parse(data);
 			var dataMensaje = {
@@ -76,8 +97,16 @@ module.exports = function (server, sessionMiddleware) {
 			var mensaje = new Mensaje(dataMensaje);
 			mensaje.save(function (err) {
 				if (!err) {
+					var mensajeEnvio = {
+						msg: mensaje.msg,
+						fechaEnvio: dateformat(mensaje.fechaEnvio, "yyyy mmm d h:MM TT"),
+						emisor: socket.request.session.user_id,
+						amistad: mensaje.amistad,
+						fromId:socket.request.session.user._id
+					}
 					var chats = myMap.get(data.to);
-					io.sockets.connected[chats].emit("nuevoMsg", JSON.stringify(mensaje));
+					if (io.sockets.connected[chats] != undefined)
+						io.sockets.connected[chats].emit("nuevoMsg", JSON.stringify(mensajeEnvio));
 				} else {
 					console.log(err)
 				}
@@ -108,11 +137,14 @@ module.exports = function (server, sessionMiddleware) {
 					var userTo = (amis.emisor._id == socket.request.session.user_id ? amis.receptor : amis.emisor);
 					var simpleMsgs = [];
 					mensajes.forEach(element => {
-						var simpleMsg = { _id: element._id, amistad: element.amistad, fechaEnvio: element.fechaEnvio, msg: element.msg, emisor: { _id: element.emisor._id } };
+						var fechaFormat = dateformat(element.fechaEnvio, "yyyy mmm d h:MM TT");
+						var simpleMsg = { _id: element._id, amistad: element.amistad, fechaEnvio: fechaFormat, msg: element.msg, emisor: { _id: element.emisor._id } };
 						simpleMsgs.push(simpleMsg);
 					});
 					if (mensajes) {
-						userTo = { _id: userTo._id, apellidos: userTo.apellidos, nombres: userTo.nombres }
+						var nombreS = userTo.nombres + ' ' + userTo.apellidos;
+						nombreS = nombreS.substr(0, 25);
+						userTo = { _id: userTo._id, nombreS: nombreS }
 						var data = { _id: amis._id, userTo: userTo, msgs: simpleMsgs }
 						io.sockets.connected[socket.id].emit("createChat", JSON.stringify(data));
 					}

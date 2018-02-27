@@ -79,6 +79,8 @@ socket.on("newclientdesconnect", function (dates) {
     $time.removeClass('hide');
 });
 
+var intervalorWriting;
+
 socket.on("nuevoMsg", function (data) {
     data = JSON.parse(data);
     var classChat = "#chat-body-" + data.amistad;
@@ -86,7 +88,77 @@ socket.on("nuevoMsg", function (data) {
     var source_reciver = document.querySelector("#msg_receiver").innerHTML;
     var template = Handlebars.compile(source_reciver);
     container.html(container.html() + template(data));
+
+    var idDivWriting = "#div_" + data.fromId;
+    clearInterval(intervalorWriting);
+    var writedComp = $(idDivWriting);
+    console.log(idDivWriting)
+    console.log(writedComp)
+    if (writedComp.length != 0) {
+        writedComp.remove();
+    }
+    if (container[0] != undefined)
+        container.animate({ scrollTop: (container[0].scrollHeight) }, 400);
+
 });
+
+
+$(document).on('click', '.chat-footer input.chat_input', function (e) {
+    var textInput = $(this);
+    var data = {
+        to: textInput.attr("idUserTo"),
+        idCont: textInput.attr("idCont"),
+    };
+    socket.emit("estaEscriviendo", JSON.stringify(data));
+});
+$(document).on('blur', '.chat-footer input.chat_input', function (e) {
+    var textInput = $(this);
+    var data = {
+        to: textInput.attr("idUserTo"),
+        idCont: textInput.attr("idCont"),
+    };
+    socket.emit("dejaEscribir", JSON.stringify(data));
+});
+
+socket.on("estaEscriviendoClient", function (data) {
+    data = JSON.parse(data);
+    var classChat = "#chat-body-" + data.amistad;
+    var container = $(classChat);
+    if (container.length > 0) {
+        var idWrited = "#txt_" + data.fromId;
+        var i = 0;
+        clearInterval(intervalorWriting);
+        var writedComp = $(idWrited);
+        if (writedComp.length == 0) {
+            var source_reciver = document.querySelector("#msg_writed").innerHTML;
+            var template = Handlebars.compile(source_reciver);
+            container.html(container.html() + template(data));
+            container.animate({ scrollTop: container[0].scrollHeight }, 0);
+        }
+        writedComp = $(idWrited);
+        intervalorWriting = setInterval(function () {
+            if (i % 2 == 0)
+                writedComp.html(data.from + " esta escribiendo.");
+            else
+                writedComp.html(data.from + " esta escribiendo...");
+            i++;
+        }, 1000);
+    }
+});
+socket.on("dejaEscribirClient", function (data) {
+    data = JSON.parse(data);
+    var classChat = "#chat-body-" + data.amistad;
+    var container = $(classChat);
+    if (container.length > 0) {
+        var idDivWriting = "#div_" + data.fromId;
+        clearInterval(intervalorWriting);
+        var writedComp = $(idDivWriting);
+        if (writedComp.length != 0) {
+            writedComp.remove();
+        }
+    }
+});
+
 socket.on("filterSearchResult", function (data) {
     data = JSON.parse(data);
     var containerMsg = $('.result-users');
@@ -99,9 +171,9 @@ socket.on("filterSearchResult", function (data) {
     containerMsg.html(html);
 });
 
+
 socket.on("createChat", function (data) {
     data = JSON.parse(data);
-    console.log(data)
     var idAmistad = data._id;
     var classId = ".chat-" + idAmistad;
     var layoutChat = $(classId);
@@ -135,6 +207,7 @@ socket.on("createChat", function (data) {
             html += template(element);
         });
         chatBody.html(html);
+        chatBody.animate({ scrollTop: chatBody[0].scrollHeight }, 0);
     } else {
         var chat = $(".chat-" + idAmistad);
         var chatBody = $("#chat-body-" + idAmistad);
@@ -148,6 +221,28 @@ socket.on("createChat", function (data) {
 function register_popup(id) {
     socket.emit("openChat", id);
 }
+
+$(document).on('submit', '.chat-footer form', function (e) {
+    var $this = $(this);
+    var listInput = $this.find('.chat_input');
+    if (listInput.length > 0) {
+        msgInput = listInput[0];
+        var data = {
+            msg: listInput.val(),
+            idCont: listInput.attr("idCont"),
+            to: listInput.attr("idUserTo"),
+            date: new Date()
+        };
+        var container = $this.parents('.chat').find('.chat-body');
+        var source_send = document.querySelector("#msg_sent").innerHTML;
+        var template = Handlebars.compile(source_send);
+        container.html(container.html() + template(data));
+        container.animate({ scrollTop: (container[0].scrollHeight) }, 0);
+        socket.emit("nuevoMsg", JSON.stringify(data));
+        listInput[0].value = "";
+    }
+    return false;
+});
 
 $(document).on('click', '.chat-footer button.chat-btn', function (e) {
     var $this = $(this);
@@ -163,13 +258,15 @@ $(document).on('click', '.chat-footer button.chat-btn', function (e) {
         var container = $this.parents('.chat').find('.chat-body');
         var source_send = document.querySelector("#msg_sent").innerHTML;
         var template = Handlebars.compile(source_send);
-       
-        container.attr("scrollTop",container.offset().top)
+        container.html(container.html() + template(data));
+        container.animate({ scrollTop: (container[0].scrollHeight) }, 0);
         socket.emit("nuevoMsg", JSON.stringify(data));
         listInput[0].value = "";
     }
     return false;
 });
+
+
 
 
 var timeoutSeachFriens;

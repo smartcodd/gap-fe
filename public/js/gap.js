@@ -14,6 +14,8 @@ $(document).on('focus', '.chat-footer input.chat_input', function (e) {
 });
 
 
+
+
 $(document).on('click', '.chat_icon_close', function (e) {
   e.preventDefault();
   $(this).parents('.chat').remove();

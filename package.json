@@ -26,6 +26,7 @@
     "connect-redis": "^3.3.2",
     "cookie-session": "^2.0.0-beta.3",
     "cron-job": "^1.0.3",
+    "dateformat": "^3.0.3",
     "express": "^4.16.1",
     "express-fileupload": "^0.4.0",
     "express-session": "^1.15.6",
