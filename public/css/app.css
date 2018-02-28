@@ -435,7 +435,8 @@ body{
 }
 
 .chat  .chat-body .chat-msg-receive .messages {
-	background-color: rgb(233, 139, 111);
+	background-color: #155724;
+	color: rgb(255, 255, 255);
 }
 .chat  .chat-body .chat-msg-send .messages {
 	
@@ -449,9 +450,6 @@ body{
 	margin-left:0.5rem;
 	font-size: 0.8rem;
 }
-
-
-	
 
 .messages {
 	border-radius: 1.2rem;
@@ -482,6 +480,10 @@ body{
 	bottom: 0;
 }
 
+/*Login*/
+.login .card-header{
+	background: transparent;
+}
 
 
 .demos {

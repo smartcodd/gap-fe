@@ -1,0 +1,22 @@
+extends ./layoutPublic.jade
+block cotenido
+    
+    .row
+        +column(3,2,1,"")
+        +column(6,8,10,"")
+            .card.login
+                .card-header.mx-auto
+                    i.fas.fa-user-circle.fa-9x
+                .card-body
+                    form(action="/valid", method="post")
+                        .form-group
+                            label(for="email") Email
+                            input(type="email", id="email", name="email" , placeholder="example@empresa.com" class="form-control" required)
+                        if msgError>""
+                            div( class="alert alert-primary msg-error" role="alert")
+                                p #{msgError}
+                            
+                        .form-group
+                            button.btn.btn-primary Siguiente
+                                i.fas.fa-sign-in-alt
+        +column(3,2,1,"")            

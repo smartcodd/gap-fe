@@ -1,0 +1,36 @@
+extends ./layoutPublic.jade
+block cotenido
+    
+    .row
+        +column(3,2,1,"")
+        +column(6,8,10,"")
+            .card.login
+                .card-header.mx-auto
+                    h1.card-title Bienvenido 
+                    p.card-text #{USER.nombres} #{USER.apellidos}
+                .card-body
+                    if USER.profile_img
+                        img( class="card-img-top rounded-circle img-fluid" src="data:#{USER.profile_img.contentType};base64, #{USER.profile_img.data}" alt="#{USER.profile_img.name}" )
+                    else
+                        i.fas.fa-user-circle.fa-8x.card-img-top
+                    form(action="/singin", method="post" autocomplete="off")
+                        .form-group
+                            label(for="email") Email
+                            input(type="text" id="email", name="email" , placeholder="example@empresa.com" class="form-control-plaintext" readonly  value="#{USER.email}") 
+                        .form-group
+                            label(for="password") Contraseña
+                            input(type="password" id="password" name="password" , placeholder="Contraseña" class="form-control" autocomplete="off" ) 
+                        if msgError>""
+                            div( class="alert alert-primary msg-error" role="alert")
+                                p #{msgError}
+                        .form-group
+                            if msgError>""
+                                button( class="btn btn-primary" type="submit") Recuperar Contraseña
+                                    i.fas.fa-sign-in-alt 
+                            button( class="btn btn-primary" type="submit") Siguiente
+                                i.fas.fa-sign-in-alt    
+        +column(3,2,1,"")   
+    script(type='text/javascript').
+        $("html, body").stop().animate({scrollTop:$("body")[0].offsetHeight}, 4000, 'swing', function() { 
+            $( "#password" ).focus();
+        });    

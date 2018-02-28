@@ -31,7 +31,9 @@ script(id="chat_windows" type="text/x-handlebars-template" src="/docs/js/socketC
                 small.text-muted {{userTo.nombreS}}
         div(class="card-body chat-body collapse" id="chat-body-{{_id}}")
         div(class="card-footer chat-footer")
-            form
+            form.form-inline
+                button.chat-btn
+                    i.fas.fa-paper-plane
                 input( idCont="{{_id}}" idUserTo="{{userTo._id}}" class="form-control chat_input form-control-sm" type="search" placeholder="Escribe tu mensaje aqui..." aria-label="Search")
                 
 

@@ -1,9 +1,9 @@
+
 window.onload = function () {
   var elements = document.querySelectorAll('.demo-image');
   if (elements.length > 0)
     Intense(elements);
 }
-
 
 $(document).on('focus', '.chat-footer input.chat_input', function (e) {
   var $this = $(this);
@@ -13,14 +13,10 @@ $(document).on('focus', '.chat-footer input.chat_input', function (e) {
   controlChat.removeClass("fa-plus-square").addClass("fa-minus");
 });
 
-
-
-
 $(document).on('click', '.chat_icon_close', function (e) {
   e.preventDefault();
   $(this).parents('.chat').remove();
 });
-
 
 $(document).on('click', '.chat_icon_minim', function (e) {
   var $this = $(this);
@@ -31,7 +27,6 @@ $(document).on('click', '.chat_icon_minim', function (e) {
     controlChat.removeClass("fa-minus").addClass("fa-plus-square");
   }
 });
-
 
 $(document).on('click', '#control_chat', function (e) {
   var svgControl = $(this).find("svg");
@@ -47,8 +42,7 @@ $(document).on('click', '#control_chat', function (e) {
   }
 });
 
-
-
+var timingMsgError;
 $(document).ready(function () {
   $("[data-toggle='popover']").each(function (i, obj) {
     $(this).popover({
@@ -59,8 +53,16 @@ $(document).ready(function () {
       }
     });
   });
-});
+  if ($(".msg-error") != undefined) {
+    
+    clearTimeout(timingMsgError);
+    timingMsgError = setTimeout(function () {
+      $(".msg-error").toggle(1000, "swing", function () {
 
+      })
+    }, 5000);
+  }
+});
 
 $(function () {
   var nua = navigator.userAgent

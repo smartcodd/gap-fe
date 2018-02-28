@@ -84,6 +84,6 @@ $(function () {
   function infowindowContent(text, latres, lngres) {
     return '<div id="info_window">' + text + "<br/><strong>" + trans.Latitude + "</strong> " + Math.round(latres * 1e6) / 1e6 + " | <strong>" + trans.Longitude + "</strong> " + Math.round(lngres * 1e6) / 1e6 + "<br/><br/></div>";
   }
-
-  google.maps.event.addDomListener(document.getElementById('viewLocation'), 'click', initMap);
+  if(document.getElementById('viewLocation')!=undefined)
+    google.maps.event.addDomListener(document.getElementById('viewLocation'), 'click', initMap);
 });

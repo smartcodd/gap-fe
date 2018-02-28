@@ -77,7 +77,7 @@ app.get("/", function (req, res) {
     res.render("index");
 });
 app.get("/login", function (req, res) {
-    res.render("login");
+    res.render("loginMail");
 });
 app.get("/signup", function (req, res) {
     res.render("signup");
@@ -88,7 +88,6 @@ app.get("/logout", function (req, res) {
     res.redirect("/");
 });
 app.post("/register", function (req, res) {
-    
     var user = new User({
         email: req.body.email,
         password: req.body.password,
@@ -121,7 +120,20 @@ app.post("/register", function (req, res) {
         }
     );
 });
-app.post("/sessions", function (req, res) {
+app.post("/valid", function (req, res) {
+    User.findOne({ email: req.body.email},
+        function (err, doc) {
+            if (doc) {
+                req.session.user = doc;
+                res.locals.USER = doc;
+                res.render("loginPass");
+            } else {
+                res.render("loginMail",{msgError:"El correo ingresado no existe, Por favor registrate"});
+            }
+        }
+    );
+});
+app.post("/singin", function (req, res) {
     User.findOne({ email: req.body.email, password: req.body.password },
         function (err, doc) {
             if (doc) {
@@ -129,7 +141,8 @@ app.post("/sessions", function (req, res) {
                 req.session.user_id = doc._id;
                 res.redirect("/app");
             } else {
-                res.redirect("/signup");
+                res.locals.USER = req.session.user;
+                res.render("loginPass",{msgError:"La contraseña es incorrecta."});
             }
         }
     );

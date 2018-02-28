@@ -30,7 +30,7 @@ block cuerpo
                 span.header-user-text #{USER.nombres}  #{USER.apellidos}
                 if USER.profile_img
                     img(  src="data:#{USER.profile_img.contentType};base64, #{USER.profile_img.data}" alt="#{USER.profile_img.name}" )
-            a(href="#" data-toggle="popover" data-container="body" data-placement="bottom"  data-html="true"  id="options") 
+            a(href="javascript:" data-toggle="popover" data-container="body" data-placement="bottom"  data-html="true"  id="options") 
                 i.fas.fa-angle-down.fa-1x
         <!--Usuarios Conectados-->
         .user-connected.position-fixed
