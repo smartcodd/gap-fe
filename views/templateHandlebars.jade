@@ -35,7 +35,28 @@ script(id="chat_windows" type="text/x-handlebars-template" src="/docs/js/socketC
                 button.chat-btn
                     i.fas.fa-paper-plane
                 input( idCont="{{_id}}" idUserTo="{{userTo._id}}" class="form-control chat_input form-control-sm" type="search" placeholder="Escribe tu mensaje aqui..." aria-label="Search")
-                
+<!--User conected-->
+script(id="user_connect" type="text/x-handlebars-template" src="/docs/js/socketClient.js")
+    if conected=="S"
+        i.fas.fa-circle.fa-1x.text-success
+    else
+        i.far.fa-circle.fa-1x
+    .portrait-img
+        img( class="rounded mx-auto d-block" src="data:{{profile_img.contentType}};base64, {{profile_img.data}}"  )
+    small.text-muted {{nombres}} {{apellidos}} 
+    if tiempo_current!=""
+        span.badge.badge-pill.badge-dark.timeConeccted {{tiempo_current}}
+    else
+        span.badge.badge-pill.badge-dark.timeConeccted.hide {{tiempo_current}}
+    if newMsg>0
+        span.badge.badge-primary.badge-pill {{newMsg}}
+<!--Search result-->
+script(id="filter_result" type="text/x-handlebars-template" src="/docs/js/socketClient.js")
+    a( href="/app/user/{{_id}}" class="list-group-item list-group-item-action") {{nombres}} {{apellidos}}
+
+<!--Search result-->
+script(id="image-template" type="text/x-handlebars-template" src="/docs/js/client.js")
+        div( class="demo-image" style="background-image: url('/docs/imagenes/{{id}}.{{extension}}')" data-image="/docs/imagenes/{{id}}.{{extension}}" data-title="{{titulo}}" data-caption="por {{creator.email}} ")
 
 
 

@@ -1,4 +1,5 @@
 var express = require("express");
+const favicon = require('express-favicon');
 var router = express.Router();
 var Imagen = require("./models/imagen").Imagen;
 var Mensaje = require("./models/mensaje").Mensaje;

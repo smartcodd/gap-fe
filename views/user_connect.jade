@@ -78,17 +78,3 @@
                         span.badge.badge-pill.badge-dark.timeConeccted.hide #{tiempoConectado}
                     if friend.newMsg>0
                         span.badge.badge-primary.badge-pill #{friend.newMsg}
-script(id="user_connect" type="text/x-handlebars-template" src="/docs/js/socketClient.js")
-    if conected=="S"
-        i.fas.fa-circle.fa-1x.text-success
-    else
-        i.far.fa-circle.fa-1x
-    .portrait-img
-        img( class="rounded mx-auto d-block" src="data:{{profile_img.contentType}};base64, {{profile_img.data}}"  )
-    small.text-muted {{nombres}} {{apellidos}} 
-    if tiempo_current!=""
-        span.badge.badge-pill.badge-dark.timeConeccted {{tiempo_current}}
-    else
-        span.badge.badge-pill.badge-dark.timeConeccted.hide {{tiempo_current}}
-    if newMsg>0
-        span.badge.badge-primary.badge-pill {{newMsg}}

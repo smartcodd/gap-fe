@@ -173,20 +173,25 @@ socket.on("filterSearchResult", function (data) {
 
 
 socket.on("createChat", function (data) {
+    
     data = JSON.parse(data);
     var idAmistad = data._id;
     var classId = ".chat-" + idAmistad;
     var layoutChat = $(classId);
+    
+    
     if (layoutChat.length == 0) {
         var size = $(".chat:last-child").css("margin-left");
         if (size)
             size_total = parseInt(size) + 230;
         else
             size_total = 2;
-        var container = document.querySelector("body");
+        var containerChat = document.querySelector(".container-chat");
         var source_reciver = document.querySelector("#chat_windows").innerHTML;
         var template = Handlebars.compile(source_reciver);
-        container.innerHTML = container.innerHTML + template(data);
+
+        containerChat.innerHTML = template(data)+containerChat.innerHTML;
+        
         var chat = $(".chat-" + idAmistad);
         var chatBody = $("#chat-body-" + idAmistad);
         var controlChat = chat.find(".chat-minus");
@@ -195,6 +200,7 @@ socket.on("createChat", function (data) {
             chatBody.addClass('show');
             controlChat.removeClass("fa-plus-square").addClass("fa-minus");
         }
+        
         var html = "";
         data.msgs.forEach(element => {
             var msg_template;
@@ -219,7 +225,7 @@ socket.on("createChat", function (data) {
     }
 });
 function register_popup(id) {
-    socket.emit("openChat", id);
+   socket.emit("openChat", id);
 }
 
 $(document).on('submit', '.chat-footer form', function (e) {

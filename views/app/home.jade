@@ -5,6 +5,5 @@ block contenido
             each imagen, i in imagenes
                 div( class="demo-image" style="background-image: url('/docs/imagenes/#{imagen._id}.#{imagen.extension}')" data-image="/docs/imagenes/#{imagen._id}.#{imagen.extension}" data-title="#{imagen.titulo}" data-caption="por #{imagen.creator.email}")
         
-    script(id="image-template" type="text/x-handlebars-template" src="/docs/js/client.js")
-        div( class="demo-image" style="background-image: url('/docs/imagenes/{{id}}.{{extension}}')" data-image="/docs/imagenes/{{id}}.{{extension}}" data-title="{{titulo}}" data-caption="por {{creator.email}} ")
+    
         
